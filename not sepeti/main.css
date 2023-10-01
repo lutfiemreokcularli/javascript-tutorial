@@ -1,0 +1,33 @@
+:root{
+    --main-color: rgba(9, 132, 227,1.0);
+    --main-color-light: rgba(9, 132, 227,0.5);
+    --accent-color: rgba(255, 118, 117,1.0);
+    --accent-color-light: rgba(255, 118, 117,0.5);
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Amaranth', sans-serif;
+    background-image: linear-gradient(to bottom right,var(--main-color),var(--accent-color));
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+.main-title{
+    font-size: 1.5rem;
+}
+.header,.gorev-form{
+    min-height: 20vh;
+    margin: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.form-item{
+    background-color: white;
+    border: none;
+}
