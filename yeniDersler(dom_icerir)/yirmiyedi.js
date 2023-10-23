@@ -7,4 +7,4 @@ function belliAraliktakiSayilariTopla(sayi1,sayi2){
 }
 
 let sonuc = belliAraliktakiSayilariTopla(30,60);
-console.log(sonuc);P
+console.log(sonuc);
