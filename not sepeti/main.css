@@ -55,6 +55,8 @@ body{
     align-items: center;
     margin: .5rem;
     background-color: white;
+    transition: .5s ease-in-out;
+    
 }
 .gorev-tanim{
     flex: 1;
@@ -76,4 +78,10 @@ body{
 .gorev-tamamlandi{
     text-decoration: line-through;
     opacity: 0.5;
+}
+.fa-solid{
+    pointer-events: none;
+}
+.kaybol{
+    transform: scale(0);
 }
