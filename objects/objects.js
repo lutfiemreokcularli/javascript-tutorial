@@ -2,7 +2,7 @@
 const factoryFunc = (ad,yas,evliMi,okul,username) =>{
     return {
         isim:ad,
-        yas:yas,
+        yas,
         evliMi:evliMi,
         okul:okul,
         bilgileriSoyle: function (){
