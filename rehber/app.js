@@ -4,6 +4,7 @@ const mail = document.getElementById('email');
 const form = document.getElementById('form-rehber');
 const kisiListesi = document.querySelector('.kisi-listesi');
 const trElement = document.querySelector('.item');
+let isSubmitEnabled = true;
 
 //tüm kişiler dizisi
 const tumKisiler = [];
@@ -11,15 +12,24 @@ const tumKisiler = [];
 //kaydet fonk
 const kaydet = (e) => {
     e.preventDefault()
-    const kisi = {
-        ad: ad.value,
-        soyad: soyad.value,
-        mail: mail.value
+    if (isSubmitEnabled) {
+        console.log(e.target);
+        if (e.target.children[3].children[0].classList.contains('button-primary')) {
+            const kisi = {
+                ad: ad.value,
+                soyad: soyad.value,
+                mail: mail.value
+            }
+            const sonuc = verileriKontrolEt(kisi);
+            bilgiOlustur(sonuc.durum, sonuc.mesaj, sonuc.className);
+            if (sonuc.durum)
+                kisiEkle(kisi);
+        }
+
+    }else{
+        isSubmitEnabled = true;
     }
-    const sonuc = verileriKontrolEt(kisi);
-    bilgiOlustur(sonuc.durum, sonuc.mesaj, sonuc.className);
-    if (sonuc.durum)
-        kisiEkle(kisi);
+
 }
 
 //veri kontrol funk
@@ -70,5 +80,31 @@ const kisiEkle = (eklenecekKisi) => {
     //kisiListesi.appendChild(olusturulanTrElementi);
     kisiListesi.insertBefore(olusturulanTrElementi, trElement);
     tumKisiler.push(eklenecekKisi);
+    console.log(tumKisiler)
+}
+
+const kisiIslemleriniYap = (e) => {
+    isSubmitEnabled = false;
+    if (e.target.classList.contains('btn--delete')) {
+        const silinecekTr = e.target.parentElement.parentElement;
+        const silicekMail = e.target.parentElement.previousElementSibling.textContent;
+        rehberdenSil(silinecekTr,silicekMail);
+    } else if (e.target.classList.contains('btn--edit')) {
+
+    }
+}
+function rehberdenSil(silinecekTrElement,silinecekMail){
+    silinecekTrElement.remove();
+    console.log(silinecekMail)
+
+    //maile göre silme işlemi
+
+    tumKisiler.forEach((kisi,index)=>{
+        if(kisi.mail === silinecekMail){
+            tumKisiler.splice(index,1);
+        }
+    })
+    console.log(tumKisiler)
 }
 form.addEventListener('submit', kaydet);
+kisiListesi.addEventListener('click', kisiIslemleriniYap);
