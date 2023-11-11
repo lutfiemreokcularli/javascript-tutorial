@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rehdber Uygulaması</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Rehber Uygulaması</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./skeleton/normalize.css">
     <link rel="stylesheet" href="./skeleton/skeleton.css">
     <link rel="stylesheet" href="main.css">
 </head>
+
 <body>
     <div class="container">
         <h1>Rehber Uygulaması</h1>
@@ -28,34 +32,34 @@
                 <input type="text" id="email" class="u-full-width">
             </div>
             <div class="submitType">
-                <input type="submit" class="button-primary u-full-width" value="Kaydet">
+                <input type="submit" class="button-primary u-full-width kaydet-guncelle" value="Kaydet">
             </div>
-            <table class="u-full-width">
-                <thead>
-                    <tr>
-                        <th>Ad</th>
-                        <th>Soyad</th>
-                        <th>Email</th>
-                        <th>İşlem</th>
-
-                    </tr>
-                </thead>
-                <tbody class="kisi-listesi">
-                     <tr class="item">
-                        <td>Emre</td>
-                        <td>Ok</td>
-                        <td>eee.@gmail.com</td>
-                        <td>
-                            
-                            <button class="btn btn--edit"><i class="fas fa-edit"></i></button>
-                            <button class="btn btn--delete"><i class="fas fa-trash-alt"></i></button>
-                            </td>
-                    </tr> 
-                </tbody>
-            </table>
-
         </form>
+        <table class="u-full-width">
+            <thead>
+                <tr>
+                    <th>Ad</th>
+                    <th>Soyad</th>
+                    <th>Email</th>
+                    <th>İşlem</th>
+
+                </tr>
+            </thead>
+            <tbody class="kisi-listesi">
+                <!-- <tr class="item">
+                    <td>Emre</td>
+                    <td>Ok</td>
+                    <td>eee.@gmail.com</td>
+                    <td>
+
+                        <button class="btn btn--edit"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn--delete"><i class="fas fa-trash-alt"></i></button>
+                    </td>
+                </tr> -->
+            </tbody>
+        </table>
     </div>
     <script src="app.js"></script>
 </body>
+
 </html>

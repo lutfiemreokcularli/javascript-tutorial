@@ -3,34 +3,51 @@ const soyad = document.getElementById('soyad');
 const mail = document.getElementById('email');
 const form = document.getElementById('form-rehber');
 const kisiListesi = document.querySelector('.kisi-listesi');
-const trElement = document.querySelector('.item');
-let isSubmitEnabled = true;
-
+//const trElement = document.querySelector('.item');
 //tüm kişiler dizisi
 const tumKisiler = [];
+let secilenSatir = undefined;
 
 //kaydet fonk
 const kaydet = (e) => {
-    e.preventDefault()
-    if (isSubmitEnabled) {
-        console.log(e.target);
-        if (e.target.children[3].children[0].classList.contains('button-primary')) {
-            const kisi = {
-                ad: ad.value,
-                soyad: soyad.value,
-                mail: mail.value
-            }
-            const sonuc = verileriKontrolEt(kisi);
-            bilgiOlustur(sonuc.durum, sonuc.mesaj, sonuc.className);
-            if (sonuc.durum)
-                kisiEkle(kisi);
-        }
-
-    }else{
-        isSubmitEnabled = true;
+    e.preventDefault();
+    const kisi = {
+        ad: ad.value,
+        soyad: soyad.value,
+        mail: mail.value
     }
-
+    const sonuc = verileriKontrolEt(kisi);
+    bilgiOlustur(sonuc.durum, sonuc.mesaj, sonuc.className);
+    if (sonuc.durum){
+        if(secilenSatir){
+            kisiGuncelle(kisi);
+        }else{
+            kisiEkle(kisi);
+        }
+    }
+    
 }
+//kişi gunceller
+const kisiGuncelle = (kisi) => {
+
+    for(let i = 0; i< tumKisiler.length; i++){
+        if(tumKisiler[i].mail === secilenSatir.cells[2].textContent){
+            /* tumKisiler[i].ad = kisi.ad;
+            tumKisiler[i].soyad = kisi.soyad;
+            tumKisiler[i].mail = kisi.mail; */
+            tumKisiler[i] = kisi;
+            break;
+        }
+    }
+    console.log(tumKisiler)
+
+    secilenSatir.cells[0].textContent = kisi.ad;
+    secilenSatir.cells[1].textContent = kisi.soyad;
+    secilenSatir.cells[2].textContent = kisi.mail;
+    document.querySelector('.kaydet-guncelle').value = 'Kaydet';
+    secilenSatir = undefined;
+}
+
 
 //veri kontrol funk
 const verileriKontrolEt = (kisi) => {
@@ -77,34 +94,51 @@ const kisiEkle = (eklenecekKisi) => {
     <td><button class="btn btn--edit"><i class="fas fa-edit"></i></button>
     <button class="btn btn--delete"><i class="fas fa-trash-alt"></i></button>
     </td>`;
-    //kisiListesi.appendChild(olusturulanTrElementi);
-    kisiListesi.insertBefore(olusturulanTrElementi, trElement);
+    kisiListesi.appendChild(olusturulanTrElementi);
+    //kisiListesi.insertBefore(olusturulanTrElementi, trElement);
     tumKisiler.push(eklenecekKisi);
-    console.log(tumKisiler)
 }
 
 const kisiIslemleriniYap = (e) => {
-    isSubmitEnabled = false;
+    console.log(tumKisiler);
     if (e.target.classList.contains('btn--delete')) {
         const silinecekTr = e.target.parentElement.parentElement;
         const silicekMail = e.target.parentElement.previousElementSibling.textContent;
-        rehberdenSil(silinecekTr,silicekMail);
+        rehberdenSil(silinecekTr, silicekMail);
     } else if (e.target.classList.contains('btn--edit')) {
+        document.querySelector('.kaydet-guncelle').value = 'Güncelle';
+        const secilenTR = e.target.parentElement.parentElement;
+        const guncellenecekEmail = secilenTR.cells[2].textContent;
 
+        ad.value = secilenTR.cells[0].textContent;
+        soyad.value = secilenTR.cells[1].textContent;
+        mail.value = secilenTR.cells[2].textContent;
+
+        secilenSatir = secilenTR;
     }
 }
-function rehberdenSil(silinecekTrElement,silinecekMail){
+
+function rehberdenSil(silinecekTrElement, silinecekMail) {
     silinecekTrElement.remove();
-    console.log(silinecekMail)
 
     //maile göre silme işlemi
 
-    tumKisiler.forEach((kisi,index)=>{
-        if(kisi.mail === silinecekMail){
-            tumKisiler.splice(index,1);
+    tumKisiler.forEach((kisi, index) => {
+        if (kisi.mail === silinecekMail) {
+            tumKisiler.splice(index, 1);
         }
-    })
-    console.log(tumKisiler)
+    });
+    alanlariTemizle();
 }
 form.addEventListener('submit', kaydet);
+
+/* document.querySelector('.submitType').addEventListener('click',(e) => {
+    e.preventDefault()
+    if(e.target.classList.contains('btn--edit')){
+
+    }else{
+        kaydet();
+    }
+}); */
+
 kisiListesi.addEventListener('click', kisiIslemleriniYap);
