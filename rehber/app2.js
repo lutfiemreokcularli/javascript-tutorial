@@ -14,10 +14,33 @@ class Ekran {
         this.ekleGuncelleButton = document.querySelector('.kaydet-guncelle');
         this.form = document.getElementById('form-rehber').addEventListener('submit', this.kaydetGuncelle.bind(this));
         this.kisiListesi = document.querySelector('.kisi-listesi');
-        this.depo = new Depo(); 
+        this.kisiListesi.addEventListener('click', this.guncelleVeyaSil.bind(this));
+        this.depo = new Depo();
+        this.secilenSatir = undefined;
         this.kisileriEkranaYazdir();
     }
-    kisileriEkranaYazdir(){
+    alanlariTemizle(){
+        this.ad.value = '';
+        this.soyad.value = '';
+        this.mail.value = '';
+    }
+    guncelleVeyaSil(e) {
+        if (e.target.classList.contains('btn--delete')) {
+            this.secilenSatir = e.target.parentElement.parentElement;
+            this.kisiyiEkrandanSil();
+
+        } else if (e.target.classList.contains('btn--edit')) {
+            this.secilenSatir = e.target.parentElement.parentElement;
+        }
+    }
+    kisiyiEkrandanSil(){
+        this.secilenSatir.remove();
+        const silinecekMail = this.secilenSatir.cells[2].textContent;
+        this.depo.kisiSil(silinecekMail);
+        this.alanlariTemizle();
+        
+    }
+    kisileriEkranaYazdir() {
         this.depo.tumKisiler.forEach(kisi => {
             this.kisiyiEkranaEkle(kisi);
         });
@@ -32,6 +55,7 @@ class Ekran {
     <button class="btn btn--delete"><i class="fas fa-trash-alt"></i></button>
     </td>`;
         this.kisiListesi.appendChild(olusturulanTrElementi);
+        this.alanlariTemizle()
     }
     kaydetGuncelle(e) {
         e.preventDefault();
@@ -66,9 +90,24 @@ class Depo {
     }
     kisiEkle(kisi) {
 
-        const tumKisilerLocal = this.verileriGetir();
-        tumKisilerLocal.push(kisi);
-        localStorage.setItem('tumKisiler', JSON.stringify(tumKisilerLocal));
+        this.tumKisiler.push(kisi)
+        localStorage.setItem('tumKisiler', JSON.stringify(this.tumKisiler));
+    }
+    kisiSil(mail) {
+        this.tumKisiler.forEach((kisi, index) => {
+            if (kisi.mail === mail) {
+                this.tumKisiler.splice(index, 1);
+            }
+        })
+        localStorage.setItem('tumKisiler', JSON.stringify(this.tumKisiler));
+    }
+    kisiGuncelle(guncelKisi) {
+        this.tumKisiler.forEach((kisi, index) => {
+            if (kisi.mail === guncelKisi.mail) {
+                this.tumKisiler[index] = guncelKisi;
+            }
+        })
+        localStorage.setItem('tumKisiler', JSON.stringify(this.tumKisiler));
     }
 }
 
