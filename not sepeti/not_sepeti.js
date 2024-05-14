@@ -22,9 +22,7 @@ const gorevSilveTamamla = (e) => {
         tiklanilanEleman.parentElement.addEventListener('transitionend',function(){
             tiklanilanEleman.parentElement.remove();
         });
-        
     }
-
 }
 yeniGorevEkleBtn.addEventListener('click',gorevEkle);
 gorevListesi.addEventListener('click',gorevSilveTamamla);
@@ -91,7 +89,7 @@ function localStorageDanSil(gorev){
     gorevler = JSON.parse(localStorage.getItem('gorevler'))
     }
 
-    //splice ilte item sil
+    //splice ile item sil
     const silinecekElemanIndex = gorevler.indexOf(gorev);
     gorevler.splice(silinecekElemanIndex,1);
     localStorage.setItem('gorevler',JSON.stringify(gorevler))

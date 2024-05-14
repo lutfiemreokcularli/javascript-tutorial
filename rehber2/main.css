@@ -1,0 +1,27 @@
+.btn {
+    padding: 0;
+    border: 0;
+    font-size: 2rem;
+}
+
+.btn--edit {
+    color: green;
+}
+
+.btn--delete {
+    color: red;
+}
+.bilgi{
+    margin: 1.5rem 0;
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+.bilgi--success{
+    border: 1px solid green;
+}
+.bilgi--error{
+    border: 1px solid red;
+}
+.fa-solid{
+    pointer-events: none;
+}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rehber Uygulaması</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="skeleton/normalize.css">
+    <link rel="stylesheet" href="skeleton/skeleton.css">
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Rehber Uygulaması</h1>
+        <!-- <div class="bilgi bilgi--success">Başarılı</div>
+        <div class="bilgi bilgi--error">Hatalı!</div> -->
+
+        <form id="form-rehber">
+            <div class="row">
+                <div class="six columns">
+                    <label for="exampleEmailInput">Your email</label>
+                    <input class="u-full-width" type="email" placeholder="test@mailbox.com" id="exampleEmailInput">
+                </div>
+                <div class="six columns">
+                    <label for="exampleRecipientInput">Reason for contacting</label>
+                    <select class="u-full-width" id="exampleRecipientInput">
+                        <option value="" disabled selected>Select your option</option>
+                        <option value="1">Questions</option>
+                        <option value="2">Admiration</option>
+                        <option value="3">Can I get your number?</option>
+                    </select>
+                </div>
+            </div>
+            <label for="exampleMessage">Message</label>
+            <textarea class="u-full-width" placeholder="Hi Dave …" id="exampleMessage"></textarea>
+            <label class="example-send-yourself-copy">
+                <input type="checkbox">
+                <span class="label-body">Send a copy to yourself</span>
+            </label>
+            <input class="button-primary" type="submit" value="Submit">
+        </form>
+        <hr>
+        <table class="u-full-width">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Message</th>
+                    <th>RFC</th>
+                    <th>Day - Time</th>
+                    <th>Process</th>
+                </tr>
+            </thead>
+            <tbody class="ticket-list">
+                <!-- <tr>
+                    <td>blabla@gmail.com</td>
+                    <td>keşke şu yapı da olsaydı</td>
+                    <td>Öneri</td>
+                    <td><button class="btn btn--edit"> <i class="fa-solid fa-edit"></i> </button>
+                        <button class="btn btn--delete"> <i class="fa-solid fa-trash"></i> </button>
+                    </td>
+                </tr> -->
+            </tbody>
+        </table>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+:root{
+    --main-color: rgba(39, 60, 117,1.0);
+    --main-color-light: rgba(39, 60, 117,0.5);
+    --accent-color: rgba(250, 152, 58,1.0);
+    --accent-color-light: rgba(250, 152, 58,0.5);
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: "Sedan SC", serif;
+    font-weight: 400;
+    font-style: normal;
+    background-image: linear-gradient(to bottom right,var(--main-color),var(--accent-color));
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+.main-title{
+    font-size: 1.5rem;
+}
+.header,.gorev-form{
+    min-height: 20vh;
+    margin: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form-item{
+    font-size: 1.5rem;
+}
+.btn-gorev-ekle{
+    color: var(--main-color);
+    cursor: pointer;
+}
+.btn-gorev-ekle:hover{
+    color: white;
+    background-color: var(--main-color);
+}
+.gorev-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.gorev-listesi{
+    list-style: none;
+    min-width: 40%;
+
+}
+.gorev-item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: .5rem;
+    background-color: white;
+    transition: .5s ease-in-out;
+}
+.gorev-tanim{
+    flex: 1;
+}
+.gorev-btn{
+    background-color: var(--accent-color-light);
+    outline: none;
+    border: none;
+    font-size: 1.2rem;
+    padding: .2rem;
+}
+.gorev-btn-sil{
+    background-color: rgb(206, 107, 107);
+}
+.gorev-tamamlandi{
+    text-decoration: line-through;
+    opacity: .5;
+}
+.fa-solid{
+    pointer-events: none;
+}
+.fa-regular{
+    pointer-events: none;
+}
+.kaybol{
+    transform: scale(0);
+}
