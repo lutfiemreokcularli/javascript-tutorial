@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Click Position (Percentage)</title>
+</head>
+<body>
+
+    <canvas id="myCanvas" style="border:1px solid #000000; width: 600px; height: 400px;"></canvas>
+
+    <script>
+        var canvas = document.getElementById('myCanvas');
+
+        canvas.addEventListener('click', function(event) {
+            // Canvas üzerindeki tıklama pozisyonunu al
+            var rect = canvas.getBoundingClientRect();
+            var x = event.clientX - rect.left;
+            var y = event.clientY - rect.top;
+
+            // Stil genişliği ve yüksekliği
+            var styleWidth = parseFloat(getComputedStyle(canvas).width);
+            var styleHeight = parseFloat(getComputedStyle(canvas).height);
+
+            // Yüzde cinsinden pozisyonu hesapla
+            var xPercent = (x / styleWidth) * 100;
+            var yPercent = (y / styleHeight) * 100;
+
+            // Yüzde pozisyonunu ekrana yazdır
+            console.log('Left (X): ' + xPercent.toFixed(2) + '%, Top (Y): ' + yPercent.toFixed(2) + '%');
+            alert('Left (X): ' + xPercent.toFixed(2) + '%, Top (Y): ' + yPercent.toFixed(2) + '%');
+        });
+    </script>
+
+</body>
+</html>
