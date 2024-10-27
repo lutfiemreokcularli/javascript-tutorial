@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phaser Sahnesi Aç</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="openPhaserScene()">Phaser Sahnesini Aç</button>
+
+    <script>
+        function openPhaserScene() {
+            const phaserWindow = window.open("", "_blank", "width=800,height=600");
+debugger
+            phaserWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="tr">
+                <head>
+                    <title>Phaser Sahnesi</title>
+                    <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.min.js"><\/script>
+                </head>
+                <body>
+                    <script>
+                        const config = {
+                            type: Phaser.AUTO,
+                            width: 800,
+                            height: 600,
+                            scene: {
+                                preload: function() {
+                                    this.load.image('example', 'https://labs.phaser.io/assets/sprites/phaser3-logo.png');
+                                },
+                                create: function() {
+                                    this.add.image(400, 300, 'example');
+                                }
+                            }
+                        };
+                        new Phaser.Game(config);
+                    </script>
+                </body>
+                </html>
+            `);
+        }
+    </script>
+</body>
+</html>

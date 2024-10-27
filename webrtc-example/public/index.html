@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebRTC Video Chat</title>
+</head>
+<body>
+    <h2>WebRTC Video Chat</h2>
+    <video id="localVideo" autoplay muted></video>
+    <video id="remoteVideo" autoplay></video>
+    <button id="startButton">Start</button>
+    
+    <script>
+        const startButton = document.getElementById('startButton');
+        const localVideo = document.getElementById('localVideo');
+        const remoteVideo = document.getElementById('remoteVideo');
+
+        let localStream;
+        let peerConnection;
+        const signalingSocket = new WebSocket('ws://localhost:3000');
+        const servers = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
+
+        signalingSocket.onmessage = async (event) => {
+            const message = JSON.parse(event.data);
+
+            if (message.offer) {
+                // Gelen teklifi kabul et ve yanıt gönder
+                await peerConnection.setRemoteDescription(new RTCSessionDescription(message.offer));
+                const answer = await peerConnection.createAnswer();
+                await peerConnection.setLocalDescription(answer);
+                signalingSocket.send(JSON.stringify({ answer }));
+            } else if (message.answer) {
+                // Gelen yanıtı kabul et
+                await peerConnection.setRemoteDescription(new RTCSessionDescription(message.answer));
+            } else if (message.iceCandidate) {
+                // ICE adayını ekle
+                await peerConnection.addIceCandidate(new RTCIceCandidate(message.iceCandidate));
+            }
+        };
+
+        startButton.onclick = async () => {
+            // Kullanıcının kamera ve mikrofonuna eriş
+            localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            localVideo.srcObject = localStream;
+
+            // Yeni bir RTCPeerConnection oluştur
+            peerConnection = new RTCPeerConnection(servers);
+
+            // Yerel video akışını bağlantıya ekle
+            localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+
+            // Uzak video akışını yakala ve oynat
+            peerConnection.ontrack = (event) => {
+                if (!remoteVideo.srcObject) {
+                    remoteVideo.srcObject = event.streams[0];
+                }
+            };
+
+            // ICE adayları oluştuğunda signaling sunucusuna gönder
+            peerConnection.onicecandidate = (event) => {
+                if (event.candidate) {
+                    signalingSocket.send(JSON.stringify({ iceCandidate: event.candidate }));
+                }
+            };
+
+            // Bağlantı teklifi oluştur ve signaling sunucusuna gönder
+            const offer = await peerConnection.createOffer();
+            await peerConnection.setLocalDescription(offer);
+            signalingSocket.send(JSON.stringify({ offer }));
+        };
+    </script>
+</body>
+</html>

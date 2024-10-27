@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Draggable Input</title>
+  <style>
+    /* Sürüklenebilir input alanına stil verelim */
+    #draggableInput {
+      width: 200px;
+      padding: 10px;
+      border: 1px solid #333;
+      cursor: move;
+      position: absolute;
+    }
+  </style>
+</head>
+<body>
+
+  <input type="text" id="draggableInput" value="Sürükle beni" draggable="true" />
+
+  <script>
+    // Sürükleme işlemi için event handler fonksiyonları ekleyelim
+    const draggableInput = document.getElementById("draggableInput");
+
+    draggableInput.addEventListener("dragstart", (event) => {
+      event.dataTransfer.setData("text", event.target.id);
+    });
+
+    document.addEventListener("dragover", (event) => {
+      event.preventDefault(); // Varsayılan davranışı engelle
+      draggableInput.setAttribute("draggable",false)
+    });
+
+    document.addEventListener("drop", (event) => {
+      event.preventDefault();
+      const data = event.dataTransfer.getData("text");
+      const draggedElement = document.getElementById(data);
+
+      // Elemanın boyutlarını al
+      const elementWidth = draggedElement.offsetWidth;
+      const elementHeight = draggedElement.offsetHeight;
+
+      // Ortasından bırakılmasını sağla
+      draggedElement.style.left = `${event.pageX - elementWidth / 2}px`;
+      draggedElement.style.top = `${event.pageY - elementHeight / 2}px`;
+    });
+  </script>
+
+</body>
+</html>
