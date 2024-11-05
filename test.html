@@ -3,9 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Input Boşluk Silme</title>
 </head>
 <body>
-    <script src="test.js"></script>
+    <div id="core">
+        <input type="text" placeholder="Bir şeyler yaz..." />
+        <input type="text" placeholder="Bir şeyler daha yaz..." />
+    </div>
+
+    <div>
+        <input type="text" placeholder="Bu input göz ardı edilecek..." />
+    </div>
+
+    <script>
+        // Sayfa yüklendiğinde
+        document.addEventListener('DOMContentLoaded', function() {
+            // 'core' id'li div içerisindeki input elemanlarını seçelim
+            const coreDiv = document.getElementById('core');
+            const inputs = coreDiv ? coreDiv.querySelectorAll('input[type="text"]') : [];
+
+            // Input elemanları varsa işlem yap
+            if (inputs.length > 0) {
+                // Her bir input için "blur" olayını dinle
+                inputs.forEach(input => {
+                    input.addEventListener('blur', function() {
+                        // Başta ve sonda boşlukları sil, fazla boşlukları tek boşluğa indir
+                        input.value = input.value.trim().replace(/\s+/g, ' ');
+                    });
+                });
+            }
+        });
+    </script>
 </body>
 </html>

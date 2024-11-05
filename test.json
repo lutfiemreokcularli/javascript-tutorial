@@ -1,91 +1,1098 @@
-{
-    "headers": [
-        "Wie heißt das Wort?\nVerbinde!"
-    ],
-    "data": [
-        {
-            "path": "cjE=",
-            "controlData": [
-                "Rmx1Zw==",
-                "aGE=",
-                "ZmVu"
-            ],
-            "text": [
-                "ZGVyJTIwRmx1Z2hhZmVuLy0=",
-                {
-                    "x": 153,
-                    "y": -12,
-                    "type": 25
-                }
-            ]
-        },
-        {
-            "path": "cjI=",
-            "controlData": [
-                "QmFobg==",
-                "c3RlaWc="
-            ],
-            "text": "ZGVyJTIwQmFobnN0ZWlnLy1l"
-        },
-        {
-            "path": "cjM=",
-            "controlData": [
-                "QmFobg==",
-                "aG9m"
-            ],
-            "text": [
-                "ZGVyJTIwQmFobmhvZi8tZQ==",
-                {
-                    "x": 124,
-                    "y": -12,
-                    "type": 25
-                }
-            ]
-        },
-        {
-            "path": "cjQ=",
-            "controlData": [
-                "RmFocg==",
-                "a2Fy",
-                "dGVu",
-                "YXU=",
-                "dG8=",
-                "bWF0"
-            ],
-            "text": "ZGVyJTIwRmFocmthcnRlbmF1dG9tYXQvLWVu"
-        },
-        {
-            "path": "cjU=",
-            "controlData": [
-                "SGFs",
-                "dGU=",
-                "c3RlbA==",
-                "bGU="
-            ],
-            "text": "ZGllJTIwSGFsdGVzdGVsbGUvLW4="
-        },
-        {
-            "path": "cjY=",
-            "controlData": [
-                "R2xl",
-                "aXM="
-            ],
-            "text": "ZGFzJTIwJTIwR2xlaXMvLWU="
-        },
-        {
-            "path": "cjc=",
-            "controlData": [
-                "SGE=",
-                "ZmVu"
-            ],
-            "text": [
-                "ZGVyJTIwSGFmZW4vLQ==",
-                {
-                    "x": 109,
-                    "y": -12,
-                    "type": 25
-                }
-            ]
-        }
-    ]
-}
+[
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[Martin] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "hat"
+    },
+    {
+        "type": "text",
+        "value": "dieses"
+    },
+    {
+        "type": "text",
+        "value": "Jahr"
+    },
+    {
+        "type": "text",
+        "value": "die"
+    },
+    {
+        "type": "text",
+        "value": "Universit\u00e4t"
+    },
+    {
+        "type": "text",
+        "value": "absolviert."
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[Es] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "war"
+    },
+    {
+        "type": "text",
+        "value": "Zeit,"
+    },
+    {
+        "type": "text",
+        "value": "um"
+    },
+    {
+        "type": "text",
+        "value": "alles"
+    },
+    {
+        "type": "text",
+        "value": "in"
+    },
+    {
+        "type": "text",
+        "value": "die"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[Wirklichkeit] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "umzusetzen,"
+    },
+    {
+        "type": "text",
+        "value": "was"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[er] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "w\u00e4hrend"
+    },
+    {
+        "type": "text",
+        "value": "seines"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[Studiums] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "geplant"
+    },
+    {
+        "type": "text",
+        "value": "hatte."
+    },
+    {
+        "type": "text",
+        "value": "Aber"
+    },
+    {
+        "type": "text",
+        "value": "auf"
+    },
+    {
+        "type": "text",
+        "value": "einmal"
+    },
+    {
+        "type": "text",
+        "value": "f\u00fchlte"
+    },
+    {
+        "type": "text",
+        "value": "er"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[sich] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "sehr"
+    },
+    {
+        "type": "text",
+        "value": "unsicher."
+    },
+    {
+        "type": "text",
+        "value": "Wo"
+    },
+    {
+        "type": "text",
+        "value": "war"
+    },
+    {
+        "type": "text",
+        "value": "der"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[selbstsichere] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "Martin?"
+    },
+    {
+        "type": "text",
+        "value": "Es"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[war] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "der"
+    },
+    {
+        "type": "text",
+        "value": "falsche"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[Zeitpunkt,] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "um"
+    },
+    {
+        "type": "text",
+        "value": "weiche"
+    },
+    {
+        "type": "text",
+        "value": "Knie"
+    },
+    {
+        "type": "text",
+        "value": "zu"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[bekommen.] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "Er"
+    },
+    {
+        "type": "text",
+        "value": "stand"
+    },
+    {
+        "type": "text",
+        "value": "kurz"
+    },
+    {
+        "type": "text",
+        "value": "vor"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[einem] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "Vorstellungsgespr\u00e4ch"
+    },
+    {
+        "type": "text",
+        "value": "in"
+    },
+    {
+        "type": "text",
+        "value": "einer"
+    },
+    {
+        "type": "text",
+        "value": "Firma,"
+    },
+    {
+        "type": "text",
+        "value": "die"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[auf] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "dem"
+    },
+    {
+        "type": "text",
+        "value": "Markt"
+    },
+    {
+        "type": "text",
+        "value": "sehr"
+    },
+    {
+        "type": "text",
+        "value": "anerkannt"
+    },
+    {
+        "type": "text",
+        "value": "war."
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[Deswegen] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "musste"
+    },
+    {
+        "type": "text",
+        "value": "er"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[sich] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "jetzt"
+    },
+    {
+        "type": "text",
+        "value": "zusammenrei\u00dfen."
+    },
+    {
+        "type": "text",
+        "value": "Er"
+    },
+    {
+        "type": "text",
+        "value": "kontrollierte"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[ein] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "letztes"
+    },
+    {
+        "type": "text",
+        "value": "Mal"
+    },
+    {
+        "type": "text",
+        "value": "sein"
+    },
+    {
+        "type": "text",
+        "value": "Aussehen,"
+    },
+    {
+        "type": "text",
+        "value": "ob"
+    },
+    {
+        "type": "text",
+        "value": "sein"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[Lebenslauf] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "und"
+    },
+    {
+        "type": "text",
+        "value": "seine"
+    },
+    {
+        "type": "text",
+        "value": "Bewerbung"
+    },
+    {
+        "type": "text",
+        "value": "fehlerfrei"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[waren] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "und"
+    },
+    {
+        "type": "text",
+        "value": "wagte"
+    },
+    {
+        "type": "text",
+        "value": "sich"
+    },
+    {
+        "type": "text",
+        "value": "in"
+    },
+    {
+        "type": "text",
+        "value": "die"
+    },
+    {
+        "type": "text",
+        "value": "Firma."
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[Sein] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "Lebenslauf"
+    },
+    {
+        "type": "text",
+        "value": "war"
+    },
+    {
+        "type": "text",
+        "value": "exzellent."
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[Studium] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "an"
+    },
+    {
+        "type": "text",
+        "value": "der"
+    },
+    {
+        "type": "text",
+        "value": "TU-"
+    },
+    {
+        "type": "text",
+        "value": "Berlin"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[im] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "Bereich"
+    },
+    {
+        "type": "text",
+        "value": "Maschinenbauingenieurwesen,"
+    },
+    {
+        "type": "text",
+        "value": "ein"
+    },
+    {
+        "type": "text",
+        "value": "Praktikum"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[bei] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "Bosch,"
+    },
+    {
+        "type": "text",
+        "value": "ein"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[Auslandspraktikum] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "in"
+    },
+    {
+        "type": "text",
+        "value": "Amerika"
+    },
+    {
+        "type": "text",
+        "value": "und"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[vier] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "Fremdsprachen."
+    },
+    {
+        "type": "text",
+        "value": "Davon"
+    },
+    {
+        "type": "text",
+        "value": "hatte"
+    },
+    {
+        "type": "text",
+        "value": "er"
+    },
+    {
+        "type": "text",
+        "value": "Franz\u00f6sisch"
+    },
+    {
+        "type": "text",
+        "value": "mit"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[einem] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "Stipendium"
+    },
+    {
+        "type": "text",
+        "value": "im"
+    },
+    {
+        "type": "text",
+        "value": "eigenen"
+    },
+    {
+        "type": "text",
+        "value": "Heimatland"
+    },
+    {
+        "type": "text",
+        "value": "der"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[Sprache] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "erweitert."
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[Der] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "Anblick"
+    },
+    {
+        "type": "text",
+        "value": "erleichterte"
+    },
+    {
+        "type": "text",
+        "value": "ihn"
+    },
+    {
+        "type": "text",
+        "value": "ein"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[wenig,] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "aber"
+    },
+    {
+        "type": "text",
+        "value": "als"
+    },
+    {
+        "type": "text",
+        "value": "ihm"
+    },
+    {
+        "type": "text",
+        "value": "einfiel,"
+    },
+    {
+        "type": "text",
+        "value": "dass"
+    },
+    {
+        "type": "text",
+        "value": "er"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[eigentlich] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "noch"
+    },
+    {
+        "type": "text",
+        "value": "keine"
+    },
+    {
+        "type": "text",
+        "value": "richtige"
+    },
+    {
+        "type": "text",
+        "value": "Berufserfahrung"
+    },
+    {
+        "type": "text",
+        "value": "hat,"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[wurde] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "ihm"
+    },
+    {
+        "type": "text",
+        "value": "flau"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[im] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "Magen."
+    },
+    {
+        "type": "text",
+        "value": "\u201eSo"
+    },
+    {
+        "type": "text",
+        "value": "jetzt"
+    },
+    {
+        "type": "text",
+        "value": "ist"
+    },
+    {
+        "type": "text",
+        "value": "aber"
+    },
+    {
+        "type": "text",
+        "value": "Schluss."
+    },
+    {
+        "type": "text",
+        "value": "Ich"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[f\u00fchre] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "mich"
+    },
+    {
+        "type": "text",
+        "value": "ja"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[auf] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "wie"
+    },
+    {
+        "type": "text",
+        "value": "ein"
+    },
+    {
+        "type": "text",
+        "value": "Kind!\u201c"
+    },
+    {
+        "type": "text",
+        "value": "dachte"
+    },
+    {
+        "type": "text",
+        "value": "Martin"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[und] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "begab"
+    },
+    {
+        "type": "text",
+        "value": "sich"
+    },
+    {
+        "type": "text",
+        "value": "zur"
+    },
+    {
+        "type": "text",
+        "value": "T\u00fcr"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[seines] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "Gespr\u00e4chspartners."
+    },
+    {
+        "type": "text",
+        "value": "Er"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[klopfte] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "an,"
+    },
+    {
+        "type": "text",
+        "value": "setzte"
+    },
+    {
+        "type": "text",
+        "value": "sich,"
+    },
+    {
+        "type": "text",
+        "value": "reichte"
+    },
+    {
+        "type": "text",
+        "value": "dem"
+    },
+    {
+        "type": "text",
+        "value": "Personalabteilungsleiter"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[seine] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "Unterlagen"
+    },
+    {
+        "type": "text",
+        "value": "und"
+    },
+    {
+        "type": "text",
+        "value": "wartete"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[geduldig] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "auf"
+    },
+    {
+        "type": "text",
+        "value": "die"
+    },
+    {
+        "type": "text",
+        "value": "Fragen"
+    },
+    {
+        "type": "text",
+        "value": "des"
+    },
+    {
+        "type": "text",
+        "value": "die"
+    },
+    {
+        "type": "text",
+        "value": "Unterlagen"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[studierenden] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "Leiters."
+    },
+    {
+        "type": "text",
+        "value": "Mit"
+    },
+    {
+        "type": "text",
+        "value": "einer"
+    },
+    {
+        "type": "text",
+        "value": "gelassenen"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[und] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "ruhigen"
+    },
+    {
+        "type": "text",
+        "value": "Miene"
+    },
+    {
+        "type": "text",
+        "value": "begann"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[dieser] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "ihn"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[zu] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "befragen."
+    },
+    {
+        "type": "text",
+        "value": "Martin"
+    },
+    {
+        "type": "text",
+        "value": "bemerkte,"
+    },
+    {
+        "type": "text",
+        "value": "wie"
+    },
+    {
+        "type": "text",
+        "value": "seine"
+    },
+    {
+        "type": "text",
+        "value": "Aufregung"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[nachlie\u00df.] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "Er"
+    },
+    {
+        "type": "text",
+        "value": "definierte"
+    },
+    {
+        "type": "text",
+        "value": "sich"
+    },
+    {
+        "type": "text",
+        "value": "als"
+    },
+    {
+        "type": "text",
+        "value": "leistungsf\u00e4hig,"
+    },
+    {
+        "type": "text",
+        "value": "teamorientiert,"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[aufnahmef\u00e4hig,] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "motiviert"
+    },
+    {
+        "type": "text",
+        "value": "und"
+    },
+    {
+        "type": "text",
+        "value": "unerm\u00fcdlich."
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[Mit] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "einer"
+    },
+    {
+        "type": "text",
+        "value": "selbstbewussten"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[Haltung] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "beendete"
+    },
+    {
+        "type": "text",
+        "value": "er"
+    },
+    {
+        "type": "text",
+        "value": "sein"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[Gespr\u00e4ch] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "und"
+    },
+    {
+        "type": "text",
+        "value": "erleichtert"
+    },
+    {
+        "type": "text",
+        "value": "ging"
+    },
+    {
+        "type": "text",
+        "value": "er"
+    },
+    {
+        "type": "text",
+        "value": "aus"
+    },
+    {
+        "type": "text",
+        "value": "dem"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[Zimmer.] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "Obwohl"
+    },
+    {
+        "type": "text",
+        "value": "er"
+    },
+    {
+        "type": "text",
+        "value": "wusste,"
+    },
+    {
+        "type": "text",
+        "value": "dass"
+    },
+    {
+        "type": "text",
+        "value": "das"
+    },
+    {
+        "type": "text",
+        "value": "ein"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[gelungenes] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "Gespr\u00e4ch"
+    },
+    {
+        "type": "text",
+        "value": "gewesen"
+    },
+    {
+        "type": "text",
+        "value": "war,"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[fielen] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "ihm"
+    },
+    {
+        "type": "text",
+        "value": "Steine"
+    },
+    {
+        "type": "text",
+        "value": "vom"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[Herzen,] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "als"
+    },
+    {
+        "type": "text",
+        "value": "er"
+    },
+    {
+        "type": "text",
+        "value": "nach"
+    },
+    {
+        "type": "text",
+        "value": "2"
+    },
+    {
+        "type": "text",
+        "value": "Wochen"
+    },
+    {
+        "type": "text",
+        "value": "von"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[der] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "Firma"
+    },
+    {
+        "type": "text",
+        "value": "die"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[erfreuliche] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "Nachricht"
+    },
+    {
+        "type": "text",
+        "value": "bekam."
+    },
+    {
+        "type": "text",
+        "value": "Jetzt"
+    },
+    {
+        "type": "text",
+        "value": "hatte"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[er] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "sein"
+    },
+    {
+        "type": "text",
+        "value": "erstes"
+    },
+    {
+        "type": "text",
+        "value": "Ziel"
+    },
+    {
+        "type": "text",
+        "value": "erreicht"
+    },
+    {
+        "type": "text",
+        "value": "\u003Cspan class=\"text-red\" style=\"text-decoration:line-through;\"\u003EXXXXX \u003Ci class=\"fa fa-close\"\u003E\u003C\/i\u003E  \u003C\/span\u003E\u003Cspan class=\"text-green\"\u003E[und] \u003C\/span\u003E"
+    },
+    {
+        "type": "text",
+        "value": "die"
+    },
+    {
+        "type": "text",
+        "value": "anderen"
+    },
+    {
+        "type": "text",
+        "value": "waren"
+    },
+    {
+        "type": "text",
+        "value": "an"
+    },
+    {
+        "type": "text",
+        "value": "der"
+    },
+    {
+        "type": "text",
+        "value": "Reihe."
+    }
+]
