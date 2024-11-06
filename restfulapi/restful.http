@@ -10,10 +10,10 @@ POST {{BASE_URL}}/users
 Content-Type: application/json
 
 {
-    "isim": "ddksdscdss",
-    "email": "dei@d.c",
-    "userName": "ddcdicds",
-    "sifre": "43d5idscds7aa"
+    "isim": "emre",
+    "email": "okcu@gmail.com",
+    "userName": "emreok",
+    "sifre": "123456"
 }
 
 ###
@@ -21,12 +21,22 @@ DELETE {{BASE_URL}}/users/671e2990e08833961e564b9
 Content-Type: application/json
 
 ###
-PATCH {{BASE_URL}}/users/6728b10fcbbb4d8a9f3eb3ea
+PATCH {{BASE_URL}}/users/671e2990e08833961e564b99
 Content-Type: application/json
 
 {
-    "isim": "kakash",
-    "userName": "kakash",
-    "email": "dertmii@gmail.com",
-    "createdAt": "2024-10-27T12:46:58.855+00:00"
+
+    "userName": "khsds"
+
+}
+
+###
+POST  {{BASE_URL}}/users/giris
+Content-Type: application/json
+
+{
+    "isim": "emre",
+    "email": "okcwu@gmail.com",
+    "userName": "emreok",
+    "sifre": "3456"
 }

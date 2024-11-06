@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Joi = require('joi')
+const Joi = require('joi');
+const createError = require('http-errors');
+const bcrypt = require("bcrypt");
 
 const UserSchema = new Schema({
     isim: {
@@ -31,21 +33,63 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         unique: false,
+        minlength: 6
     }
-},{collection:'kullanicilar', timestamps:true});
+}, { collection: 'kullanicilar', timestamps: true });
 
-UserSchema.methods.joiValidation = function(userObject){
-    const schema = Joi.object({
-        isim : Joi.string().min(3).max(50).trim().required(),
-        userName : Joi.string().min(3).max(50).trim().required(),
-        email : Joi.string()
+const schema = Joi.object({
+    isim: Joi.string().min(3).max(50).trim(),
+    userName: Joi.string().min(3).max(50).trim(),
+    email: Joi.string()
         .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
-        sifre : Joi.string().trim().required()
-    });
+    sifre: Joi.string().min(6).trim()
+});
 
+UserSchema.methods.toJSON = function () {
+    const user = this.toObject();
+    delete user._id;
+    delete user.createdAt;
+    delete user.updatedAt;
+    delete user.__v;
+    delete user.sifre;
+
+    return user;
+}
+
+UserSchema.methods.joiValidation = function (userObject) {
+    schema.required();
     return schema.validate(userObject);
 }
-const User = mongoose.model('User',UserSchema);
+
+UserSchema.statics.joiValidationForUpdates = function (userObject) {
+    return schema.validate(userObject);
+}
+
+UserSchema.statics.girisYap = async (email, sifre) => {
+
+    const { error, value } = schema.validate({ email, sifre });
+
+    if (error) {
+        throw createError(error);
+    }
+    const user = await User.findOne({ email });
+    if (!user) {
+        throw createError(400, "Girilen Email/Şifre hatalı.");
+    }
+
+    const sifreKontrol = await bcrypt.compare(sifre, user.sifre);
+    if (!sifreKontrol) {
+        throw createError(400, "Girilen Email/Şifre hatalı.");
+    }
+
+    return user;
+
+
+}
+
+
+
+const User = mongoose.model('User', UserSchema);
 
 
 
