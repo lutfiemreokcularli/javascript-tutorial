@@ -1,87 +1,26 @@
 const router = require('express').Router();
-const User = require('../models/userModel');
-const createError = require('http-errors');
-const bcrypt = require("bcrypt");
+//const User = require('../models/userModel');
 
 
-router.get('/', async (req, res) => {
-    const tumUserlar = await User.find({});
-    res.json(tumUserlar);
-})
+const authMiddleware = require("../middleware/authMiddleware");
+const adminMiddleware = require("../middleware/adminMiddleware");
+const userController = require("../controllers/userController");
 
-router.get('/:id', (req, res) => {
-    res.json({ mesaj: "idsi :" + req.params.id + " olan kullanıcı getirilecek" })
-});
+router.get('/', [authMiddleware,adminMiddleware] ,userController.tumUserlariListele)
 
-router.post('/', async (req, res, next) => {
-    try {
-        const ekelenecekUser = new User(req.body);
-        ekelenecekUser.sifre = await bcrypt.hash(ekelenecekUser.sifre,10);
-        const { err, value } = ekelenecekUser.joiValidation(req.body);
-        if (!err) {
-            const sonuc = await ekelenecekUser.save();
-            res.json(sonuc);
-        } else throw createError(err);
+router.get('/me', authMiddleware, userController.oturumAcanKullaniciBilgileri);
+router.patch('/me', authMiddleware, userController.oturumAcanKullaniciGüncelleme);
 
-    } catch (error) {
-        next(error);
-    }
-});
-router.patch('/:id', async (req, res, next) => {
-    delete req.body.createdAt;
-    delete req.body.updatedAt;
-    if(req.body.hasOwnProperty('sifre')){
-        req.body.sifre = await bcrypt.hash(req.body.sifre,10);
-    }
+router.post('/', userController.yeniKullaniciOlustur);
+router.patch('/:id', userController.adminUserGuncelleme);
+router.delete('/me',authMiddleware, userController.kullaniciKendiniSil);
+router.delete('/:id',[authMiddleware,adminMiddleware], userController.adminKullaniciSil);
 
-    const { error, value } = User.joiValidationForUpdates(req.body);
-    if (error) {
-        next(createError(error))
-    } else {
-        try {
-            const sonuc = await User.findByIdAndUpdate({ _id: req.params.id }, req.body, {
-                new: true, runValidators: true
+router.get('/deleteAll',[authMiddleware,adminMiddleware], userController.tumKullanicilariSil);
 
-            });
-            if (sonuc) {
-                return res.json(sonuc);
-            } else {
-                //return res.status(404).json({ 'mesaj': "kullanıcı bulunamadı" });
-                throw createError(404, "kullanıcı yok");
-            }
-        } catch (error) {
-            next(error);
-        }
-    }
-
-
-});
-router.delete('/:id', async (req, res, next) => {
-
-    try {
-        const sonuc = await User.findOneAndDelete({ _id: req.params.id });
-        if (sonuc) {
-            return res.json(sonuc);
-        } else {
-            /* return res.status(404).json({
-                mesaj: "user bulunamadı"
-            }); */
-            throw createError(404, 'kullanıcı bulunamadı')
-        }
-    } catch (error) {
-        next(error);
-    }
-});
 
 
 //user giriş kontrol
 
-router.post('/giris', async(req,res,next)=>{
-    try{
-        const user = await User.girisYap(req.body.email,req.body.sifre);
-        res.json(user);
-    }catch(hata){
-        next(hata);
-    }
-});
+router.post('/giris', userController.girisYap);
 module.exports = router;

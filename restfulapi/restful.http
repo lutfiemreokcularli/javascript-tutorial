@@ -3,6 +3,7 @@
 ###
 
 GET {{BASE_URL}}/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzMxZTQ0MDIxYTE5YmExZTMwOTczZjQiLCJpYXQiOjE3MzEzMjI5NTgsImV4cCI6MTczMTMyNjU1OH0.3gj6qwrp6XhLQ0qEq1fjccEMi9oEpW22xPYeKYZ8lfQ
 
 
 ###
@@ -10,10 +11,10 @@ POST {{BASE_URL}}/users
 Content-Type: application/json
 
 {
-    "isim": "emre",
-    "email": "okcu@gmail.com",
-    "userName": "emreok",
-    "sifre": "123456"
+    "isim": "emreler1",
+    "email": "okculer1@gmail.com",
+    "userName": "emreokler1",
+    "sifre": "1234561"
 }
 
 ###
@@ -21,12 +22,13 @@ DELETE {{BASE_URL}}/users/671e2990e08833961e564b9
 Content-Type: application/json
 
 ###
-PATCH {{BASE_URL}}/users/671e2990e08833961e564b99
+PATCH {{BASE_URL}}/users/6731e4f021a19ba1e30973f9
 Content-Type: application/json
 
 {
 
-    "userName": "khsds"
+    "isim": "emreler2",
+    "userName": "emreokler2"
 
 }
 
@@ -35,8 +37,32 @@ POST  {{BASE_URL}}/users/giris
 Content-Type: application/json
 
 {
-    "isim": "emre",
-    "email": "okcwu@gmail.com",
-    "userName": "emreok",
-    "sifre": "3456"
+    "isim": "emreler",
+    "email": "okculer@gmail.com",
+    "userName": "emreokler",
+    "sifre": "123456"
 }
+
+###
+PATCH {{BASE_URL}}/users/me
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzMxZTQ0MDIxYTE5YmExZTMwOTczZjQiLCJpYXQiOjE3MzEzMjI5NTgsImV4cCI6MTczMTMyNjU1OH0.3gj6qwrp6XhLQ0qEq1fjccEMi9oEpW22xPYeKYZ8lfQ
+
+{
+
+    "isim": "emre"
+
+}
+
+
+###
+DELETE  {{BASE_URL}}/users/6731e4f021a19ba1e30973f9
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzMxZTQ0MDIxYTE5YmExZTMwOTczZjQiLCJpYXQiOjE3MzEzMjI5NTgsImV4cCI6MTczMTMyNjU1OH0.3gj6qwrp6XhLQ0qEq1fjccEMi9oEpW22xPYeKYZ8lfQ
+
+###
+GET  {{BASE_URL}}/users/deleteAll
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzJjN2FmNDVmOWE5NTdhMTkxMTA4ZmEiLCJpYXQiOjE3MzA5NzgwNTksImV4cCI6MTczMDk4MTY1OX0.-O1U97kVA0QOq-sOmP-K9X_Ykpk-2TI8Q0PRkI089K4
+
+###
+DELETE {{BASE_URL}}/users/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzJjN2FmNDVmOWE5NTdhMTkxMTA4ZmEiLCJpYXQiOjE3MzA5NzgwNTksImV4cCI6MTczMDk4MTY1OX0.-O1U97kVA0QOq-sOmP-K9X_Ykpk-2TI8Q0PRkI089K4

@@ -5,8 +5,11 @@ const images = [
     
     // Buraya diğer resimlerin yolunu ekleyin
   ];
-for (let i = 0; i <= 149; i++) {
+/* for (let i = 0; i <= 149; i++) {
     images.push(`images/star-${i}.png`);
+} */
+for (let i = 0; i <= 3; i++) {
+  images.push(`images2/${i+1}.png`);
 }
   
   // Hangi resmin gösterileceğini takip eden değişken
@@ -25,5 +28,5 @@ for (let i = 0; i <= 149; i++) {
   }
   
   // Her 200 ms'de bir changeImage fonksiyonunu çağırarak resimleri sırayla göster
-  setInterval(changeImage, 50);
+  setInterval(changeImage, 500);
   

@@ -1,7 +1,7 @@
 const express = require('express');
 require('./db/dbConnection');
 const hataMiddleware = require('./middleware/hataMiddleware');
-const jwt = require("jsonwebtoken");
+//const jwt = require("jsonwebtoken");
 
 //Routes
 const userRouter = require('./router/userRouter');
@@ -29,14 +29,14 @@ app.use(hataMiddleware);
     console.log(sonuc)
 }
 test(); */
-function test(){
+/* function test(){
     const token = jwt.sign({_userID: 'yenikull',isAdmin: true,aktif: true},'123456',{expiresIn:'2h'});
     console.log(token)
 
     const sonuc = jwt.verify(token,'123456');
     console.log(sonuc)
 }
-test();
+test(); */
 
 app.listen(3000, () => {
     console.log("3000 portu dinleniyor");

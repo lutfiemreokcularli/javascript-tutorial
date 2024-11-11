@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 const Joi = require('joi');
 const createError = require('http-errors');
 const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
 
 const UserSchema = new Schema({
     isim: {
@@ -34,6 +35,10 @@ const UserSchema = new Schema({
         required: true,
         unique: false,
         minlength: 6
+    },
+    isAdmin:{
+        type: Boolean,
+        default : false
     }
 }, { collection: 'kullanicilar', timestamps: true });
 
@@ -63,6 +68,13 @@ UserSchema.methods.joiValidation = function (userObject) {
 
 UserSchema.statics.joiValidationForUpdates = function (userObject) {
     return schema.validate(userObject);
+}
+
+UserSchema.methods.generateToken = async function(){
+    const girisYapanUser = this;
+    const token = await jwt.sign({_id:girisYapanUser.id},'secretKey',{expiresIn: '1h'});
+    return token;
+
 }
 
 UserSchema.statics.girisYap = async (email, sifre) => {
