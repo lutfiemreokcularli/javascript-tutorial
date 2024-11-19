@@ -1,0 +1,10 @@
+<%- include('../partials/_header') %>
+
+    <div class="columns is-multiline is-mobile">
+
+        <% makaleler.forEach((makale,index)=> { %>
+            <div class="column is-4">
+                <%- include('../partials/_makaleCard',{makale,index}) %>
+            </div>
+            <% }) %>
+    </div>
