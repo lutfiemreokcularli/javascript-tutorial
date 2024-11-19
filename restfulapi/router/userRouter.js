@@ -5,9 +5,9 @@ const router = require('express').Router();
 const authMiddleware = require("../middleware/authMiddleware");
 const adminMiddleware = require("../middleware/adminMiddleware");
 const userController = require("../controllers/userController");
-
-router.get('/', [authMiddleware,adminMiddleware] ,userController.tumUserlariListele)
-
+var kk = "tumUserlariListele";
+router.get('/', [authMiddleware,adminMiddleware] ,userController[`${kk}`]);
+//router.get('/', [authMiddleware,adminMiddleware] ,userController.tumUserlariListele);
 router.get('/me', authMiddleware, userController.oturumAcanKullaniciBilgileri);
 router.patch('/me', authMiddleware, userController.oturumAcanKullaniciGüncelleme);
 

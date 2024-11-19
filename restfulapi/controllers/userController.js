@@ -41,7 +41,7 @@ const yeniKullaniciOlustur = async (req, res, next) => {
     try {
         const ekelenecekUser = new User(req.body);
         ekelenecekUser.sifre = await bcrypt.hash(ekelenecekUser.sifre,10);
-        const { err, value } = ekelenecekUser.joiValidation(req.body);
+        const { err, value } = ekelenecekUser.joiValidation();
         if (!err) {
             const sonuc = await ekelenecekUser.save();
             res.json(sonuc);
