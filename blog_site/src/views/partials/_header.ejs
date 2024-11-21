@@ -51,16 +51,18 @@
   
       <div class="navbar-end">
         <div class="navbar-item">
-          <div class="field has-addons">
-            <div class="control">
-              <input class="input" type="text" placeholder="Find a section">
+          <form action="/blog" method="post">
+            <div class="field has-addons">
+              <div class="control">
+                <input class="input" name="search" type="text" placeholder="Arama yap.">
+              </div>
+              <div class="control">
+                <button class="button is-info" type="submit">
+                  Search
+                </button>
+              </div>
             </div>
-            <div class="control">
-              <button class="button is-info">
-                Search
-              </button>
-            </div>
-          </div>
+          </form>
           <!-- <div class="buttons">
             <a class="button is-primary">
               <strong>Sign up</strong>

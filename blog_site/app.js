@@ -10,6 +10,8 @@ app.use(expressLayout);
 app.set('view engine','ejs');
 app.set('views', path.resolve(__dirname,'./src/views'));
 
+app.use(express.urlencoded({extended: true}));
+
 app.use('/',blogRouter);
 app.use('/blog',blogRouter);
 
