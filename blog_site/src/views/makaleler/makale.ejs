@@ -1,5 +1,19 @@
 <%- include('../partials/_header') %>
-<div class="column is-half is-offset-one-quarter">
-    <!-- <p><%=//dynamicModule.testfnc() %></p> -->
-    <%- include('../partials/_makaleCard',{makale,index: undefined}) %>
-</div>
+    <div class="column is-half is-offset-one-quarter">
+        <!-- <p><%=//dynamicModule.testfnc() %></p> -->
+        <button id="loadModule">Load Module</button>
+        <p id="output"></p>
+        <script>
+             const moduleName = "<%= moduleName %>";
+               /* const module = await import(`/modules/${moduleName}`);
+                const result = await module.testfnc();
+                document.getElementById('output').innerText = result; */
+                import(`/modules/${moduleName}`).then(module =>{
+                    document.getElementById('output').innerText = module.testfnc();
+                });
+             document.getElementById('loadModule').addEventListener('click', async () => {
+                
+            });
+        </script>
+        <%- include('../partials/_makaleCard',{makale,index: undefined}) %>
+    </div>

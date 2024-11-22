@@ -53,13 +53,14 @@ const tumMakaleleriGetir = async (req, res) => {
 
 const tekMakaleGetir = async (req, res) => {
     let makaleID = req.params.id;
-    //const moduleName = req.query.module;
+    const moduleName = "meka1.js";
     var options = { headers: { 'user-agent': 'node.js' } }
     try {
         const blogApi = await axios.get('https://emrealtunbilek.com/wp-json/wp/v2/posts/'+ makaleID,options);
-        /* const dynamicModule = require(`./modules/${moduleName}`);
-        res.render('./makaleler/makale.ejs',{makale : blogApi.data , dynamicModule}); */
-        res.render('./makaleler/makale.ejs',{makale : blogApi.data});
+        //modulu sunucu tarafında yükler.
+        //const dynamicModule = require(`./modules/${moduleName}`);
+        res.render('./makaleler/makale.ejs',{makale : blogApi.data , moduleName});
+        //res.render('./makaleler/makale.ejs',{makale : blogApi.data});
     } catch (error) {
         console.log(error.response.data);
         console.log(error.response.status);
