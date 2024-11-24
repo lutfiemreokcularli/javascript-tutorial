@@ -15,6 +15,6 @@ app.use(express.urlencoded({extended: true}));
 app.use('/',blogRouter);
 app.use('/blog',blogRouter);
 
-app.listen(3000,()=>{
-    console.log("3000 den ayaklandık");
+app.listen(4000,()=>{
+    console.log("4000 den ayaklandık");
 })

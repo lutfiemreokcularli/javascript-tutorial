@@ -1,0 +1,23 @@
+@BASE_URL = http://localhost:3000/api
+
+###
+
+GET {{BASE_URL}}/units
+
+
+
+###
+POST {{BASE_URL}}/units
+Content-Type: application/json
+
+{
+    "name": "ZAHLEN"
+}
+
+
+
+
+
+
+
+

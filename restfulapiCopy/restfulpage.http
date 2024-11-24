@@ -1,0 +1,33 @@
+@BASE_URL = http://localhost:3000/api
+
+###
+
+GET {{BASE_URL}}/pages
+
+###
+
+GET {{BASE_URL}}/pages/67434a8000fb00859b4bc915
+
+###
+POST {{BASE_URL}}/pages
+Content-Type: application/json
+
+{
+    
+    "data" : {
+        "modulName": "nthAudioInputKontrolle",
+        "elementCount" : 3,
+        "dcevap" : ["cevap1","cevap2","cevap3"]
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+

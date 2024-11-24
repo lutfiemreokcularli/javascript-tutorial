@@ -1,0 +1,10 @@
+<%- include('../partials/_header') %>
+
+<div class="columns is-multiline is-mobile">
+
+    <% sayfalar.forEach((sayfa,index)=> { %>
+        <div class="column is-4">
+            <%- include('../partials/_sayfaCard',{sayfa,index}) %>
+        </div>
+        <% }) %>
+</div>

@@ -1,0 +1,8 @@
+body{
+    background-color: teal;
+}
+.navbar-item img{
+    width: 331px;
+    height: 77px;
+    max-height: 77px;
+}

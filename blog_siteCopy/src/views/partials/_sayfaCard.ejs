@@ -1,0 +1,49 @@
+<% 
+let yukseklik = '';
+if(index == undefined){
+  yukseklik = '600';
+}else{
+  index = index % 10;
+  yukseklik = "60" + index;
+}
+
+%>
+ 
+
+<div class="card">
+    <div class="card-image">
+      <figure class="image is-4by3">
+        <img
+          src="https://picsum.photos/600/<%=yukseklik%>"
+          alt="Placeholder image"
+        />
+      </figure>
+    </div>
+    <div class="card-content">
+      <div class="media">
+        <div class="media-left">
+          <figure class="image is-48x48">
+            <img
+              src="https://bulma.io/assets/images/placeholders/96x96.png"
+              alt="Placeholder image"
+            />
+          </figure>
+        </div>
+        <div class="media-content">
+          <p class="title is-4">seite <%- index + 1  %></p>
+          <p class="subtitle is-6">Son düzenleyen : Lütfi Emre OKCULARLI</p>
+        </div>
+      </div>
+  
+      <div class="content">
+        <%- index == undefined ? sayfa.data.modulName : sayfa.data.modulName.slice(0,10)  %>
+        <% if (index != undefined) { %>
+           <a href="/<%= sayfa._id %>">Sayfaya Git</a>
+        <% } %>
+        <br>
+        <a>#LTA</a>. <a href="#">#Minticity</a>
+        <br />
+        <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+      </div>
+    </div>
+  </div>
