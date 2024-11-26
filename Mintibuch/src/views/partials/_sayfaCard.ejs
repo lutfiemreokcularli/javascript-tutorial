@@ -35,8 +35,8 @@ if(index == undefined){
         </div>
       </div>
   
-      <div class="content">
-        <%- index == undefined ? sayfa.data.modulName : sayfa.data.modulName.slice(0,10)  %>
+      <div class="content">Game Module : 
+        <%- index == undefined ? sayfa.data.modulName : sayfa.data.modulName  %>
         <% if (index != undefined) { %>
            <a href="/<%= sayfa._id %>">Sayfaya Git</a>
         <% } %>

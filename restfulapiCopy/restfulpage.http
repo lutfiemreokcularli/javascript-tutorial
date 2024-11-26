@@ -15,9 +15,8 @@ Content-Type: application/json
 {
     
     "data" : {
-        "modulName": "nthAudioInputKontrolle",
-        "elementCount" : 3,
-        "dcevap" : ["cevap1","cevap2","cevap3"]
+        "modulName": "nthImageClickable",
+        "elementCount" : 30
     }
     
 }

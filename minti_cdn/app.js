@@ -1,35 +1,17 @@
-const axios = require('axios');
-const { JSDOM } = require('jsdom');
-const fs = require('fs');
+const express = require('express');
+const https = require('https');
 
-const BASE_URL = 'https://cdn.minticity.com/assets/mintibuch/a1-2/berufe/seite-10/junior';
+const app = express();
 
-async function fetchImageUrls() {
-  try {
-    console.log("emre");
-    // URL'ye GET isteği gönder
-    const response = await axios.get(BASE_URL);
-    console.log("e");
-    const dom = new JSDOM(response.data);
-    const document = dom.window.document;
-
-    // Resim dosyalarını bul
-    const imageUrls = [];
-    const links = document.querySelectorAll('a');
-    console.log(links);
-    links.forEach(link => {
-      const href = link.getAttribute('href');
-      if (href && (href.endsWith('.jpg') || href.endsWith('.png') || href.endsWith('.jpeg'))) {
-        imageUrls.push(BASE_URL + href);
-      }
+app.get('/proxy', (req, res) => {
+    const url = "https://cdn.minticity.com/assets/mintibuch/a1-1/mein-tag/seite-1/junior/junior.png";
+    https.get(url, (response) => {
+        res.setHeader('Content-Type', response.headers['content-type']); // İçerik türünü ayarla
+        response.pipe(res); // Veriyi doğrudan istemciye gönder
+    }).on('error', (err) => {
+        console.error(err);
+        res.status(500).send('Asset alınamadı');
     });
+});
 
-    // Resim URL'lerini bir dosyaya kaydet
-    fs.writeFileSync('images.json', JSON.stringify(imageUrls, null, 2));
-    console.log('Resim URL\'leri başarıyla kaydedildi!');
-  } catch (error) {
-    console.error('Hata:', error.message);
-  }
-}
-
-fetchImageUrls();
+app.listen(3000, () => console.log('Server çalışıyor: http://localhost:3000'));
