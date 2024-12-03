@@ -1,7 +1,7 @@
 <script id="test" type="module" >
-    const moduleName = "<%= sayfa[0].data.modulName %>";
+    let moduleName = "<%= sayfa.data.modulName %>"
     import(`/modules/${moduleName}`).then(module => {
-        module.config.userInput = "<%= sayfa[0].data.elementCount %>";
+        module.config.userInput = "<%= sayfa.data.elementCount %>";
         document.getElementById('test').src = module;
         });
 </script>
