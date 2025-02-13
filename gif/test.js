@@ -14,7 +14,7 @@ const images = {
 for (let i = 0; i <= 4; i++) {
   images.image3.push(`images3/${i+1}.png`);
 }
-for (let i = 0; i <= 17; i++) {
+for (let i = 0; i <= 9; i++) {
   images.image4.push(`images4/${i+1}.png`);
 }
 for (let i = 0; i <= 7; i++) {
