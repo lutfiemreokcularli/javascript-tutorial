@@ -1,52 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rehber Uygulaması</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="./skeleton/normalize.css">
-    <link rel="stylesheet" href="./skeleton/skeleton.css">
-    <link rel="stylesheet" href="main.css">
-</head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="./skeleton/normalize.css" />
+    <link rel="stylesheet" href="./skeleton/skeleton.css" />
+    <link rel="stylesheet" href="main.css" />
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <h1>Rehber Uygulaması</h1>
-        <!-- <div class="bilgi bilgi--success">Başarılı</div>
+      <h1>Rehber Uygulaması</h1>
+      <!-- <div class="bilgi bilgi--success">Başarılı</div>
         <div class="bilgi bilgi--error">Hata Çıktı</div> -->
-        <form id="form-rehber">
-            <div>
-                <label for="Ad">Ad:</label>
-                <input type="text" id="ad" class="u-full-width">
-            </div>
-            <div>
-                <label for="Soyad">Soyad:</label>
-                <input type="text" id="soyad" class="u-full-width">
-            </div>
-            <div>
-                <label for="email">Email:</label>
-                <input type="text" id="email" class="u-full-width">
-            </div>
-            <div class="submitType">
-                <input type="submit" class="button-primary u-full-width kaydet-guncelle" value="Kaydet">
-            </div>
-        </form>
-        <table class="u-full-width">
-            <thead>
-                <tr>
-                    <th>Ad</th>
-                    <th>Soyad</th>
-                    <th>Email</th>
-                    <th>İşlem</th>
-
-                </tr>
-            </thead>
-            <tbody class="kisi-listesi">
-                <!-- <tr class="item">
+      <form id="form-rehber">
+        <div>
+          <label for="Ad">Ad:</label>
+          <input type="text" id="ad" class="u-full-width" />
+        </div>
+        <div>
+          <label for="Soyad">Soyad:</label>
+          <input type="text" id="soyad" class="u-full-width" />
+        </div>
+        <div>
+          <label for="email">Email:</label>
+          <input type="text" id="email" class="u-full-width" />
+        </div>
+        <div class="submitType">
+          <input
+            type="submit"
+            class="button-primary u-full-width kaydet-guncelle"
+            value="Kaydet"
+          />
+        </div>
+      </form>
+      <table class="u-full-width">
+        <thead>
+          <tr>
+            <th>Ad</th>
+            <th>Soyad</th>
+            <th>Email</th>
+            <th>İşlem</th>
+          </tr>
+        </thead>
+        <tbody class="kisi-listesi">
+          <!-- <tr class="item">
                     <td>Emre</td>
                     <td>Ok</td>
                     <td>eee.@gmail.com</td>
@@ -56,10 +62,9 @@
                         <button class="btn btn--delete"><i class="fas fa-trash-alt"></i></button>
                     </td>
                 </tr> -->
-            </tbody>
-        </table>
+        </tbody>
+      </table>
     </div>
-    <script src="app2.js"></script>
-</body>
-
+    <script src="app.js"></script>
+  </body>
 </html>
