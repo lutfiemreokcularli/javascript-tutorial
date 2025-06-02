@@ -12,6 +12,7 @@ export const config = {
 export function startGame() {
   const game = new Phaser.Game(config);
 }
+
 function preload() {
   console.log("preload", config);
   this.load.image("background", "https://picsum.photos/seed/picsum/200");

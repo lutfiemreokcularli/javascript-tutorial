@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Phaser + Handwriting Recognition</title>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.15.0"></script>
+    <style>
+      body {
+        margin: 0;
+      }
+      canvas {
+        display: block;
+        margin: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let model;
+
+      async function loadModel() {
+        model = await tf.loadLayersModel("model.json");
+        console.log("Model yüklendi!");
+      }
+      loadModel();
+
+      const config = {
+        type: Phaser.AUTO,
+        width: 280,
+        height: 280,
+        backgroundColor: "#ffffff",
+        scene: {
+          preload: preload,
+          create: create,
+          update: update,
+        },
+      };
+
+      let graphics,
+        drawing = false;
+
+      const game = new Phaser.Game(config);
+
+      function preload() {}
+
+      function create() {
+        graphics = this.add.graphics({
+          lineStyle: { width: 15, color: 0x000000 },
+        });
+
+        this.input.on("pointerdown", (pointer) => {
+          drawing = true;
+          graphics.beginPath();
+          graphics.moveTo(pointer.x, pointer.y);
+        });
+
+        this.input.on("pointermove", (pointer) => {
+          if (drawing) {
+            graphics.lineTo(pointer.x, pointer.y);
+            graphics.strokePath();
+          }
+        });
+
+        this.input.on("pointerup", async () => {
+          drawing = false;
+          await recognize(this);
+        });
+
+        this.input.keyboard.on("keydown-R", () => {
+          graphics.clear();
+        });
+      }
+
+      function update() {}
+
+      async function recognize(scene) {
+        const rt = scene.add.renderTexture(0, 0, 280, 280);
+        rt.draw(graphics);
+        const dataURL = rt.getCanvas().toDataURL();
+        const img = new Image();
+        img.src = dataURL;
+
+        img.onload = async () => {
+          const tensor = tf.tidy(() => {
+            const temp = tf.browser
+              .fromPixels(img, 1) // grayscale
+              .resizeNearestNeighbor([28, 28])
+              .toFloat()
+              .div(255.0)
+              .expandDims(0); // [1, 28, 28, 1]
+            return temp;
+          });
+
+          const prediction = model.predict(tensor);
+          const classIndex = prediction.argMax(-1).dataSync()[0];
+          alert("Tahmin: " + String.fromCharCode(65 + classIndex)); // 0 -> A gibi
+
+          tf.dispose(tensor);
+          rt.destroy();
+        };
+      }
+    </script>
+  </body>
+</html>

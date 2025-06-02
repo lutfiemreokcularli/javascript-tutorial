@@ -1,16 +1,381 @@
+window.App = {
+  name: "Minticity",
+  url: "https://eu.minticity.com",
+  cdn: "https://eu.minticity.com/",
+  assets: {
+    baseUrl: "https://cdn.minticity.com",
+    mintibuch: {
+      units: {
+        meineFamilie:
+          "https://cdn.minticity.com/assets/mintibuch/a1-1/meine-familie/",
+        meinTag: "https://cdn.minticity.com/assets/mintibuch/a1-1/mein-tag/",
+        dasDeutscheAbc:
+          "https://cdn.minticity.com/assets/mintibuch/starter/das-deutsche-abc/",
+        gutenTag:
+          "https://cdn.minticity.com/assets/mintibuch/starter/guten-tag/",
+        jahreszeiten:
+          "https://cdn.minticity.com/assets/mintibuch/starter/jahreszeiten-monate-tage/",
+        zahlen: "https://cdn.minticity.com/assets/mintibuch/starter/zahlen/",
+        werBistDu:
+          "https://cdn.minticity.com/assets/mintibuch/starter/wer-bist-du/",
+        schule: "https://cdn.minticity.com/assets/mintibuch/a1-1/schule/",
+        hobbysUndFreizeit:
+          "https://cdn.minticity.com/assets/mintibuch/a1-1/hobbys-und-freizeit/",
+        essenUndTrinken:
+          "https://cdn.minticity.com/assets/mintibuch/a1-1/essen-und-trinken/",
+        wieSpatIstEs:
+          "https://cdn.minticity.com/assets/mintibuch/starter/wie-spat-ist-es/",
+        woherKommstDu:
+          "https://cdn.minticity.com/assets/mintibuch/starter/woher-kommst-du/",
+        farbenUndAdjective:
+          "https://cdn.minticity.com/assets/mintibuch/starter/farben-und-adjektive/",
+        rundUmDieSchule:
+          "https://cdn.minticity.com/assets/mintibuch/starter/rund-um-die-schule/",
+        kleidung: "https://cdn.minticity.com/assets/mintibuch/a1-2/kleidung/",
+        korperUndGesundheit:
+          "https://cdn.minticity.com/assets/mintibuch/a1-2/korper-und-gesundheit/",
+        meinHausMeinWohnungMeinZimmer:
+          "https://cdn.minticity.com/assets/mintibuch/a1-2/mein-haus-meine-wohnung-mein-zimmer/",
+        berufe: "https://cdn.minticity.com/assets/mintibuch/a1-2/berufe/",
+        unterwegs: "https://cdn.minticity.com/assets/mintibuch/a1-2/unterwegs/",
+        tiere: "https://cdn.minticity.com/assets/mintibuch/starter/tiere/",
+        freundeUndFreizeit:
+          "https://cdn.minticity.com/assets/mintibuch/a2-1/freunde-und-freizeit/",
+        festeUndGeschenke:
+          "https://cdn.minticity.com/assets/mintibuch/a2-1/feste-und-geschenke/",
+        eineZeitreise:
+          "https://cdn.minticity.com/assets/mintibuch/a2-1/eine-zeitreise/",
+        freundschaftUndGefuhle:
+          "https://cdn.minticity.com/assets/mintibuch/a2-1/freundschaft-und-gefuhle/",
+        farbtypenMode:
+          "https://cdn.minticity.com/assets/mintibuch/a2-1/farbtypen-mode/",
+        ernahrungfitnessundgesundheit:
+          "https://cdn.minticity.com/assets/mintibuch/a2-2/ernahrung-fitness-und-gesundheit/",
+        wieSchmekts:
+          "https://cdn.minticity.com/assets/mintibuch/a2-2/wie-schmekts/",
+      },
+    },
+    menuIcons: "https://cdn.minticity.com/assets/menu-icons/",
+    mainPageThemes: "https://cdn.minticity.com/assets/themes/main-page/",
+    mainPageEvents:
+      "https://cdn.minticity.com/assets/themes/main-page/events/spritesheets/",
+    mintibuchThemes: "https://cdn.minticity.com/assets/themes/mintibuch/",
+    bildworterbuch: "https://cdn.minticity.com/assets/word-pool-mintibuch/",
+    comics:
+      "https://cdn.minticity.com/assets/mediathek/comics/minti-momo-in-sachsen/lesen/",
+  },
+  port: "8080",
+  socket_url: "socketeu.minticity.com",
+  user: {
+    id: 1216734,
+    username: "emre",
+    name_surname: "emre okcularl\u0131",
+    email: "emre.okcularli@das-akademie.de",
+    member_type: 1,
+    school: {
+      id: 2,
+      name: "Minticity",
+      image: {
+        small: "/schools/small/1067_1627981944.png",
+        medium: "/schools/medium/1067_1627981944.png",
+        big: "/schools/big/1067_1627981944.png",
+      },
+    },
+    classroom: { id: 1, name: "Teenage Klasse" },
+    gender: 1,
+    avatar: {
+      body: "https://eu.minticity.com/avatar-jt/file/2711047c4c17b27b10136f9a24cfa40b.png",
+      small_body:
+        "https://eu.minticity.com/avatar-jt/file/2711047c4c17b27b10136f9a24cfa40b_small.png",
+      face: "https://eu.minticity.com/avatar-jt/file/2711047c4c17b27b10136f9a24cfa40b_face.png",
+    },
+    type_id: 3,
+    credit: 2878454,
+    total_credit: 43283454,
+    is_multiplayer_enabled: 1,
+    socket_paths:
+      '{"/junior/spiel-spass/minti-memo":"{\\"created_at\\":1717512135,\\"point\\":32133.333333333332,\\"isEnded\\":false,\\"isCreditSaved\\":false,\\"type\\":\\"minti-memo\\",\\"validation\\":\\"d8fc36e4-475c-48ce-a363-0d8ee0ef6397\\",\\"currentLevel\\":2,\\"lastAddedPoint\\":29600,\\"correctCount\\":0,\\"wrongCount\\":0,\\"time_spend\\":4648}"}',
+    lifetime: "120",
+    permissions: {
+      "content_page.edit": true,
+      "game.tester": true,
+      "game.admin": true,
+      "tester.web": true,
+      "can.preview.junior": true,
+      "can.preview.teenage": true,
+      "can.preview.kids": true,
+      "can.print": true,
+      remember_me: true,
+    },
+  },
+  theme: {
+    base_url: "https://cdn.minticity.com",
+    theme_folder: "minti-in-space",
+    theme_avatar: { x: 220, y: 230, show: 1 },
+    theme_menu: {
+      MenuThemeID: 5,
+      ThemeName: "Minti im Weltraum",
+      ThemeType: "junior",
+      Price: 50000,
+      Image: "thumbnail.jpg",
+      BackgroundImage: "background.jpg",
+      Folder: "minti-in-space",
+      NavBarTopColor: "#345ba9",
+      ContentBackColor: "#333333",
+      NavBarBottomColor: "#FFFFFF",
+      NavBarGradientPercent: "45%",
+      NavBarBorderColor: "#779FEC",
+      BreadcrumbColor: "#345ba9",
+      BreadcrumbActiveColor: "#6184c9",
+      BreadcrumbTextColor: "#FFFFFF",
+      PageButtonColor: "#193366",
+      PageButtonTextColor: "#FFFFFF",
+      PageButtonFontSize: "13px",
+      PageButtonWidth: "100px",
+      SearchButtonColor: "#FFF",
+      MenuButtonColor: "#193366",
+      NotifyButtonColor: "#FF8C00",
+      Release: 1,
+    },
+    theme_buttons: [
+      {
+        ThemeID: 3,
+        ButtonID: 1,
+        ButtonName: "mein-profil",
+        Image: "mein-profil.png",
+        Link: "/profil",
+        Permission: null,
+        SomethingNew: 0,
+        PositionX: 230,
+        PositionY: 330,
+        Layer: 0,
+        IsLocked: false,
+      },
+      {
+        ThemeID: 3,
+        ButtonID: 2,
+        ButtonName: "mein-mintibuch",
+        Image: "mein-mintibuch.png",
+        Link: "/mintibuch",
+        Permission: null,
+        SomethingNew: 0,
+        PositionX: 700,
+        PositionY: 360,
+        Layer: 0,
+        IsLocked: false,
+      },
+      {
+        ThemeID: 3,
+        ButtonID: 3,
+        ButtonName: "mediathek",
+        Image: "mediathek.png",
+        Link: "/mediathek",
+        Permission: null,
+        SomethingNew: 0,
+        PositionX: 1660,
+        PositionY: 650,
+        Layer: 0,
+        IsLocked: false,
+      },
+      {
+        ThemeID: 3,
+        ButtonID: 4,
+        ButtonName: "spiel-spass",
+        Image: "spiel-spass.png",
+        Link: "/spiel-spass",
+        Permission: null,
+        SomethingNew: 0,
+        PositionX: 1340,
+        PositionY: 550,
+        Layer: 0,
+        IsLocked: false,
+      },
+      {
+        ThemeID: 3,
+        ButtonID: 5,
+        ButtonName: "bildworterbuch",
+        Image: "bildworterbuch.png",
+        Link: "/bildworterbuch",
+        Permission: null,
+        SomethingNew: 0,
+        PositionX: 935,
+        PositionY: 940,
+        Layer: 2,
+        IsLocked: false,
+      },
+      {
+        ThemeID: 3,
+        ButtonID: 6,
+        ButtonName: "lernen-uben",
+        Image: "lernen-uben.png",
+        Link: "/lernen-uben",
+        Permission: null,
+        SomethingNew: 0,
+        PositionX: 1020,
+        PositionY: 545,
+        Layer: 0,
+        IsLocked: false,
+      },
+      {
+        ThemeID: 3,
+        ButtonID: 7,
+        ButtonName: "wortschatz",
+        Image: "wortschatz.png",
+        Link: "/wortschatz",
+        Permission: null,
+        SomethingNew: 0,
+        PositionX: 1280,
+        PositionY: 950,
+        Layer: 2,
+        IsLocked: false,
+      },
+      {
+        ThemeID: 3,
+        ButtonID: 8,
+        ButtonName: "lieder",
+        Image: "lieder.png",
+        Link: "/lieder",
+        Permission: null,
+        SomethingNew: 0,
+        PositionX: 1605,
+        PositionY: 920,
+        Layer: 2,
+        IsLocked: false,
+      },
+      {
+        ThemeID: 3,
+        ButtonID: 9,
+        ButtonName: "meine-module",
+        Image: "meine-module.png",
+        Link: "/meine-module",
+        Permission: "[1,2,3]",
+        SomethingNew: 0,
+        PositionX: 200,
+        PositionY: 900,
+        Layer: 2,
+        IsLocked: false,
+      },
+      {
+        ThemeID: 3,
+        ButtonID: 10,
+        ButtonName: "meine-arbeitsblatter",
+        Image: "meine-arbeitsblatter.png",
+        Link: "/arbeitsblattgenerator",
+        Permission: "[1,2,3]",
+        SomethingNew: 0,
+        PositionX: 560,
+        PositionY: 920,
+        Layer: 2,
+        IsLocked: false,
+      },
+    ],
+    theme_animations: [
+      {
+        AnimationID: 5,
+        ThemeID: 3,
+        AnimationName: "Minti1",
+        Data: "minti-rocket-green.json",
+        Sprite: "minti-rocket-green.png",
+        PositionX: -50,
+        PositionY: 480,
+        Layer: 1,
+        Scale: 0.8,
+        Anchor: 0.5,
+        Speed: 10,
+      },
+      {
+        AnimationID: 6,
+        ThemeID: 3,
+        AnimationName: "Minti2",
+        Data: "minti-ufo-purple.json",
+        Sprite: "minti-ufo-purple.png",
+        PositionX: 2400,
+        PositionY: 580,
+        Layer: 1,
+        Scale: 0.8,
+        Anchor: 0.5,
+        Speed: 10,
+      },
+    ],
+    theme_mintibuch: "minti-in-space",
+  },
+  events: [
+    {
+      EventID: 1,
+      EventName: "BestOfMinticity",
+      Link: "/bestof",
+      LinkTarget: "_self",
+      Data: "rosette1.json",
+      Sprite: "rosette1.png",
+      Scale: 0.9,
+      Anchor: 0.5,
+      Speed: 2.5,
+      Clickable: 1,
+      TeacherEvent: 0,
+      Countdown: "-838:59:59",
+      IsPremium: false,
+    },
+    {
+      EventID: 4,
+      EventName: "MinticityGuide",
+      Link: "https://minticityguide.com/schulungen/",
+      LinkTarget: "_blank",
+      Data: "minticityGuide1.json",
+      Sprite: "minticityGuide1.png",
+      Scale: 0.9,
+      Anchor: 0.5,
+      Speed: 2.5,
+      Clickable: 1,
+      TeacherEvent: 1,
+      Countdown: "-838:59:59",
+      IsPremium: false,
+    },
+  ],
+  path: {
+    current:
+      "https://eu.minticity.com/junior/mintibuch/starter/das-deutsche-abc/seite-5",
+    full: "https://eu.minticity.com/junior/mintibuch/starter/das-deutsche-abc/seite-5",
+    request_type: { id: 2, name: "JUNIOR", slug: "junior" },
+  },
+  notifications: [],
+  type: "junior",
+  master: true,
+  token: "W20GJPYCQFQASJ4RGWLP4HDO68R6CN7N8OXHGAQETPZXYMMHWEAHENBGMDYRAZXD",
+  prod: true,
+  notifurl: "https://eu.minticity.com/junior/profil/notifications",
+  server_addr: "10.10.10.20",
+  app_location: "DE",
+  translate: {
+    swal: {
+      delete: {
+        title: "L\u00f6schen best\u00e4tigen",
+        text: "Best\u00e4tigen Sie den L\u00f6schvorgang?",
+      },
+      areYouSure: { title: "Best\u00e4tigen", text: "Bist du dir sicher?" },
+      yes: "Ja.",
+      no: "Nein!",
+    },
+  },
+  subscribeOptions: {
+    userVisibleOnly: true,
+    applicationServerKey:
+      "BNqqJOUr68v6g9s2-h1BqXwO21w6NTnbX45fJBTwzmIGA0P0slS2h0mjYn2QTUITV54I_4QiotfjCC2bPFxByfA",
+  },
+  foreignSchools: true,
+};
 var _typeof =
   typeof Symbol === "function" && typeof Symbol.iterator === "symbol"
     ? function (obj) {
-      return typeof obj;
-    }
+        return typeof obj;
+      }
     : function (obj) {
-      return obj &&
-        typeof Symbol === "function" &&
-        obj.constructor === Symbol &&
-        obj !== Symbol.prototype
-        ? "symbol"
-        : typeof obj;
-    };
+        return obj &&
+          typeof Symbol === "function" &&
+          obj.constructor === Symbol &&
+          obj !== Symbol.prototype
+          ? "symbol"
+          : typeof obj;
+      };
 
 function _extends(target) {
   for (var i = 1; i < arguments.length; i++) {
@@ -38,11 +403,11 @@ function toConsumableArray(arr) {
 var minti_titles = "";
 var uyarilar = {
   memory: "Super!\nDein Memory ist bereit.\nSpiel und gewinne Mintos!",
-  ende: "Die Übung ist zu Ende.\nBitte klick auf Speichern."
+  ende: "Die Übung ist zu Ende.\nBitte klick auf Speichern.",
 };
 var minti_phaser = {
   baslik: { font: 'bold 40pt Amaranth "Roboto Condensed"', fill: "#576273" },
-  baslik_1: { font: 'italic bold 30px "Roboto Condensed"', fill: "#576273" }
+  baslik_1: { font: 'italic bold 30px "Roboto Condensed"', fill: "#576273" },
 };
 
 var PhaserFilterPaths = {
@@ -50,7 +415,7 @@ var PhaserFilterPaths = {
   BlurY: "/plugins/phaser/filters/BlurY.js",
   ColorMatrix: "/plugins/phaser/filters/ColorMatrixFilter.js",
   Glow: "/plugins/phaser/filters/Glow.js",
-  Gray: "/plugins/phaser/filters/Gray.js"
+  Gray: "/plugins/phaser/filters/Gray.js",
 };
 var Random = (function () {
   var numbs = "0123456789";
@@ -120,7 +485,7 @@ var Minti = (function () {
     "w",
     "x",
     "y",
-    "z"
+    "z",
   ];
   var specials = ["ä", "ö", "ü", "ß"];
   var alphabetUpperCase = [
@@ -149,7 +514,7 @@ var Minti = (function () {
     "W",
     "X",
     "Y",
-    "Z"
+    "Z",
   ];
   var specialsUpperCase = ["Ä", "Ö", "Ü", "ß"];
   var alphabetOptions = {
@@ -157,7 +522,7 @@ var Minti = (function () {
     special: true,
     upperCase: false,
     upperCaseSpecial: false,
-    array: true
+    array: true,
   };
   /*
    * @mintiAlphabet
@@ -195,7 +560,7 @@ var Minti = (function () {
       parent: "core",
       enableDebug: false,
       fullScreenTarget: __mintibuch_toggle,
-      seed: [(Date.now() * Math.random()).toString()]
+      seed: [(Date.now() * Math.random()).toString()],
     },
     mintibuchConfig1: {
       width: 1813,
@@ -203,7 +568,7 @@ var Minti = (function () {
       parent: "core",
       enableDebug: false,
       fullScreenTarget: __mintibuch_toggle,
-      seed: [(Date.now() * Math.random()).toString()]
+      seed: [(Date.now() * Math.random()).toString()],
     },
     mintibuchConfig2: {
       width: 1920,
@@ -211,7 +576,7 @@ var Minti = (function () {
       parent: "core",
       enableDebug: false,
       fullScreenTarget: __mintibuch_toggle,
-      seed: [(Date.now() * Math.random()).toString()]
+      seed: [(Date.now() * Math.random()).toString()],
     },
     mintibuchConfig3: {
       width: 1825,
@@ -219,7 +584,7 @@ var Minti = (function () {
       parent: "core",
       enableDebug: false,
       fullScreenTarget: __mintibuch_toggle,
-      seed: [(Date.now() * Math.random()).toString()]
+      seed: [(Date.now() * Math.random()).toString()],
     },
     mintibuchConfigForPhone: {
       width: window.innerWidth * window.devicePixelRatio,
@@ -227,36 +592,36 @@ var Minti = (function () {
       parent: "core",
       enableDebug: false,
       fullScreenTarget: __mintibuch_toggle,
-      seed: [(Date.now() * Math.random()).toString()]
+      seed: [(Date.now() * Math.random()).toString()],
     },
     colors: {
       nom: {
         hex: "#57A9DD",
         rgb: "rgb(87,169,221)",
-        dhex: 0x57a9dd
+        dhex: 0x57a9dd,
       },
       akk: {
         hex: "#F15A24",
         rgb: "rgb(241,90,36)",
-        dhex: 0xf15a24
+        dhex: 0xf15a24,
       },
       dat: {
         hex: "#93278F",
         rgb: "rgb(147,39,143)",
-        dhex: 0x93278f
-      }
+        dhex: 0x93278f,
+      },
     },
     Types: {
       JUNIOR: "junior",
       TEENAGE: "teenage",
-      KIDS: "kids"
-    }
+      KIDS: "kids",
+    },
   };
   Object.defineProperties(Minti, {
     MAX_MINTIBUCH_MINTOS: {
       get: function () {
         return MAX_MINTIBUCH_MINTOS;
-      }
+      },
     },
     alphabetOptions: {
       get: function () {
@@ -279,8 +644,8 @@ var Minti = (function () {
           opts.upperCaseSpecial = false;
         }
         alphabetOptions = opts;
-      }
-    }
+      },
+    },
   });
   return Minti;
 })();
@@ -289,6 +654,10 @@ Minti.getCommonBaseURL = function (baseURL) {
     .replace("teenage/", "")
     .replace("junior/", "")
     .replace("kids/", "");
+};
+App.content = {
+  baseURL:
+    "https://eu.minticity.com/web/mintibuch/a1/a1-1/meine-familie/seite-1/junior/",
 };
 Minti.getMintibuchPageData = function (link) {
   link = window.location.pathname;
@@ -345,7 +714,7 @@ Minti.Utils = (function () {
     return (
       value &&
       (typeof value === "undefined" ? "undefined" : _typeof(value)) ===
-      "object" &&
+        "object" &&
       value.constructor === Array
     );
   };
@@ -353,7 +722,7 @@ Minti.Utils = (function () {
     return (
       value &&
       (typeof value === "undefined" ? "undefined" : _typeof(value)) ===
-      "object" &&
+        "object" &&
       value.constructor === Object
     );
   };
@@ -382,10 +751,7 @@ Minti.Utils = (function () {
     var defaultValue =
       arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
     if (!isArray(key)) {
-      key = ("" + key)
-        .replace(/^\[|]/g, "")
-        .replace(/\[/g, ".")
-        .split(".");
+      key = ("" + key).replace(/^\[|]/g, "").replace(/\[/g, ".").split(".");
     }
     key = [].concat(toConsumableArray(key));
     var segment = "" + key.shift();
@@ -479,7 +845,7 @@ Minti.Utils = (function () {
       ),
       function (carry, n) {
         return [].concat(toConsumableArray(carry), [
-          slice(items, n * size, (n + 1) * size)
+          slice(items, n * size, (n + 1) * size),
         ]);
       },
       []
@@ -515,7 +881,7 @@ Minti.Utils = (function () {
     if (count(a) !== count(b)) {
       return false;
     }
-    for (var i = a.length; i--;) {
+    for (var i = a.length; i--; ) {
       if (a[i] !== b[i]) {
         return false;
       }
@@ -551,9 +917,9 @@ Minti.Utils = (function () {
       function (carry, value) {
         return isArray(value) || isObject(value)
           ? [].concat(
-            toConsumableArray(carry),
-            toConsumableArray(flatten(value))
-          )
+              toConsumableArray(carry),
+              toConsumableArray(flatten(value))
+            )
           : [].concat(toConsumableArray(carry), [value]);
       },
       []
@@ -778,7 +1144,7 @@ Minti.Utils = (function () {
     deepCopy: deepCopy,
     wrapValue: wrapValue,
     numberArray: numberArray,
-    numberArrayStep: numberArrayStep
+    numberArrayStep: numberArrayStep,
   };
 })();
 Minti.Helper = (function () {
@@ -800,7 +1166,7 @@ Minti.Helper = (function () {
       msg: "Kopiert!",
       size: "mini",
       rounded: true,
-      sound: false
+      sound: false,
     });
     document.execCommand("copy");
   };
@@ -883,16 +1249,13 @@ Minti.Helper = (function () {
     );
     $("#jsPopUp").load(key, function () {
       var $popup = $("#jsPopUp");
-      $popup
-        .attr("src", key)
-        .removeClass("hide")
-        .css({
-          width: "50%",
-          top: "25%",
-          left: "25%",
-          position: "absolute",
-          cursor: "pointer"
-        });
+      $popup.attr("src", key).removeClass("hide").css({
+        width: "50%",
+        top: "25%",
+        left: "25%",
+        position: "absolute",
+        cursor: "pointer",
+      });
       TweenMax.from($popup, 0.5, {
         css: { scale: 0 },
         ease: Back.easeOut,
@@ -903,10 +1266,10 @@ Minti.Helper = (function () {
               ease: Back.easeIn,
               onComplete: function () {
                 $popup.remove();
-              }
+              },
             });
           });
-        }
+        },
       });
     });
   };
@@ -970,7 +1333,7 @@ Minti.Helper = (function () {
     var obj = {
       word: word,
       singular: "",
-      plural: ""
+      plural: "",
     };
     if (_typeof(haveDots) === "undefined") {
       haveDots = false;
@@ -982,7 +1345,7 @@ Minti.Helper = (function () {
       var _dd = [
         arr[0].lastIndexOf("o"),
         arr[0].lastIndexOf("u"),
-        arr[0].lastIndexOf("a")
+        arr[0].lastIndexOf("a"),
       ];
       var deger = Math.max.apply(
         Math,
@@ -1069,7 +1432,7 @@ Minti.Helper = (function () {
     copyClipboard: copyClipboard,
     setCaretAtEnd: SetCaretAtEnd,
     SetCaretAtEnd: SetCaretAtEnd,
-    singularPlural: singularPlural
+    singularPlural: singularPlural,
   };
 })();
 try {
@@ -1083,6 +1446,7 @@ try {
     "/mintibuch/";
 
   if (Phaser.VERSION.startsWith("2.")) {
+    debugger;
     // Minti.mintibuchConfig.renderer = Phaser.CANVAS;
     Minti.PhaserHelper = (function () {
       function resizev2(_game) {
@@ -1133,7 +1497,7 @@ try {
         var _this = this;
         try {
           this.game.input.mouseWheel.stop();
-        } catch (e) { }
+        } catch (e) {}
         this.sound.allowMultiple = false;
         this.time.desiredFps = 60;
         this.time.advancedTiming = true;
@@ -1291,6 +1655,7 @@ try {
         this.load.baseURL = this.data.baseURL;
         if (this.data.defaultItems) {
           let isSelectedUnit = false;
+
           let arrayOfContent = App.content.baseURL.toString().split("/");
           for (let i = 0; i <= arrayOfContent.length - 1; i++) {
             if (
@@ -1323,7 +1688,7 @@ try {
               arrayOfContent[i] === "korper-und-gesundheit-clone" ||
               arrayOfContent[i] === "korper-und-gesundheit" ||
               arrayOfContent[i] ===
-              "mein-haus-meine-wohnung-mein-zimmer-clone" ||
+                "mein-haus-meine-wohnung-mein-zimmer-clone" ||
               arrayOfContent[i] === "mein-haus-meine-wohnung-mein-zimmer" ||
               arrayOfContent[i] === "berufe-clone" ||
               arrayOfContent[i] === "berufe" ||
@@ -1413,10 +1778,7 @@ try {
           baseURL = App.Spiel.baseURL;
         }
         let common =
-          baseURL
-            .split("/")
-            .slice(0, -3)
-            .join("/") +
+          baseURL.split("/").slice(0, -3).join("/") +
           "/assets/" +
           App.type +
           "/";
@@ -1428,7 +1790,7 @@ try {
           "rightArrow.png",
           "fullScreen.png",
           "fullScreenExit.png",
-          "anLehrerSenden.png"
+          "anLehrerSenden.png",
         ];
         for (let i = 0; i < commonList.length; i++) {
           let element = commonList[i];
@@ -1603,7 +1965,7 @@ try {
             fill: "#000000",
             fillAlpha: 0,
             fontWeight: "bold",
-            align: "right"
+            align: "right",
           }
         );
         this.avcs.anchor.set(0.5);
@@ -1710,7 +2072,7 @@ try {
             font: "80px Amaranth",
             fontWeight: "bold",
             fill: "#FFF",
-            align: "center"
+            align: "center",
           });
           text.setText(
             config.text || "Die Übung ist zu Ende.\nBitte klick auf Speichern."
@@ -1965,7 +2327,7 @@ try {
           font: "24px Roboto",
           align: "center",
           boundsAlignH: "center",
-          boundsAlignV: "middle"
+          boundsAlignV: "middle",
         };
         var timeText = state.make.text(play.x + 70, 3, "00:00", font);
         timeText.anchor.set(0.5);
@@ -2332,7 +2694,7 @@ try {
         this.inputEnableChildren = true;
         this.TYPES = {
           VERTICAL: "VERTICAL",
-          HORIZONTAL: "HORIZONTAL"
+          HORIZONTAL: "HORIZONTAL",
         };
 
         this.currentState = state;
@@ -2397,7 +2759,7 @@ try {
             sub[m].push([
               puzzleData.startPos.x + w / 2 + farkx,
               puzzleData.startPos.y + h / 2 + farky,
-              m + (j % 2)
+              m + (j % 2),
             ]);
             farkx += w;
           }
@@ -2455,7 +2817,7 @@ try {
                       ch.key,
                       {
                         font: "bold 40px Amaranth",
-                        fill: "#9b005d"
+                        fill: "#9b005d",
                       }
                     );
                     this.passives.add(tex);
@@ -2528,7 +2890,7 @@ try {
                       ch.key,
                       {
                         font: "bold 40px Amaranth",
-                        fill: "#9b005d"
+                        fill: "#9b005d",
                       }
                     );
                     this.passives.add(tex);
@@ -2644,7 +3006,7 @@ try {
           alphabet: false,
           special: false,
           upperCase: true,
-          upperCaseSpecial: false
+          upperCaseSpecial: false,
         });
         /**
          * We are adding these keys cause on Turkish keyboard have extra
@@ -2654,7 +3016,7 @@ try {
           "CLOSED_BRACKET",
           "QUESTION_MARK",
           "BACKSPACE",
-          "SPACEBAR"
+          "SPACEBAR",
         ]);
         for (var i = 0; i < keys.length; i++) {
           var key = keys[i],
@@ -3025,9 +3387,8 @@ try {
             }
           },
           fullScreen: function (fButton) {
-            fButton.game.scale.fullScreenTarget = document.getElementById(
-              "mintibuch_toggle"
-            );
+            fButton.game.scale.fullScreenTarget =
+              document.getElementById("mintibuch_toggle");
             if (!fButton.game.scale.isFullScreen) {
               fButton.alpha = 0;
               fButton.game.scale.startFullScreen(false, "when-not-mouse");
@@ -3043,7 +3404,7 @@ try {
             if ("setFontSize" in state) {
               state.setFontSize();
             }
-          }
+          },
         },
         onInput: {
           Over: function (e) {
@@ -3079,7 +3440,7 @@ try {
             e.game.add.tween(e.scale).to(
               {
                 x: scaleBack,
-                y: scaleBack
+                y: scaleBack,
               },
               150,
               "Back.easeOut",
@@ -3094,13 +3455,13 @@ try {
             e.game.add.tween(e.scale).to(
               {
                 x: scaleBack,
-                y: scaleBack
+                y: scaleBack,
               },
               150,
               "Back.easeOut",
               true
             );
-          }
+          },
         },
 
         Card: Card,
@@ -3294,10 +3655,10 @@ try {
           grap.lineStyle(4, 0xffd900, 1);
           grap.drawRect(image.left, image.top, image.width, image.height);
           grap.endFill();
-        }
+        },
       };
     })();
-    
+
     Minti.Scene = {
       arrangeDefaultButtons: function (header, pointable, isChangedUnit) {
         if (typeof header === "undefined") {
@@ -3336,7 +3697,7 @@ try {
           this.puanText = this.add.text(1725, 52, "0", {
             font: "bold 30px Amaranth",
             align: "center",
-            fill: "#ffffff"
+            fill: "#ffffff",
           });
           this.puanText.anchor.set(0.5);
         }
@@ -3355,9 +3716,8 @@ try {
           }
           if (!isMintiBuchOrLernen) {
             if (typeof this.addFullScreenButtons === "undefined") {
-              this.addFullScreenButtons = Minti.Scene.addFullScreenButtons.bind(
-                this
-              );
+              this.addFullScreenButtons =
+                Minti.Scene.addFullScreenButtons.bind(this);
             }
             this.addFullScreenButtons();
           }
@@ -3465,7 +3825,7 @@ try {
           this.puanText = this.add.text(1717.5, puanYer.y, 0, {
             font: "bold 25px Roboto",
             align: "center",
-            fill: "#ffffff"
+            fill: "#ffffff",
           });
           this.puanText.anchor.set(0.5);
           if (App && App.type === "junior") {
@@ -3475,7 +3835,7 @@ try {
             this.puanText.setStyle({
               font: "bold 40px Noteworthy",
               align: "center",
-              fill: "#ffffff"
+              fill: "#ffffff",
             });
           }
         }
@@ -3493,9 +3853,8 @@ try {
           }
           if (!isMintiBuchOrLernen1) {
             if (typeof this.addFullScreenButtons === "undefined") {
-              this.addFullScreenButtons = Minti.Scene.addFullScreenButtons.bind(
-                this
-              );
+              this.addFullScreenButtons =
+                Minti.Scene.addFullScreenButtons.bind(this);
             }
             this.addFullScreenButtons(1773, 28.9, 1);
           }
@@ -3522,7 +3881,7 @@ try {
         });
       },
       addDefaultSounds: function () {
-        if (this.cache.checkSoundKey("dses")) {
+        /* if (this.cache.checkSoundKey("dses")) {
           this.ds = this.add.sound("dses", 0.1);
         }
         if (this.cache.checkSoundKey("glow")) {
@@ -3530,10 +3889,10 @@ try {
         }
         if (this.cache.checkSoundKey("yses")) {
           this.ys = this.add.sound("yses", 0.1);
-        }
-      }
+        } */
+      },
     };
-    
+
     Phaser.GameObjectFactory.prototype.multiply = function (
       x,
       y,
@@ -3577,8 +3936,8 @@ try {
     window.BootState = Minti.PhaserHelper.BootState;
     window.PreloadState = Minti.PhaserHelper.PreloadState;
     window.PopUp = Minti.PhaserHelper.PopUp;
-
   } else if (Phaser.VERSION.startsWith("3.")) {
+    debugger;
     Minti.Events = Minti.events = new Phaser.Events.EventEmitter();
 
     Minti.Scene = {
@@ -3618,7 +3977,7 @@ try {
           this.puanText = this.add.text(1725, 52, "0", {
             font: "bold 30px Amaranth",
             align: "center",
-            fill: "#ffffff"
+            fill: "#ffffff",
           });
           this.puanText.anchor.set(0.5);
         }
@@ -3637,9 +3996,8 @@ try {
           }
           if (!isMintiBuchOrLernen) {
             if (typeof this.addFullScreenButtons === "undefined") {
-              this.addFullScreenButtons = Minti.Scene.addFullScreenButtons.bind(
-                this
-              );
+              this.addFullScreenButtons =
+                Minti.Scene.addFullScreenButtons.bind(this);
             }
             this.addFullScreenButtons();
           }
@@ -3747,7 +4105,7 @@ try {
           this.puanText = this.add.text(1717.5, puanYer.y, 0, {
             font: "bold 25px Roboto",
             align: "center",
-            fill: "#ffffff"
+            fill: "#ffffff",
           });
           this.puanText.anchor.set(0.5);
           if (App && App.type === "junior") {
@@ -3757,7 +4115,7 @@ try {
             this.puanText.setStyle({
               font: "bold 40px Noteworthy",
               align: "center",
-              fill: "#ffffff"
+              fill: "#ffffff",
             });
           }
         }
@@ -3775,9 +4133,8 @@ try {
           }
           if (!isMintiBuchOrLernen1) {
             if (typeof this.addFullScreenButtons === "undefined") {
-              this.addFullScreenButtons = Minti.Scene.addFullScreenButtons.bind(
-                this
-              );
+              this.addFullScreenButtons =
+                Minti.Scene.addFullScreenButtons.bind(this);
             }
             this.addFullScreenButtons(1773, 28.9, 1);
           }
@@ -3804,7 +4161,7 @@ try {
         });
       },
       addDefaultSounds: function () {
-        if (this.cache.checkSoundKey("dses")) {
+        /* if (this.cache.checkSoundKey("dses")) {
           this.ds = this.add.sound("dses", 0.1);
         }
         if (this.cache.checkSoundKey("glow")) {
@@ -3812,8 +4169,8 @@ try {
         }
         if (this.cache.checkSoundKey("yses")) {
           this.ys = this.add.sound("yses", 0.1);
-        }
-      }
+        } */
+      },
     };
 
     Minti.mintibuchConfig = {
@@ -3821,95 +4178,95 @@ try {
       backgroundColor: 0x062830,
       url: App.url,
       loader: {
-        crossOrigin: true
+        crossOrigin: true,
       },
       scale: {
         mode: Phaser.Scale.ScaleModes.FIT,
         width: 1920,
         height: 1080,
         parent: "core",
-        fullscreenTarget: "mintibuch_toggle"
+        fullscreenTarget: "mintibuch_toggle",
       },
       banner: {
         text: "#FFFFFF",
-        hidePhaser: App.prod
-      }
+        hidePhaser: App.prod,
+      },
     };
     Minti.mintibuchConfig1 = {
       type: Phaser.AUTO,
       backgroundColor: 0x062830,
       url: App.url,
       loader: {
-        crossOrigin: true
+        crossOrigin: true,
       },
       scale: {
         mode: Phaser.Scale.ScaleModes.FIT,
         width: 1813,
         height: 884,
         parent: "core",
-        fullscreenTarget: "mintibuch_toggle"
+        fullscreenTarget: "mintibuch_toggle",
       },
       banner: {
         text: "#FFFFFF",
-        hidePhaser: App.prod
-      }
+        hidePhaser: App.prod,
+      },
     };
     Minti.mintibuchConfig2 = {
       type: Phaser.AUTO,
       backgroundColor: 0x062830,
       url: App.url,
       loader: {
-        crossOrigin: true
+        crossOrigin: true,
       },
       scale: {
         mode: Phaser.Scale.ScaleModes.FIT,
         width: 1920,
         height: 1080,
         parent: "core",
-        fullscreenTarget: "mintibuch_toggle"
+        fullscreenTarget: "mintibuch_toggle",
       },
       banner: {
         text: "#FFFFFF",
-        hidePhaser: App.prod
-      }
+        hidePhaser: App.prod,
+      },
     };
     Minti.mintibuchConfig3 = {
       type: Phaser.AUTO,
       backgroundColor: 0x062830,
       url: App.url,
       loader: {
-        crossOrigin: true
+        crossOrigin: true,
       },
       scale: {
         mode: Phaser.Scale.ScaleModes.FIT,
         width: 1825,
         height: 940,
         parent: "core",
-        fullscreenTarget: "mintibuch_toggle"
+        fullscreenTarget: "mintibuch_toggle",
       },
       banner: {
         text: "#FFFFFF",
-        hidePhaser: App.prod
-      }
+        hidePhaser: App.prod,
+      },
     };
     Minti.mintibuchConfigForPhone = {
       type: Phaser.AUTO,
       backgroundColor: 0x062830,
       url: App.url,
       loader: {
-        crossOrigin: true
+        crossOrigin: true,
       },
       scale: {
         mode: Phaser.Scale.ScaleModes.FIT,
         width: window.innerWidth * window.devicePixelRatio,
         height: window.innerHeight * window.devicePixelRatio,
         parent: "core",
-        fullscreenTarget: "mintibuch_toggle"
+        fullscreenTarget: "mintibuch_toggle",
       },
       banner: {
         text: "#FFFFFF",
-        hidePhaser: App.prod
-      }
+        hidePhaser: App.prod,
+      },
     };
     Minti.PhaserHelper = (function () {
       var Card = new Phaser.Class({
@@ -3926,7 +4283,7 @@ try {
         create: function () {
           this.bottom = this.scene.add
             .container(0, 0, [
-              this.scene.make.image({ x: 0, y: 0, key: "cardBottom" })
+              this.scene.make.image({ x: 0, y: 0, key: "cardBottom" }),
             ])
             .setScale(0, 1);
           if (this.config.picture) {
@@ -3942,16 +4299,16 @@ try {
                 style: this.config.style || {
                   fontSize: 30,
                   fontFamily: "Roboto",
-                  fill: "#000000"
+                  fill: "#000000",
                 },
-                origin: 0.5
+                origin: 0.5,
               })
             );
           }
           this.top = this.scene.make.image({
             x: 0,
             y: 0,
-            key: "cardTop"
+            key: "cardTop",
           });
           if (typeof isAdmin === "function" && isAdmin()) {
             var top = this.top;
@@ -3965,15 +4322,15 @@ try {
                   text: this.config.id,
                   style: {
                     font: "30px Roboto",
-                    fill: "#00ffff"
+                    fill: "#00ffff",
                   },
-                  visible: this.scene.toggleForAdmins || false
-                })
+                  visible: this.scene.toggleForAdmins || false,
+                }),
               ])
               .setInteractive({
                 useHandCursor: true,
                 hitArea: bounds,
-                hitAreaCallback: Phaser.Geom.Rectangle.Contains
+                hitAreaCallback: Phaser.Geom.Rectangle.Contains,
               })
               .on(Phaser.Input.Events.POINTER_DOWN, this.show, this);
           } else {
@@ -3988,7 +4345,7 @@ try {
             targets: [this.top],
             scaleX: 0,
             ease: "Linear",
-            duration: this.turnTime
+            duration: this.turnTime,
           });
           this.scene.tweens.add({
             targets: [this.bottom],
@@ -4002,7 +4359,7 @@ try {
                 image.parentContainer.hide();
               }, 500);
             },
-            onCompleteParams: [this.top]
+            onCompleteParams: [this.top],
           });
         },
         hide: function () {
@@ -4010,7 +4367,7 @@ try {
             targets: [this.bottom],
             scaleX: 0,
             ease: "Linear",
-            duration: this.turnTime
+            duration: this.turnTime,
           });
           this.scene.tweens.add({
             targets: [this.top],
@@ -4021,9 +4378,9 @@ try {
             onComplete: function (tw, targs, image) {
               image.setInteractive();
             },
-            onCompleteParams: [this.top]
+            onCompleteParams: [this.top],
           });
-        }
+        },
       });
       var PopUp = new Phaser.Class({
         Extends: Phaser.GameObjects.Container,
@@ -4054,7 +4411,7 @@ try {
             .text(0, 0, this.subText, {
               font: "bold 80px Amaranth",
               fill: "#FFFFFF",
-              align: "center"
+              align: "center",
             })
             .setOrigin(0.5);
           this.add([sp, tex]);
@@ -4070,7 +4427,7 @@ try {
               sp.setInteractive({ useHandCursor: true });
               sp.on("pointerdown", this.onInpDown, this);
             },
-            callbackScope: this
+            callbackScope: this,
           });
         },
         onInpDown: function () {
@@ -4083,9 +4440,9 @@ try {
             scaleY: 0,
             onComplete: function () {
               this.destroy();
-            }
+            },
           });
-        }
+        },
       });
       var Waiting = new Phaser.Class({
         Extends: Phaser.GameObjects.Container,
@@ -4114,7 +4471,7 @@ try {
               height: 2000,
               key: "yaprak",
               angle: Phaser.Math.Between(1, 0) ? 45 : -45,
-              alpha: 0.4
+              alpha: 0.4,
             })
             .setTilePosition(-10);
           var keys = Object.keys(
@@ -4124,13 +4481,13 @@ try {
             start: 0,
             end: keys.length - 2,
             prefix: "minti_",
-            zeroPad: 2
+            zeroPad: 2,
           });
           this.scene.anims.create({
             key: "load",
             frames: frameNames,
             frameRate: 24,
-            repeat: -1
+            repeat: -1,
           });
           var sp = this.scene.add
             .sprite(this.centerX, this.centerY, texture)
@@ -4144,8 +4501,8 @@ try {
               fontSize: 60,
               fontFamily: "Amaranth",
               fontStyle: "bold",
-              color: "#000000"
-            }
+              color: "#000000",
+            },
           });
           tex.x = this.centerX - tex.width / 2;
           this.tex = tex;
@@ -4162,10 +4519,10 @@ try {
               }
             },
             callbackScope: this,
-            loop: true
+            loop: true,
           });
           this.add([this.tile, sp, tex]);
-        }
+        },
       });
 
       var BootScene = new Phaser.Class({
@@ -4181,7 +4538,7 @@ try {
           this.loaders = [
             "loaders/loader1",
             "loaders/loader2",
-            "loaders/loader3"
+            "loaders/loader3",
           ];
           this.load.setBaseURL("/web/ortak/img/");
           var rnd = "loader3";
@@ -4197,7 +4554,7 @@ try {
             },
             this
           );
-        }
+        },
       });
       var PreloadScene = new Phaser.Class({
         Extends: Phaser.Scene,
@@ -4279,7 +4636,7 @@ try {
                 arrayOfContent[i] === "kleidung-clone" ||
                 arrayOfContent[i] === "korper-und-gesundheit-clone" ||
                 arrayOfContent[i] ===
-                "mein-haus-meine-wohnung-mein-zimmer-clone" ||
+                  "mein-haus-meine-wohnung-mein-zimmer-clone" ||
                 arrayOfContent[i] === "berufe-clone" ||
                 arrayOfContent[i] === "unterwegs-clone" ||
                 arrayOfContent[i] === "freunde-und-freizeit-clone" ||
@@ -4455,8 +4812,11 @@ try {
             },
             this
           );
-        }
+        },
       });
+      function emreTest() {
+        console.log("oldu");
+      }
 
       function resize(_game) {
         // var canvas = _game.canvas;
@@ -4482,13 +4842,10 @@ try {
         // 	}
         // }
 
-
         const intervalCanvas = setInterval(() => {
-
           var canvas = _game.canvas;
 
           if (canvas !== null) {
-
             var par = $(".content");
             var windowWidth = par.width();
             var windowHeight = par.height();
@@ -4501,7 +4858,6 @@ try {
             clearInterval(intervalCanvas);
           }
         }, 1);
-
       }
 
       window.v3Resize = resize; // if needed
@@ -4563,6 +4919,7 @@ try {
       }
 
       return {
+        emre: emreTest,
         resize: resize,
         Card: Card,
         PopUp: PopUp,
@@ -4571,7 +4928,7 @@ try {
         PreloadScene: PreloadScene,
         openButton: openButton,
         closeButton: closeButton,
-        getText: getText
+        getText: getText,
       };
     })();
     Minti.OnInput = {
@@ -4583,7 +4940,7 @@ try {
           targets: this,
           scale: this.scaleTo || 1.1,
           ease: "Back.easeOut",
-          duration: 250
+          duration: 250,
         });
       },
       Out: function () {
@@ -4591,7 +4948,7 @@ try {
           targets: this,
           scale: this.scaleBack || 1,
           ease: "Back.easeOut",
-          duration: 250
+          duration: 250,
         });
       },
       Call: function (gameObject) {
@@ -4609,7 +4966,7 @@ try {
           .on(Phaser.Input.Events.POINTER_OUT, Minti.OnInput.Out);
 
         return gameObject;
-      }
+      },
     };
     Minti.Buttonify = Minti.buttonify = function (
       gameObject,
@@ -4631,7 +4988,7 @@ try {
         {
           useHandCursor: true,
           draggable: draggable,
-          bringToTop: true
+          bringToTop: true,
         },
         options
       );
@@ -4672,7 +5029,7 @@ try {
         targets: gameObject,
         scale: scaleTo,
         ease: "Back.easeOut",
-        duration: 350
+        duration: 350,
       });
       gameObject.scene.tweens.add({
         targets: gameObject,
@@ -4682,7 +5039,7 @@ try {
         delay: 350,
         onComplete: function () {
           gameObject.isAlreadyTweeningFor = false;
-        }
+        },
       });
       return gameObject;
     };
@@ -4717,39 +5074,47 @@ try {
       initialize: function Multiply(scene, x, y, texture, frame) {
         Phaser.GameObjects.Image.call(this, scene, x, y, texture, frame);
         this.setBlendMode(Phaser.BlendModes.MULTIPLY);
-      }
+      },
     });
-    Phaser.GameObjects.GameObjectFactory.register("multiply", function (
-      x,
-      y,
-      texture,
-      frame
-    ) {
-      return this.displayList.add(
-        new Minti.GameObjects.Multiply(this.scene, x, y, texture, frame)
-      );
-    });
-    Phaser.GameObjects.GameObjectCreator.register("multiply", function (
-      config,
-      addToScene
-    ) {
-      if (config === undefined) {
-        config = {};
+    Phaser.GameObjects.GameObjectFactory.register(
+      "multiply",
+      function (x, y, texture, frame) {
+        return this.displayList.add(
+          new Minti.GameObjects.Multiply(this.scene, x, y, texture, frame)
+        );
       }
+    );
+    Phaser.GameObjects.GameObjectCreator.register(
+      "multiply",
+      function (config, addToScene) {
+        if (config === undefined) {
+          config = {};
+        }
 
-      var key = Phaser.Utils.Objects.GetAdvancedValue(config, "key", null);
-      var frame = Phaser.Utils.Objects.GetAdvancedValue(config, "frame", null);
+        var key = Phaser.Utils.Objects.GetAdvancedValue(config, "key", null);
+        var frame = Phaser.Utils.Objects.GetAdvancedValue(
+          config,
+          "frame",
+          null
+        );
 
-      var image = new Minti.GameObjects.Multiply(this.scene, 0, 0, key, frame);
+        var image = new Minti.GameObjects.Multiply(
+          this.scene,
+          0,
+          0,
+          key,
+          frame
+        );
 
-      if (addToScene !== undefined) {
-        config.add = addToScene;
+        if (addToScene !== undefined) {
+          config.add = addToScene;
+        }
+
+        Phaser.GameObjects.BuildGameObject(this.scene, image, config);
+
+        return image;
       }
-
-      Phaser.GameObjects.BuildGameObject(this.scene, image, config);
-
-      return image;
-    });
+    );
 
     Minti.GameObjects.Text = new Phaser.Class({
       Extends: Phaser.GameObjects.Text,
@@ -4765,54 +5130,56 @@ try {
       },
       removeAll: function () {
         return this.setText("");
-      }
+      },
     });
     Phaser.GameObjects.GameObjectFactory.remove("text");
     Phaser.GameObjects.GameObjectCreator.remove("text");
-    Phaser.GameObjects.GameObjectFactory.register("text", function (
-      x,
-      y,
-      text,
-      style
-    ) {
-      return this.displayList.add(
-        new Minti.GameObjects.Text(this.scene, x, y, text, style)
-      );
-    });
-    Phaser.GameObjects.GameObjectCreator.register("text", function (
-      config,
-      addToScene
-    ) {
-      if (config === undefined) {
-        config = {};
+    Phaser.GameObjects.GameObjectFactory.register(
+      "text",
+      function (x, y, text, style) {
+        return this.displayList.add(
+          new Minti.GameObjects.Text(this.scene, x, y, text, style)
+        );
       }
-      var content = Phaser.Utils.Objects.GetAdvancedValue(config, "text", "");
-      var style = Phaser.Utils.Objects.GetAdvancedValue(config, "style", null);
-      var padding = Phaser.Utils.Objects.GetAdvancedValue(
-        config,
-        "padding",
-        null
-      );
-      if (padding !== null) {
-        style.padding = padding;
+    );
+    Phaser.GameObjects.GameObjectCreator.register(
+      "text",
+      function (config, addToScene) {
+        if (config === undefined) {
+          config = {};
+        }
+        var content = Phaser.Utils.Objects.GetAdvancedValue(config, "text", "");
+        var style = Phaser.Utils.Objects.GetAdvancedValue(
+          config,
+          "style",
+          null
+        );
+        var padding = Phaser.Utils.Objects.GetAdvancedValue(
+          config,
+          "padding",
+          null
+        );
+        if (padding !== null) {
+          style.padding = padding;
+        }
+        var text = new Minti.GameObjects.Text(this.scene, 0, 0, content, style);
+        if (addToScene !== undefined) {
+          config.add = addToScene;
+        }
+        Phaser.GameObjects.BuildGameObject(this.scene, text, config);
+        text.autoRound = Phaser.Utils.Objects.GetAdvancedValue(
+          config,
+          "autoRound",
+          true
+        );
+        text.resolution = Phaser.Utils.Objects.GetAdvancedValue(
+          config,
+          "resolution",
+          1
+        );
+        return text;
       }
-      var text = new Minti.GameObjects.Text(this.scene, 0, 0, content, style);
-      if (addToScene !== undefined) {
-        config.add = addToScene;
-      }
-      Phaser.GameObjects.BuildGameObject(this.scene, text, config);
-      text.autoRound = Phaser.Utils.Objects.GetAdvancedValue(
-        config,
-        "autoRound",
-        true
-      );
-      text.resolution = Phaser.Utils.Objects.GetAdvancedValue(
-        config,
-        "resolution",
-        1
-      );
-      return text;
-    });
+    );
 
     // override and/or extra functions
     var onProcess = Phaser.Loader.FileTypes.ScriptFile.prototype.onProcess;
@@ -4863,7 +5230,7 @@ try {
           bTop.outerHeight() +
           10 -
           $(".brand-link").outerHeight(),
-        behavior: "smooth"
+        behavior: "smooth",
       });
     }
   }
@@ -4871,7 +5238,7 @@ try {
   if ($("#core1").length) {
     if (App && App.type === "junior") {
       $(".puanYer").css("left", "81.3%");
-      $(".puan").css("left", "82.6%");
+      //$(".puan").css("left", "82.6%");
       $(".gonder").css("left", "69.5%");
       $("#core1 .kontrol").css("left", "58.6%");
     }
@@ -4914,9 +5281,9 @@ function anLehrerSendenConfirm() {
         ja: {
           class: "btn btn-success",
           text: "Ok",
-          closeOnClick: true
-        }
-      }
+          closeOnClick: true,
+        },
+      },
     });
   }, 1500);
 }
@@ -4945,9 +5312,9 @@ function schreibenPost(data) {
           ja: {
             class: "btn btn-success",
             text: "Ok",
-            closeOnClick: true
-          }
-        }
+            closeOnClick: true,
+          },
+        },
       });
     }
     return 1;
@@ -5030,9 +5397,9 @@ function toggleFullScreen() {
         this.y = position.y;
       }
     };
-  } catch (e) { }
+  } catch (e) {}
 
-  if ($) {
+  /* if ($) {
     $.fn.extend({
       animateCss: function (animationName, callback) {
         var animationEnd = (function (el) {
@@ -5040,7 +5407,7 @@ function toggleFullScreen() {
             animation: "animationend",
             OAnimation: "oAnimationEnd",
             MozAnimation: "mozAnimationEnd",
-            WebkitAnimation: "webkitAnimationEnd"
+            WebkitAnimation: "webkitAnimationEnd",
           };
 
           for (var t in animations) {
@@ -5075,11 +5442,11 @@ function toggleFullScreen() {
           .one(animationEnd, function () {
             $(this).removeClass("animated " + animationName);
           });
-      }
+      },
     });
-  }
-  var $puan = $(".puan");
-  if ($puan) {
+  } */
+  //var $puan = $(".puan");
+  /* if ($puan) {
     $puan.on("DOMSubtreeModified", function () {
       var val = parseInt($(this).html());
       if (Number.isNaN(val)) {
@@ -5089,7 +5456,7 @@ function toggleFullScreen() {
         $(this).html(Minti.MAX_MINTIBUCH_MINTOS.format());
       }
     });
-  }
+  } */
 })();
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -5107,7 +5474,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   setTimeout(function () {
-
     var $toggle = $("#toggle_fullscreen"),
       fullScreen = cdnUrl("/web/ortak/img/fullScreen.png?v=" + VERSION),
       //fullScreen = cdnUrl('/web/mintibuch/themes/' + App.type + '/' + App.theme.theme_mintibuch + '/fullScreen.png?v=' + VERSION)
@@ -5156,7 +5522,7 @@ document.addEventListener("DOMContentLoaded", function () {
       datarecordid: txtArea.data("recordid"),
       datapagetype: txtArea.data("pagetype"),
       datadd: txtArea.data("dd"),
-      datareturn: txtArea.data("return")
+      datareturn: txtArea.data("return"),
     };
     if (data.datareturn == true) {
       schreibenObject.text = data.text;
@@ -5173,33 +5539,33 @@ document.addEventListener("DOMContentLoaded", function () {
           ok: {
             class: "btn btn-success",
             text: "Ja",
-            closeOnClick: true
+            closeOnClick: true,
           },
           cancel: {
             class: "btn btn-danger",
             text: "Nein",
-            closeOnClick: true
-          }
+            closeOnClick: true,
+          },
         },
         callback: function (lobibox, type) {
           if (type === "ok") {
             schreibenPost(data);
           }
-        }
+        },
       });
     } else {
       schreibenPost(data);
     }
   });
 });
-$(document).on("keyup", "#sendText", function () {
+/* $(document).on("keyup", "#sendText", function () {
   let txtArea = $("#sendText").val();
   if (txtArea.length < 3) {
     $("#sendToTeacher").attr("disabled", true);
   } else {
     $("#sendToTeacher").attr("disabled", false);
   }
-});
+}); */
 window.addEvents = function (callback) {
   $(window).on(
     "resize",
@@ -5218,26 +5584,26 @@ window.addEvents = function (callback) {
 window.changeEvent = function (fn) {
   var $core = $("#core");
   if ($core.length) {
-    $(".puan").css({ fontSize: ($core.width() * pointFontSize) / 1920 + "em" });
+    //$(".puan").css({ fontSize: ($core.width() * pointFontSize) / 1920 + "em" });
     $(".input").css({
-      fontSize: ($core.width() * mintibuchInputFontSize) / 1920 + "em"
+      fontSize: ($core.width() * mintibuchInputFontSize) / 1920 + "em",
     });
     $(".dcevap").css({
-      fontSize: ($core.width() * (mintibuchInputFontSize + 0.5)) / 1920 + "em"
+      fontSize: ($core.width() * (mintibuchInputFontSize + 0.5)) / 1920 + "em",
     });
   } else {
     $core = $("#core1");
-    $("#core1 .puan").css({
-      fontSize: ($core.width() * (mintibuchInputFontSize - 0.3)) / 1920 + "em"
-    });
+    /* $("#core1 .puan").css({
+      fontSize: ($core.width() * (mintibuchInputFontSize - 0.3)) / 1920 + "em",
+    }); */
     $("#core1 #m-header").css({
-      fontSize: ($core.width() * mintibuchInputFontSize) / 1920 + "em"
+      fontSize: ($core.width() * mintibuchInputFontSize) / 1920 + "em",
     });
     $("#core1 .input").css({
-      fontSize: ($core.width() * mintibuchInputFontSize) / 1920 + "em"
+      fontSize: ($core.width() * mintibuchInputFontSize) / 1920 + "em",
     });
     $("#core1 .dcevap").css({
-      fontSize: ($core.width() * (mintibuchInputFontSize + 0.5)) / 1920 + "em"
+      fontSize: ($core.width() * (mintibuchInputFontSize + 0.5)) / 1920 + "em",
     });
   }
   if (!!(fn && fn.constructor && fn.call && fn.apply)) {
@@ -5249,9 +5615,7 @@ window.sendEvent = function (total, validation) {
     return;
   }
   $(".kontrol").trigger("click");
-  $(".gonder")
-    .unbind()
-    .remove();
+  $(".gonder").unbind().remove();
   setTimeout(function () {
     socket.emit("mintibuchPointSave", Math.round(total), validation);
     window.sendEvent = undefined;
@@ -5267,26 +5631,27 @@ window.mintibuchInputFontSize = 2;
 window.playSound = Minti.Helper.playSound;
 window.correctSoundPath = [
   "/web/ortak/sound/dogru.mp3",
-  "/web/ortak/sound/glow.mp3"
+  "/web/ortak/sound/glow.mp3",
 ];
 window.wrongSoundPath = "/web/ortak/sound/yanlis.mp3";
 window.anLehrerSendenConfirm = anLehrerSendenConfirm;
 
 let intervalId = setInterval(() => {
-  const coreDiv = document.getElementById('core') || document.getElementById('core1');
+  const coreDiv =
+    document.getElementById("core") || document.getElementById("core1");
   if (coreDiv) {
-    const inputlar = document.querySelectorAll('input');
-    inputlar.forEach(input => {
-      input.addEventListener('blur', function () {
-        input.value = input.value.trim().replace(/\s+/g, ' ');;
+    const inputlar = document.querySelectorAll("input");
+    inputlar.forEach((input) => {
+      input.addEventListener("blur", function () {
+        input.value = input.value.trim().replace(/\s+/g, " ");
       });
     });
     clearInterval(intervalId);
     const observer = new MutationObserver((mutationsList, observer) => {
-      const inputlar = document.querySelectorAll('input');
-      inputlar.forEach(input => {
-        input.addEventListener('blur', function () {
-          input.value = input.value.trim().replace(/\s+/g, ' ');;
+      const inputlar = document.querySelectorAll("input");
+      inputlar.forEach((input) => {
+        input.addEventListener("blur", function () {
+          input.value = input.value.trim().replace(/\s+/g, " ");
         });
       });
     });
@@ -5295,5 +5660,5 @@ let intervalId = setInterval(() => {
   }
 }, 1000);
 
-
-export default Minti.Scene;
+export const Scene = Minti.Scene;
+export const PhaserHelper = Minti.PhaserHelper;

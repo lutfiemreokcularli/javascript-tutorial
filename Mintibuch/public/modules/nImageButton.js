@@ -1,3 +1,4 @@
+import { Scene, PhaserHelper } from "./Minti.js";
 export const config = {
   type: Phaser.AUTO,
   width: 800,
@@ -14,6 +15,8 @@ export function startGame() {
 }
 
 function preload() {
+  PhaserHelper.emre();
+  Scene.addDefaultSounds();
   this.load.image("background", "https://picsum.photos/seed/picsum/200");
   this.load.image("star", "https://picsum.photos/seed/picsum/200/300");
 }

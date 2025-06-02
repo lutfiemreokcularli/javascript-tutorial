@@ -15,7 +15,7 @@ Content-Type: application/json
 {
     
     "data" : {
-        "modulName": "nthImageClickable",
+        "modulName": "nthButtonClickable",
         "elementCount" : 30
     }
     
