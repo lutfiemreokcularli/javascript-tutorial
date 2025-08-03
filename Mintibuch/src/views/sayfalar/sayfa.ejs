@@ -1,9 +1,9 @@
 <script id="test" type="module">
   let moduleName = "<%= sayfa.data.modulName %>";
   import(`/modules/${moduleName}`).then((module) => {
-    /* module.config.userInput = "<%= sayfa.data.elementCount %>";
+    module.config.userInput = "<%= sayfa.data.elementCount %>";
     module.config.width = 1813;
-    module.config.height = 884; */
+    module.config.height = 884;
     module.startGame();
   });
 </script>

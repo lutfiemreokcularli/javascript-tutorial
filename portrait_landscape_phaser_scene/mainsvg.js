@@ -1,10 +1,12 @@
+const svgUrl = "assets/background4.svg";
+
 class MainScene extends Phaser.Scene {
   constructor() {
     super("MainScene");
   }
 
   preload() {
-    // Gerekli görseller varsa burada preload edebilirsin
+    this.load.svg("bg", svgUrl); // SVG'yi yükle
   }
 
   create() {
@@ -25,6 +27,8 @@ class MobileScene extends Phaser.Scene {
   }
 
   create() {
+    this.bg = this.add.image(0, 0, "bg").setOrigin(0);
+
     this.text = this.add
       .text(0, 0, "", {
         fontSize: "28px",
@@ -36,7 +40,6 @@ class MobileScene extends Phaser.Scene {
 
     this.updateLayout();
 
-    // 🔥 Doğru resize hook'u: Phaser’ın kendi olayını kullan
     this.scale.on("resize", (gameSize) => {
       this.cameras.resize(gameSize.width, gameSize.height);
       this.updateLayout();
@@ -47,6 +50,10 @@ class MobileScene extends Phaser.Scene {
     const width = this.scale.width;
     const height = this.scale.height;
     const isPortrait = height > width;
+
+    // arka planı tam ekran yay
+    this.bg.displayWidth = width;
+    this.bg.displayHeight = height;
 
     this.text.setText(isPortrait ? "📱 Portrait Mode" : "📱 Landscape Mode");
     this.text.setPosition(width / 2, height / 2);
@@ -60,12 +67,28 @@ class DesktopScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.text(100, 100, "🖥️ Desktop Scene", {
+    this.bg = this.add.image(0, 0, "bg").setOrigin(0);
+
+    this.desktopText = this.add.text(100, 100, "🖥️ Desktop Scene", {
       fontSize: "32px",
       fill: "#0000ff",
     });
 
-    // Masaüstü özel kontroller veya animasyonlar burada
+    this.updateLayout();
+
+    this.scale.on("resize", (gameSize) => {
+      this.cameras.resize(gameSize.width, gameSize.height);
+      this.updateLayout();
+    });
+  }
+
+  updateLayout() {
+    const width = this.scale.width;
+    const height = this.scale.height;
+
+    // arka planı tam ekran yay
+    this.bg.displayWidth = width;
+    this.bg.displayHeight = height;
   }
 }
 
