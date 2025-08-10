@@ -1,0 +1,35 @@
+{
+  "data": {
+    "title": "Karışık Eşleşme – Hayvanlar",
+    "spacing": 16,
+    "flipDuration": 180,
+    "match": "text-image",
+    "cover": { "color": "#171d34", "label": "?" },
+    "items": [
+      {
+        "key": "goat",
+        "text": "Keçi",
+        "audio": "audio/goat.mp3",
+        "modalities": ["text", "audio"]
+      },
+      {
+        "key": "bird",
+        "image": "images/bird.png",
+        "audio": "audio/bird.mp3",
+        "modalities": ["image", "audio"]
+      },
+      {
+        "key": "dog",
+        "text": "Köpek",
+        "image": "images/dog.png",
+        "modalities": ["text", "image"]
+      },
+      {
+        "key": "chicken",
+        "image": "images/chicken.png",
+        "audio": "audio/chicken.mp3",
+        "modalities": ["audio", "image"]
+      }
+    ]
+  }
+}

@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      Phaser 3 – Dinamik Memory (Text-Image · Text-Audio · Image-Audio)
+    </title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: #0f1220;
+      }
+      #game {
+        width: 100%;
+        height: 100%;
+      }
+      .overlay-ui {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        color: #e6e8f0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+          Helvetica Neue, Arial;
+      }
+      .topbar {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 12px;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.35),
+          rgba(0, 0, 0, 0)
+        );
+      }
+      .pill {
+        pointer-events: auto;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 8px 12px;
+        border-radius: 999px;
+        backdrop-filter: blur(6px);
+        font-weight: 600;
+      }
+      .btn {
+        cursor: pointer;
+        transition: transform 0.08s ease;
+      }
+      .btn:active {
+        transform: translateY(1px);
+      }
+      .footer {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0.6;
+        font-size: 12px;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.0/dist/phaser.js"></script>
+  </head>
+  <body>
+    <div id="game"></div>
+    <div class="overlay-ui">
+      <div class="topbar">
+        <div id="titlePill" class="pill">Memory</div>
+        <div id="statsPill" class="pill">
+          Hamle: 0 · Süre: 00:00 · Eşleşme: 0
+        </div>
+        <div id="restartBtn" class="pill btn">Yeniden Başlat</div>
+      </div>
+      <div id="footer" class="footer">
+        JSON’dan başlat: <code>startMemoryGameFromUrl('gameData.json')</code>
+      </div>
+    </div>
+
+    <script>
+      /*************************
+       * JSON ŞEMASI (ÖZET)
+       * {
+       *   "data": {
+       *     "title": "...",
+       *     "grid": {"cols":4, "rows":2}, // desktop ve fallback grid
+       *     "mobile": {
+       *       "portraitGrid": {"cols":3, "rows":4},
+       *       "landscapeGrid": {"cols":5, "rows":3}
+       *     },
+       *     "spacing": 16,
+       *     "flipDuration": 180,
+       *     "match": "text-image" | "text-audio" | "image-audio",
+       *     "cover": {"color":"#171d34", "label":"?"},
+       *     "items": [
+       *       { "key":"goat",    "text":"Keçi",   "audio":"audio/goat.mp3",    "modalities":["text","audio"] },
+       *       { "key":"bird",    "image":"images/bird.png",    "audio":"audio/bird.mp3",    "modalities":["image","audio"] },
+       *       { "key":"dog",     "text":"Köpek",  "image":"images/dog.png",     "modalities":["text","image"] },
+       *       { "key":"chicken", "image":"images/chicken.png", "audio":"audio/chicken.mp3", "modalities":["audio","image"] }
+       *     ]
+       *   }
+       * }
+       *************************/
+
+      async function startMemoryGameFromUrl(url) {
+        const res = await fetch(url);
+        const j = await res.json();
+        startMemoryGame(j.data);
+      }
+
+      const DEFAULTS = {
+        title: "Memory",
+        grid: null,
+        spacing: 16,
+        flipDuration: 180,
+        match: "text-image", // text-image | text-audio | image-audio
+        cover: { color: "#1b1f33", label: "?" },
+      };
+
+      let phaserGame = null;
+      let lastConfig = null;
+
+      // Viewport ölçümü: mobile tarayıcılarda adres çubuğu etkisini azaltmak için visualViewport tercih
+      function getViewportSize() {
+        const vv = window.visualViewport || null;
+        if (vv) {
+          return { w: Math.round(vv.width), h: Math.round(vv.height) };
+        }
+        const de = document.documentElement;
+        return { w: de.clientWidth, h: de.clientHeight };
+      }
+
+      // --- Safe area: canvas #game, topbar ve footer arasında kalsın ---
+      function updateGameContainerSafeArea() {
+        const gameEl = document.getElementById("game");
+        const topbar = document.querySelector(".topbar");
+        const footer = document.getElementById("footer");
+        if (!gameEl) return;
+
+        const { w: vw, h: vh } = getViewportSize();
+
+        // Üst/alt bileşen yükseklikleri + footer'ın bottom offset'i
+        const topH = topbar
+          ? Math.ceil(topbar.getBoundingClientRect().height)
+          : 0;
+        const footH = footer
+          ? Math.ceil(footer.getBoundingClientRect().height)
+          : 0;
+        const footGap = footer
+          ? parseInt(getComputedStyle(footer).bottom || "0", 10) || 0
+          : 0; // bottom:10px'i de düş
+
+        const extraTop = 8; // üst nefes payı
+        const extraBottom = 20; // alt nefes payı (biraz arttırıldı)
+
+        const safeTop = topH + extraTop;
+        const safeBottom = footH + footGap + extraBottom;
+        const safeHeight = Math.max(100, vh - safeTop - safeBottom);
+
+        gameEl.style.position = "fixed";
+        gameEl.style.left = "0px";
+        gameEl.style.width = vw + "px";
+        gameEl.style.top = safeTop + "px";
+        gameEl.style.height = safeHeight + "px";
+      }
+
+      function bindSafeAreaObservers() {
+        if (window.__safeAreaBound) return;
+        const gameEl = document.getElementById("game");
+        const topbar = document.querySelector(".topbar");
+        const footer = document.getElementById("footer");
+        const onChange = () => {
+          updateGameContainerSafeArea();
+          if (phaserGame && gameEl) {
+            phaserGame.scale.resize(gameEl.clientWidth, gameEl.clientHeight);
+          }
+        };
+        try {
+          const RO = window.ResizeObserver || null;
+          if (RO) {
+            const ro1 = new RO(onChange);
+            const ro2 = new RO(onChange);
+            if (topbar) ro1.observe(topbar);
+            if (footer) ro2.observe(footer);
+            const ro3 = new RO(onChange);
+            if (gameEl) ro3.observe(gameEl);
+            window.__safeAreaBound = [ro1, ro2, ro3];
+          }
+        } catch (e) {
+          /* no-op */
+        }
+        // İlk konumlandırma + font yüklendikten sonra + iki kere rAF ile stabil ölçüm
+        onChange();
+        try {
+          if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(() => {
+              onChange();
+            });
+          }
+        } catch (e) {}
+        try {
+          requestAnimationFrame(() => {
+            onChange();
+            requestAnimationFrame(onChange);
+          });
+        } catch (e) {}
+      }
+
+      function clamp(v, a, b) {
+        return Math.max(a, Math.min(b, v));
+      }
+      function calcAutoGrid(total) {
+        const cols = Math.ceil(Math.sqrt(total));
+        const rows = Math.ceil(total / cols);
+        return { cols, rows };
+      }
+      function shuffle(arr, seed = Date.now() % 2147483647) {
+        function rnd() {
+          seed = (seed * 48271) % 2147483647;
+          return seed / 2147483647;
+        }
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(rnd() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      }
+      function parseMatch(s) {
+        switch (s) {
+          case "text-image":
+            return ["text", "image"];
+          case "text-audio":
+            return ["text", "audio"];
+          case "image-audio":
+            return ["image", "audio"];
+          default:
+            return ["text", "image"];
+        }
+      }
+
+      function createCardFaceTexture(
+        scene,
+        key,
+        w,
+        h,
+        { label = "", color = null, icon = null, textColor = null }
+      ) {
+        const isTextFace = !!label && !icon;
+        const bg = color || (isTextFace ? "#e8eef7" : "#2a345c"); // text için açık zemin
+        const fillCol = Phaser.Display.Color.HexStringToColor(bg).color;
+
+        const gfx = scene.make.graphics({ x: 0, y: 0, add: false });
+        gfx.fillStyle(fillCol, 1);
+        const r = Math.min(w, h) * 0.08;
+        gfx.fillRoundedRect(0, 0, w, h, r);
+        gfx.lineStyle(2, 0xffffff, 0.12);
+        gfx.strokeRoundedRect(1, 1, w - 2, h - 2, r);
+
+        const rt = scene.add.renderTexture(0, 0, w, h).setVisible(false);
+        rt.draw(gfx);
+
+        if (icon) {
+          const icoColor = textColor || "#ffffff";
+          const txt = scene.add
+            .text(0, 0, icon, {
+              fontFamily: "system-ui,Segoe UI,Arial",
+              fontSize: Math.round(Math.min(w, h) * 0.28) + "px",
+              color: icoColor,
+            })
+            .setOrigin(0.5);
+          txt.setPosition(w / 2, h / 2);
+          rt.draw(txt);
+          txt.destroy();
+        } else if (label) {
+          const lblColor = textColor || (isTextFace ? "#111827" : "#ffffff"); // text için koyu yazı
+          const txt = scene.add
+            .text(0, 0, label, {
+              fontFamily: "system-ui,Segoe UI,Arial",
+              fontSize: Math.round(Math.min(w, h) * 0.18) + "px",
+              color: lblColor,
+              fontStyle: "700",
+              align: "center",
+            })
+            .setOrigin(0.5);
+          txt.setWordWrapWidth(w * 0.8, true);
+          txt.setPosition(w / 2, h / 2);
+          rt.draw(txt);
+          txt.destroy();
+        }
+
+        gfx.destroy();
+        rt.saveTexture(key);
+        rt.destroy();
+      }
+
+      class Card extends Phaser.GameObjects.Container {
+        constructor(scene, x, y, opts) {
+          super(scene, x, y);
+          this.scene = scene;
+          this.size = opts.size; // {w,h}
+          this.flipDuration = opts.flipDuration;
+          this.itemKey = opts.itemKey; // eşleşme için anahtar
+          this.modality = opts.modality; // 'text' | 'image' | 'audio'
+          this.frontKey = opts.frontKey; // texture key
+          this.isFlipped = false;
+          this.isMatched = false;
+
+          const { w, h } = this.size;
+          this.back = scene.add
+            .image(0, 0, opts.backKey)
+            .setDisplaySize(w, h)
+            .setInteractive({ useHandCursor: true });
+          this.front = scene.add
+            .image(0, 0, this.frontKey)
+            .setDisplaySize(w, h)
+            .setVisible(false);
+          this.add([this.back, this.front]);
+
+          this.back.on("pointerdown", () => {
+            if (this.isMatched || this.isFlipped || scene.inputLocked) return;
+            this.flip(true);
+            if (this.modality === "audio") {
+              scene.playItemAudio(this.itemKey);
+            }
+            scene.handleCardFlip(this);
+          });
+        }
+        flip(show) {
+          if (this.isMatched) return;
+          const tar = show ? this.front : this.back;
+          const oth = show ? this.back : this.front;
+          const d = this.flipDuration;
+          this.scene.tweens.add({
+            targets: this,
+            scaleX: 0,
+            duration: d,
+            ease: "Cubic.easeIn",
+            onComplete: () => {
+              oth.setVisible(false);
+              tar.setVisible(true);
+              this.scene.tweens.add({
+                targets: this,
+                scaleX: 1,
+                duration: d,
+                ease: "Cubic.easeOut",
+              });
+            },
+          });
+          this.isFlipped = show;
+        }
+        markMatched() {
+          this.isMatched = true;
+          this.scene.tweens.add({
+            targets: this,
+            scale: 1.06,
+            yoyo: true,
+            duration: 110,
+            repeat: 1,
+          });
+        }
+      }
+
+      // --- Memory Scene (hem desktop hem mobile davranışı) ---
+      class MemoryScene extends Phaser.Scene {
+        constructor() {
+          super("MemoryScene");
+        }
+        init(data) {
+          this.platform = data.platform || "desktop";
+          this.mobileGrids = data.mobileGrids || null;
+          this.cfg = data.cfg;
+          this.items = data.items;
+          this.grid = data.grid;
+          this.spacing = data.spacing;
+          this.flipDuration = data.flipDuration;
+          this.seed = data.seed;
+          this.cards = [];
+          this.opened = [];
+          this.matches = 0;
+          this.moves = 0;
+          this.inputLocked = false;
+          this.elapsed = 0;
+          this.totalPairs = data.totalPairs;
+          this.coverKey = null;
+          this.frontKeys = {};
+          this.soundsMap = new Map();
+          this.lastAudio = { key: null, ts: 0 };
+          this.playStarted = false;
+        }
+        preload() {
+          for (const it of this.items) {
+            if (it.image) {
+              this.load.image("img_" + it.key, it.image);
+            }
+            if (it.audio) {
+              this.load.audio("aud_" + it.key, it.audio);
+            }
+          }
+        }
+        create() {
+          this.inputLocked = true;
+          this.coverKey = "back_" + Math.random().toString(36).slice(2);
+          createCardFaceTexture(this, this.coverKey, 300, 360, {
+            label: this.cfg.cover?.label || "?",
+            color: this.cfg.cover?.color || "#1b1f33",
+          });
+          for (const it of this.items) {
+            createCardFaceTexture(this, "txt_" + it.key, 300, 360, {
+              label: it.text || it.key,
+            });
+            createCardFaceTexture(this, "audico_" + it.key, 300, 360, {
+              icon: "🔊",
+            });
+          }
+          for (const it of this.items) {
+            if (this.cache.audio.exists("aud_" + it.key)) {
+              this.soundsMap.set(it.key, this.sound.add("aud_" + it.key));
+            }
+          }
+
+          // İlk yerleşim ve deste
+          const initialGrid = this.getRuleBasedGrid();
+          this.layoutAndBuildDeck(initialGrid);
+
+          // Timer & UI
+          this.time.addEvent({
+            delay: 1000 / 30,
+            loop: true,
+            callback: () => {
+              if (this.playStarted) {
+                this.elapsed += 1000 / 30;
+                this.updateTopbar();
+              }
+            },
+          });
+          const sceneRef = this;
+          document.getElementById("restartBtn").onclick = () => {
+            try {
+              sceneRef.fadeStopAll(120);
+            } catch (e) {}
+            if (lastConfig) startMemoryGame(lastConfig);
+          };
+          this.input.keyboard?.on("keydown-ESC", () => {
+            try {
+              this.fadeStopAll(120);
+            } catch (e) {}
+            if (lastConfig) startMemoryGame(lastConfig);
+          });
+          this.updateTopbar();
+          this.startIntroShuffle(3000);
+
+          this.scale.on("resize", (gameSize) => {
+            // Phaser'ın kendi resize hook'u: kamera ve layout güncelle
+            this.cameras.resize(gameSize.width, gameSize.height);
+            this.scheduleReflow();
+          });
+          // Orientation explicit dinle (bazı tarayıcılarda resize gecikebiliyor)
+          this.scale.on("orientationchange", () => {
+            this.scheduleReflow();
+          });
+        }
+
+        // --- ortak layout & reflow ---
+        // Reflow'u debounce ederek ani küçülmeleri engelle
+        scheduleReflow() {
+          if (this._reflowTimer) {
+            this._reflowTimer.remove(false);
+          }
+          this._reflowTimer = this.time.delayedCall(140, () => {
+            const next = this.getRuleBasedGrid();
+            this.reflowGrid(next);
+          });
+        }
+        layoutAndBuildDeck(grid) {
+          const W = this.scale.width,
+            H = this.scale.height;
+          const spacing = this.spacing;
+          const { cols, rows } = grid;
+          const pad = Math.round(Math.min(W, H) * 0.02);
+          const left = pad,
+            right = pad,
+            top = 8,
+            bottom = 0; // footer alanı DOM'da zaten düşülüyor
+          const areaW = W - left - right,
+            areaH = H - top - bottom;
+          const cardW = Math.floor((areaW - spacing * (cols - 1)) / cols);
+          const cardH = Math.floor((areaH - spacing * (rows - 1)) / rows);
+          const s = Math.max(24, Math.min(cardW, cardH));
+          const size = { w: s, h: s };
+          const gridW = cols * size.w + (cols - 1) * spacing;
+          const gridH = rows * size.h + (rows - 1) * spacing;
+          // Grid'i kullanılabilir alanın TAM ORTASINA yerleştir (alt taşmayı engeller)
+          const startX = left + (areaW - gridW) / 2 + size.w / 2;
+          const startY = top + (areaH - gridH) / 2 + size.h / 2;
+          this.gridRect = { startX, startY, gridW, gridH };
+
+          if (this.cards.length === 0) {
+            const deck = this.buildDeck();
+            this.deck = deck;
+            deck.forEach((d, i) => {
+              const cx = i % cols,
+                cy = Math.floor(i / cols);
+              const x = startX + cx * (size.w + spacing);
+              const y = startY + cy * (size.h + spacing);
+              const frontKey =
+                d.modality === "text"
+                  ? "txt_" + d.key
+                  : d.modality === "image"
+                  ? "img_" + d.key
+                  : "audico_" + d.key;
+              const c = new Card(this, x, y, {
+                size,
+                flipDuration: this.flipDuration,
+                itemKey: d.key,
+                modality: d.modality,
+                frontKey,
+                backKey: this.coverKey,
+              });
+              this.add.existing(c);
+              this.cards.push(c);
+            });
+          } else {
+            const tlDur = 450;
+            const ease = "Cubic.easeInOut";
+            this.cards.forEach((c, i) => {
+              const cx = i % cols,
+                cy = Math.floor(i / cols);
+              const x = startX + cx * (size.w + spacing);
+              const y = startY + cy * (size.h + spacing);
+              c.back.setDisplaySize(size.w, size.h);
+              c.front.setDisplaySize(size.w, size.h);
+              this.tweens.add({ targets: c, x, y, duration: tlDur, ease });
+            });
+          }
+          this.grid = { cols, rows };
+          this.size = size;
+        }
+
+        reflowGrid(newGrid) {
+          if (!newGrid) return;
+          this.inputLocked = true;
+          this.layoutAndBuildDeck(newGrid);
+          this.time.delayedCall(480, () => {
+            this.inputLocked = false;
+          });
+        }
+
+        // --- başlangıç shuffle ---
+        startIntroShuffle(duration = 3000) {
+          const { startX, startY, gridW, gridH } = this.gridRect;
+          const centerX = startX + gridW / 2;
+          const centerY = startY + gridH / 2;
+          let finished = 0;
+          this.cards.forEach((c) => {
+            c.tx = c.x;
+            c.ty = c.y;
+            const delay = Phaser.Math.Between(0, 200);
+            const scatterX = startX + Phaser.Math.FloatBetween(0, gridW);
+            const scatterY = startY + Phaser.Math.FloatBetween(0, gridH);
+            this.tweens.add({
+              targets: c,
+              x: centerX + Phaser.Math.Between(-80, 80),
+              y: centerY + Phaser.Math.Between(-60, 60),
+              angle: Phaser.Math.Between(-25, 25),
+              scale: 0.96,
+              duration: 900,
+              ease: "Cubic.easeInOut",
+              delay,
+              onComplete: () => {
+                this.tweens.add({
+                  targets: c,
+                  x: scatterX,
+                  y: scatterY,
+                  angle: Phaser.Math.Between(-15, 15),
+                  scale: 0.94,
+                  duration: 900,
+                  ease: "Quad.easeInOut",
+                  onComplete: () => {
+                    this.tweens.add({
+                      targets: c,
+                      x: c.tx,
+                      y: c.ty,
+                      angle: 0,
+                      scale: 1,
+                      duration: 900,
+                      ease: "Cubic.easeOut",
+                      onComplete: () => {
+                        finished++;
+                        if (finished === this.cards.length) {
+                          this.inputLocked = false;
+                          this.playStarted = true;
+                        }
+                      },
+                    });
+                  },
+                });
+              },
+            });
+          });
+        }
+
+        buildDeck() {
+          const deck = [];
+          const allowed = new Set(["text", "image", "audio"]);
+          for (const it of this.items) {
+            let pair = Array.isArray(it.modalities)
+              ? it.modalities.slice(0, 2)
+              : parseMatch(this.cfg.match);
+            if (
+              !pair ||
+              pair.length !== 2 ||
+              pair.some((m) => !allowed.has(m))
+            ) {
+              pair = parseMatch(this.cfg.match);
+            }
+            deck.push({ key: it.key, modality: pair[0] });
+            deck.push({ key: it.key, modality: pair[1] });
+          }
+          return shuffle(deck, this.seed);
+        }
+
+        handleCardFlip(card) {
+          this.opened.push(card);
+          if (this.opened.length < 2) return;
+          this.inputLocked = true;
+          this.moves++;
+          const [a, b] = this.opened;
+          const isMatch = a.itemKey === b.itemKey && a.modality !== b.modality;
+          if (isMatch) {
+            const includesAudio =
+              a.modality === "audio" || b.modality === "audio";
+            if (includesAudio) {
+              const keepKey =
+                this.lastAudio && this.lastAudio.key
+                  ? this.lastAudio.key
+                  : null;
+              this.fadeStopAllExcept(keepKey, 120);
+              if (keepKey) {
+                this.time.delayedCall(600, () =>
+                  this.fadeStopKey(keepKey, 180)
+                );
+              } else {
+                this.fadeStopAll(120);
+              }
+            } else {
+              this.fadeStopAll(120);
+            }
+            a.markMatched();
+            b.markMatched();
+            this.matches++;
+            this.time.delayedCall(180, () => {
+              this.opened.length = 0;
+              this.inputLocked = false;
+              this.updateTopbar();
+              if (this.matches >= this.totalPairs) {
+                this.endGame();
+              }
+            });
+          } else {
+            this.fadeStopAll();
+            this.time.delayedCall(450, () => {
+              a.flip(false);
+              b.flip(false);
+            });
+            this.time.delayedCall(450 + this.flipDuration, () => {
+              this.opened.length = 0;
+              this.inputLocked = false;
+              this.updateTopbar();
+            });
+          }
+          this.updateTopbar();
+        }
+
+        playItemAudio(key) {
+          const s = this.soundsMap.get(key);
+          if (!s) return;
+          this.fadeStopAllExcept(key, 120);
+          try {
+            s.setVolume(1);
+            s.stop();
+            s.play();
+            this.lastAudio = { key, ts: this.time.now };
+          } catch (e) {}
+        }
+
+        fadeStopAll(ms = 180) {
+          try {
+            this.soundsMap.forEach((s) => {
+              if (s && s.isPlaying) {
+                const startVol = s.volume ?? 1;
+                this.tweens.addCounter({
+                  from: startVol,
+                  to: 0,
+                  duration: ms,
+                  ease: "Linear",
+                  onUpdate: (tw, val) => {
+                    try {
+                      s.setVolume(val.value);
+                    } catch (e) {}
+                  },
+                  onComplete: () => {
+                    try {
+                      s.stop();
+                      s.setVolume(startVol);
+                    } catch (e) {}
+                  },
+                });
+              }
+            });
+          } catch (e) {}
+        }
+        fadeStopAllExcept(exceptKey, ms = 180) {
+          try {
+            this.soundsMap.forEach((s, k) => {
+              if (k === exceptKey) return;
+              if (s && s.isPlaying) {
+                const startVol = s.volume ?? 1;
+                this.tweens.addCounter({
+                  from: startVol,
+                  to: 0,
+                  duration: ms,
+                  ease: "Linear",
+                  onUpdate: (tw, val) => {
+                    try {
+                      s.setVolume(val.value);
+                    } catch (e) {}
+                  },
+                  onComplete: () => {
+                    try {
+                      s.stop();
+                      s.setVolume(startVol);
+                    } catch (e) {}
+                  },
+                });
+              }
+            });
+          } catch (e) {}
+        }
+        fadeStopKey(key, ms = 180) {
+          try {
+            const s = this.soundsMap.get(key);
+            if (!s || !s.isPlaying) return;
+            const startVol = s.volume ?? 1;
+            this.tweens.addCounter({
+              from: startVol,
+              to: 0,
+              duration: ms,
+              ease: "Linear",
+              onUpdate: (tw, val) => {
+                try {
+                  s.setVolume(val.value);
+                } catch (e) {}
+              },
+              onComplete: () => {
+                try {
+                  s.stop();
+                  s.setVolume(startVol);
+                } catch (e) {}
+              },
+            });
+          } catch (e) {}
+        }
+
+        endGame() {
+          this.tweens.add({
+            targets: this.cards,
+            angle: { from: 0, to: 360 },
+            duration: 800,
+            ease: "Cubic.easeInOut",
+          });
+        }
+
+        updateTopbar() {
+          const mm = (t) => String(Math.floor(t / 60000)).padStart(2, "0");
+          const ss = (t) =>
+            String(Math.floor((t % 60000) / 1000)).padStart(2, "0");
+          const stats = document.getElementById("statsPill");
+          stats.textContent = `Hamle: ${this.moves} · Süre: ${mm(
+            this.elapsed
+          )}:${ss(this.elapsed)} · Eşleşme: ${this.matches}/${this.totalPairs}`;
+          const titleEl = document.getElementById("titlePill");
+          titleEl.textContent = this.cfg.title || "Memory";
+        }
+
+        // helpers for mobile
+        isPortrait() {
+          if (window.screen?.orientation?.type) {
+            return window.screen.orientation.type.startsWith("portrait");
+          }
+          if (window.matchMedia) {
+            const mq = window.matchMedia("(orientation: portrait)");
+            if (mq && typeof mq.matches === "boolean") return mq.matches;
+          }
+          return window.innerHeight >= window.innerWidth;
+        }
+        getRuleBasedGrid() {
+          const totalItems = this.items.length;
+          const totalCards = totalItems * 2;
+          if (totalItems <= 18) {
+            if (this.platform === "desktop") {
+              const rows = 2;
+              const cols = Math.ceil(totalCards / rows);
+              return { cols, rows };
+            } else {
+              // mobile
+              if (this.isPortrait()) {
+                const cols = 2;
+                const rows = Math.ceil(totalCards / cols);
+                return { cols, rows };
+              } else {
+                const rows = 2;
+                const cols = Math.ceil(totalCards / rows);
+                return { cols, rows };
+              }
+            }
+          }
+          // >18 item → otomatik grid
+          return calcAutoGrid(totalCards);
+        }
+      }
+
+      // --- Boot sahnesi: cihaza göre MemoryScene’i uygun gridlerle başlat ---
+      class BootScene extends Phaser.Scene {
+        constructor() {
+          super("BootScene");
+        }
+        create(prepared) {
+          const dev = this.sys.game.device;
+          const isMobile = dev.os.android || dev.os.iOS;
+          const mobileGrids = prepared.cfg.mobile || null;
+          if (isMobile) {
+            this.scene.start("MobileState", { ...prepared, mobileGrids });
+          } else {
+            this.scene.start("DesktopState", { ...prepared });
+          }
+        }
+      }
+
+      class MobileState extends Phaser.Scene {
+        constructor() {
+          super("MobileState");
+        }
+        create(prepared) {
+          this.scene.start("MemoryScene", { ...prepared, platform: "mobile" });
+        }
+      }
+
+      class DesktopState extends Phaser.Scene {
+        constructor() {
+          super("DesktopState");
+        }
+        create(prepared) {
+          this.scene.start("MemoryScene", { ...prepared, platform: "desktop" });
+        }
+      }
+
+      function buildPhaser(cfg, prepared) {
+        updateGameContainerSafeArea();
+        bindSafeAreaObservers();
+        const gameEl = document.getElementById("game");
+        const w = Math.max(1, gameEl?.clientWidth || window.innerWidth);
+        const h = Math.max(1, gameEl?.clientHeight || window.innerHeight);
+
+        phaserGame = new Phaser.Game({
+          type: Phaser.AUTO,
+          parent: "game",
+          backgroundColor: "#0f1220",
+          width: w,
+          height: h,
+          scale: {
+            mode: Phaser.Scale.RESIZE,
+            autoCenter: Phaser.Scale.CENTER_BOTH,
+          },
+          fps: { target: 60 },
+          audio: { disableWebAudio: false },
+          scene: [BootScene, MobileState, DesktopState, MemoryScene],
+        });
+
+        phaserGame.scene.start("BootScene", prepared);
+
+        // İlk karelerden sonra güvenli alanı tekrar ölç ve Phaser'ı nihai boyuta al
+        setTimeout(() => {
+          const el = document.getElementById("game");
+          updateGameContainerSafeArea();
+          if (phaserGame && el) {
+            phaserGame.scale.resize(el.clientWidth, el.clientHeight);
+          }
+        }, 50);
+        setTimeout(() => {
+          const el = document.getElementById("game");
+          updateGameContainerSafeArea();
+          if (phaserGame && el) {
+            phaserGame.scale.resize(el.clientWidth, el.clientHeight);
+          }
+        }, 300);
+        setTimeout(() => {
+          const el = document.getElementById("game");
+          updateGameContainerSafeArea();
+          if (phaserGame && el) {
+            phaserGame.scale.resize(el.clientWidth, el.clientHeight);
+          }
+        }, 800);
+      }
+
+      function prepareFromJSON(json) {
+        const cfg = { ...DEFAULTS, ...json };
+        const items = Array.isArray(cfg.items) ? [...cfg.items] : [];
+        const totalCards = items.length * 2;
+        if (totalCards < 2) throw new Error("Yetersiz kart verisi.");
+        const grid = null; // JSON'daki grid'i yok sayıyoruz; sahne auto-grid hesaplayacak
+        const prepared = {
+          cfg,
+          items,
+          grid,
+          totalPairs: totalCards / 2,
+          spacing: clamp(cfg.spacing ?? DEFAULTS.spacing, 4, 48),
+          flipDuration: clamp(
+            cfg.flipDuration ?? DEFAULTS.flipDuration,
+            80,
+            600
+          ),
+          seed: (json && json.seed) || Date.now() % 2147483647,
+        };
+        buildPhaser(cfg, prepared);
+      }
+
+      window.startMemoryGame = function (json) {
+        if (phaserGame) {
+          phaserGame.destroy(true);
+          phaserGame = null;
+        }
+        lastConfig = json;
+        prepareFromJSON(json || {});
+      };
+      window.startMemoryGameFromUrl = startMemoryGameFromUrl;
+
+      // Sayfa açılır açılmaz gameData.json'u otomatik yüklemeyi dene
+      window.addEventListener("load", () => {
+        startMemoryGameFromUrl("gameData.json").catch(() => {
+          console.warn(
+            "gameData.json bulunamadı veya yüklenemedi. Manuel olarak startMemoryGameFromUrl(...) çağırabilirsiniz."
+          );
+        });
+      });
+
+      // Demo kapalı. İstersen aktif et:
+      // startMemoryGame({ title:'Demo – Text/Audio', match:'text-audio', grid:{cols:4,rows:3}, items:[{key:'cat', text:'Kedi', audio:'audio/cat.mp3'},{key:'dog', text:'Köpek', audio:'audio/dog.mp3'}] });
+    </script>
+  </body>
+</html>

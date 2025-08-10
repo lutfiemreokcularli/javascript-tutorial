@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Phaser 3 – Dinamik Memory Card Game</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: #0f1220;
+      }
+      #game {
+        width: 100%;
+        height: 100%;
+      }
+      .overlay-ui {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        color: #e6e8f0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+          "Helvetica Neue", Arial;
+      }
+      .topbar {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 12px;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.35),
+          rgba(0, 0, 0, 0)
+        );
+      }
+      .pill {
+        pointer-events: auto;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 8px 12px;
+        border-radius: 999px;
+        backdrop-filter: blur(6px);
+        font-weight: 600;
+      }
+      .btn {
+        cursor: pointer;
+        transition: transform 0.08s ease;
+      }
+      .btn:active {
+        transform: translateY(1px);
+      }
+      .footer {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0.6;
+        font-size: 12px;
+      }
+      .hidden {
+        display: none;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.0/dist/phaser.js"></script>
+  </head>
+  <body>
+    <div id="game"></div>
+    <div class="overlay-ui">
+      <div class="topbar">
+        <div id="titlePill" class="pill">Memory</div>
+        <div id="statsPill" class="pill">
+          Hamle: 0 · Süre: 00:00 · Eşleşme: 0
+        </div>
+        <div id="restartBtn" class="pill btn">Yeniden Başlat</div>
+      </div>
+      <div id="footer" class="footer">
+        JSON ile dinamik: <code>startMemoryGame(json)</code>
+      </div>
+    </div>
+
+    <script>
+      (() => {
+        /**
+         * KULLANIM
+         * window.startMemoryGame({
+         *   title: "Hayvanlar",
+         *   mode: "duplicate", // "duplicate" = her öğeyi çiftler; "pairs" = explicit eşleşme listesi
+         *   cover: { color: "#1c2239", label: "?" }, // kartın arka yüzü (ops.)
+         *   items: [ // Öğe sayısı * 2 toplam kart (duplicate modunda)
+         *     { key: "cat", label: "Kedi", image: "https://.../cat.png", color: "#5b8aff" },
+         *     { key: "dog", label: "Köpek", image: "https://.../dog.png", color: "#ff7a80" },
+         *     // image boşsa label + color ile otomatik doku oluşturulur
+         *   ],
+         *   // mode === "pairs" ise:
+         *   // pairs: [["istanbul","constantinople"], ["ankara","angora"], ...]
+         *   grid: { cols: 4, rows: 3 }, // opsiyonel; verilmezse otomatik
+         *   spacing: 14,                  // kartlar arası boşluk (px)
+         *   flipDuration: 180             // ms
+         * });
+         */
+
+        const DEFAULTS = {
+          title: "Memory",
+          mode: "duplicate",
+          grid: null,
+          spacing: 16,
+          flipDuration: 180,
+          cover: { color: "#1b1f33", label: "?" },
+        };
+
+        let userConfig = null;
+        let phaserGame = null;
+
+        function clamp(v, a, b) {
+          return Math.max(a, Math.min(b, v));
+        }
+
+        function calcAutoGrid(total) {
+          // Yaklaşık kare ızgara: kökN etrafında, satır*kol >= total
+          const cols = Math.ceil(Math.sqrt(total));
+          const rows = Math.ceil(total / cols);
+          return { cols, rows };
+        }
+
+        // Basit RNG seed'li karıştırma (Fisher-Yates)
+        function shuffle(array, seed = Date.now() % 2147483647) {
+          function rand() {
+            seed = (seed * 48271) % 2147483647;
+            return seed / 2147483647;
+          }
+          for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(rand() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+          }
+          return array;
+        }
+
+        // Phaser "dynamic texture" üretimi (label + renkli arka plan)
+        function createCardFaceTexture(
+          scene,
+          key,
+          w,
+          h,
+          label,
+          color,
+          textColor = "#ffffff"
+        ) {
+          const gfx = scene.make.graphics({ x: 0, y: 0, add: false });
+          gfx.fillStyle(Phaser.Display.Color.HexStringToColor(color).color, 1);
+          gfx.fillRoundedRect(0, 0, w, h, Math.min(w, h) * 0.08);
+          gfx.lineStyle(2, 0xffffff, 0.12);
+          gfx.strokeRoundedRect(1, 1, w - 2, h - 2, Math.min(w, h) * 0.08);
+
+          // Label
+          const rt = scene.add.renderTexture(0, 0, w, h).setVisible(false);
+          rt.draw(gfx);
+
+          const txt = scene.add
+            .text(0, 0, label || "", {
+              fontFamily:
+                'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial',
+              fontSize: Math.round(Math.min(w, h) * 0.18) + "px",
+              color: textColor,
+              fontStyle: "700",
+              align: "center",
+            })
+            .setDepth(1000);
+          txt.setWordWrapWidth(w * 0.8, true);
+          txt.setOrigin(0.5);
+          txt.setPosition(w / 2, h / 2);
+
+          rt.draw(txt, { x: txt.x - txt.width / 2, y: txt.y - txt.height / 2 });
+          txt.destroy();
+          gfx.destroy();
+
+          rt.saveTexture(key);
+          rt.destroy();
+        }
+
+        class Card extends Phaser.GameObjects.Container {
+          constructor(scene, x, y, cardData, size, flipDuration, textures) {
+            super(scene, x, y);
+            this.scene = scene;
+            this.cardData = cardData; // {key, pairKey, label, image}
+            this.size = size;
+            this.flipDuration = flipDuration;
+            this.isFlipped = false;
+            this.isMatched = false;
+
+            const { w, h } = size; // w=h kare ama responsive için bırakıldı
+
+            // Back (kapak)
+            this.back = scene.add
+              .image(0, 0, textures.back)
+              .setDisplaySize(w, h)
+              .setInteractive({ useHandCursor: true });
+            // Front
+            this.front = scene.add
+              .image(0, 0, textures.frontKey)
+              .setDisplaySize(w, h)
+              .setVisible(false);
+
+            this.add([this.back, this.front]);
+
+            this.back.on("pointerdown", () => {
+              if (this.isMatched || this.isFlipped || scene.inputLocked) return;
+              this.flip(true);
+              scene.handleCardFlip(this);
+            });
+          }
+
+          setFrontTexture(key) {
+            this.front.setTexture(key);
+          }
+
+          flip(showFront) {
+            if (this.isMatched) return;
+            const target = showFront ? this.front : this.back;
+            const other = showFront ? this.back : this.front;
+            const dur = this.flipDuration;
+            this.scene.tweens.add({
+              targets: this,
+              scaleX: 0,
+              duration: dur,
+              ease: "Cubic.easeIn",
+              onComplete: () => {
+                other.setVisible(false);
+                target.setVisible(true);
+                this.scene.tweens.add({
+                  targets: this,
+                  scaleX: 1,
+                  duration: dur,
+                  ease: "Cubic.easeOut",
+                });
+              },
+            });
+            this.isFlipped = showFront;
+          }
+
+          markMatched() {
+            this.isMatched = true;
+            this.scene.tweens.add({
+              targets: this,
+              scale: 1.06,
+              yoyo: true,
+              duration: 110,
+              repeat: 1,
+            });
+          }
+        }
+
+        class MemoryScene extends Phaser.Scene {
+          constructor() {
+            super("MemoryScene");
+          }
+
+          init(data) {
+            this.cfg = data.cfg;
+            this.items = data.items; // [{key,label,image,color}]
+            this.cards = []; // Card instances
+            this.opened = []; // currently opened (max 2)
+            this.matches = 0;
+            this.moves = 0;
+            this.inputLocked = false;
+            this.elapsed = 0; // ms
+            this.totalPairs = data.totalPairs;
+            this.grid = data.grid; // {cols, rows}
+            this.spacing = data.spacing;
+            this.flipDuration = data.flipDuration;
+            this.seed = data.seed;
+            // Dinamik oluşturulacak
+            this.coverKey = null;
+            this.frontKeys = {}; // map: key -> texture key
+          }
+
+          preload() {
+            // Görsel URL'leri için loader
+            this.load.setCORS("anonymous");
+
+            // Kullanıcı item'ları için image varsa yükle
+            for (const it of this.items) {
+              if (it.image) {
+                // aynı image birden çok kez kullanılabilir => key'i stabil tut
+                const key = `img_${it.key}`;
+                if (!this.textures.exists(key)) {
+                  this.load.image(key, it.image);
+                }
+              }
+            }
+          }
+
+          create() {
+            const W = this.scale.width,
+              H = this.scale.height;
+
+            // Önce kapak ve ön yüz dokularını hazırla
+            // Kapak
+            this.coverKey = `back_${Math.random().toString(36).slice(2)}`;
+            createCardFaceTexture(
+              this,
+              this.coverKey,
+              300,
+              360,
+              this.cfg.cover?.label ?? "?",
+              this.cfg.cover?.color ?? "#1b1f33"
+            );
+
+            // Front yüzleri
+            for (const it of this.items) {
+              const fKey = `front_${it.key}`;
+              if (!it.image) {
+                createCardFaceTexture(
+                  this,
+                  fKey,
+                  300,
+                  360,
+                  it.label || it.key,
+                  it.color || "#2a345c"
+                );
+                this.frontKeys[it.key] = fKey;
+              } else {
+                // preload'da yüklendi
+                this.frontKeys[it.key] = `img_${it.key}`;
+              }
+            }
+
+            // Zemin
+            const bg = this.add.shader
+              ? null
+              : this.add.rectangle(W / 2, H / 2, W, H, 0x0e132b).setDepth(-50);
+
+            // Oyun alanı boyutu ve kart ölçüsü
+            const maxAreaW = Math.min(W * 0.94, 1400);
+            const maxAreaH = Math.min(H * 0.78, 1000);
+            const { cols, rows } = this.grid;
+            const spacing = this.spacing;
+
+            const cardW = Math.floor((maxAreaW - spacing * (cols - 1)) / cols);
+            const cardH = Math.floor((maxAreaH - spacing * (rows - 1)) / rows);
+            const size = {
+              w: Math.min(cardW, cardH),
+              h: Math.min(cardW, cardH),
+            };
+
+            // Kart destesi verisini üret
+            const deck = this.buildDeck(); // [{key, pairKey, frontKey}]
+
+            // Konumlandırma başlangıç noktası
+            const gridW = cols * size.w + (cols - 1) * spacing;
+            const gridH = rows * size.h + (rows - 1) * spacing;
+            const startX = (W - gridW) / 2 + size.w / 2;
+            const startY = (H - gridH) / 2 + size.h / 2 + 24; // üst barda yer kalsın
+
+            // Kartları oluştur
+            deck.forEach((d, i) => {
+              const cx = i % cols;
+              const cy = Math.floor(i / cols);
+              const x = startX + cx * (size.w + spacing);
+              const y = startY + cy * (size.h + spacing);
+              const c = new Card(this, x, y, d, size, this.flipDuration, {
+                back: this.coverKey,
+                frontKey: d.frontKey,
+              });
+              this.add.existing(c);
+              this.cards.push(c);
+            });
+
+            // Üst çubuk UI güncelleme
+            this.updateTopbar();
+
+            // Zamanlayıcı
+            this.time.addEvent({
+              delay: 1000 / 30,
+              loop: true,
+              callback: () => {
+                this.elapsed += 1000 / 30;
+                this.updateTopbar();
+              },
+            });
+
+            // Yeniden başlat butonu
+            document.getElementById("restartBtn").onclick = () => {
+              restartGame();
+            };
+
+            // Escape ile yeniden başlat
+            this.input.keyboard?.on("keydown-ESC", () => restartGame());
+
+            // Resize dinle
+            this.scale.on("resize", () => {
+              /* Phaser FIT ölçeklemesi yeterli */
+            });
+          }
+
+          buildDeck() {
+            const deck = [];
+            const mode = this.cfg.mode;
+            if (mode === "pairs" && Array.isArray(this.cfg.pairs)) {
+              for (const [a, b] of this.cfg.pairs) {
+                const A = this.items.find((x) => x.key === a);
+                const B = this.items.find((x) => x.key === b);
+                if (!A || !B) continue;
+                deck.push({
+                  key: `${A.key}_1`,
+                  pairKey: `${A.key}|${B.key}`,
+                  frontKey: this.frontKeys[A.key],
+                });
+                deck.push({
+                  key: `${B.key}_2`,
+                  pairKey: `${A.key}|${B.key}`,
+                  frontKey: this.frontKeys[B.key],
+                });
+              }
+            } else {
+              // duplicate: her item'dan iki kopya
+              for (const it of this.items) {
+                deck.push({
+                  key: `${it.key}_a`,
+                  pairKey: it.key,
+                  frontKey: this.frontKeys[it.key],
+                });
+                deck.push({
+                  key: `${it.key}_b`,
+                  pairKey: it.key,
+                  frontKey: this.frontKeys[it.key],
+                });
+              }
+            }
+            shuffle(deck, this.seed);
+            return deck;
+          }
+
+          handleCardFlip(card) {
+            this.opened.push(card);
+            if (this.opened.length < 2) return;
+
+            this.inputLocked = true;
+            this.moves++;
+            const [c1, c2] = this.opened;
+            const isMatch = c1.cardData.pairKey === c2.cardData.pairKey;
+
+            if (isMatch) {
+              c1.markMatched();
+              c2.markMatched();
+              this.matches++;
+              this.time.delayedCall(180, () => {
+                this.opened.length = 0;
+                this.inputLocked = false;
+                this.updateTopbar();
+                if (this.matches >= this.totalPairs) {
+                  this.endGame();
+                }
+              });
+            } else {
+              this.time.delayedCall(450, () => {
+                c1.flip(false);
+                c2.flip(false);
+              });
+              this.time.delayedCall(450 + this.flipDuration, () => {
+                this.opened.length = 0;
+                this.inputLocked = false;
+                this.updateTopbar();
+              });
+            }
+            this.updateTopbar();
+          }
+
+          endGame() {
+            // Basit final animasyonu
+            this.tweens.add({
+              targets: this.cards,
+              angle: { from: 0, to: 360 },
+              duration: 800,
+              ease: "Cubic.easeInOut",
+            });
+          }
+
+          updateTopbar() {
+            const mm = (t) => String(Math.floor(t / 60000)).padStart(2, "0");
+            const ss = (t) =>
+              String(Math.floor((t % 60000) / 1000)).padStart(2, "0");
+            const stats = document.getElementById("statsPill");
+            stats.textContent = `Hamle: ${this.moves} · Süre: ${mm(
+              this.elapsed
+            )}:${ss(this.elapsed)} · Eşleşme: ${this.matches}/${
+              this.totalPairs
+            }`;
+            const titleEl = document.getElementById("titlePill");
+            titleEl.textContent = this.cfg.title || "Memory";
+          }
+        }
+
+        function buildPhaser(cfg, prepared) {
+          const config = {
+            type: Phaser.AUTO,
+            parent: "game",
+            backgroundColor: "#0f1220",
+            scale: {
+              mode: Phaser.Scale.FIT,
+              autoCenter: Phaser.Scale.CENTER_BOTH,
+              width: 1280,
+              height: 720,
+            },
+            fps: { target: 60 },
+            scene: [MemoryScene],
+            render: { pixelArt: false, roundPixels: false },
+          };
+
+          phaserGame = new Phaser.Game(config);
+          phaserGame.scene.start("MemoryScene", prepared);
+        }
+
+        function prepareFromJSON(json) {
+          const cfg = { ...DEFAULTS, ...json };
+          const seed = (json && json.seed) || Date.now() % 2147483647;
+
+          // Items doğrula
+          let items = Array.isArray(cfg.items) ? [...cfg.items] : [];
+
+          if (cfg.mode === "pairs" && Array.isArray(cfg.pairs)) {
+            const needed = new Set(cfg.pairs.flat());
+            items = items.filter((it) => needed.has(it.key));
+          }
+
+          const totalCards =
+            cfg.mode === "pairs" && Array.isArray(cfg.pairs)
+              ? cfg.pairs.length * 2
+              : items.length * 2;
+          if (totalCards < 2) throw new Error("Yetersiz kart verisi.");
+
+          const grid =
+            cfg.grid && cfg.grid.cols && cfg.grid.rows
+              ? cfg.grid
+              : calcAutoGrid(totalCards);
+
+          // Hazır veri: front/back dokuları sahnenin create()'inde üretilecek
+          const prepared = {
+            cfg,
+            items,
+            grid,
+            totalPairs: totalCards / 2,
+            spacing: clamp(cfg.spacing ?? DEFAULTS.spacing, 4, 48),
+            flipDuration: clamp(
+              cfg.flipDuration ?? DEFAULTS.flipDuration,
+              80,
+              600
+            ),
+            seed,
+          };
+
+          buildPhaser(cfg, prepared);
+        }
+
+        // Dış API
+        window.startMemoryGame = function (json) {
+          try {
+            // Varsa eski oyunu kapat
+            if (phaserGame) {
+              phaserGame.destroy(true);
+              phaserGame = null;
+            }
+            prepareFromJSON(json || {});
+          } catch (e) {
+            console.error(e);
+            alert("Hata: " + e.message);
+          }
+        };
+
+        // Hızlı denemek için mini örnek (istemezseniz yorumlayın)
+        const demo = {
+          title: "Hayvanlar (Demo)",
+          mode: "duplicate",
+          cover: { color: "#171d34", label: "?" },
+          spacing: 16,
+          items: [
+            { key: "cat", label: "Kedi", color: "#4f6df5" },
+            { key: "dog", label: "Köpek", color: "#f56d6d" },
+            { key: "fox", label: "Tilki", color: "#f59b48" },
+            { key: "owl", label: "Baykuş", color: "#7bd59a" },
+            { key: "lion", label: "Aslan", color: "#d58ff2" },
+            { key: "frog", label: "Kurbağa", color: "#67d5c2" },
+          ],
+        };
+        // Otomatik başlat (isterseniz kaldırın)
+        startMemoryGame(demo);
+
+        // Dışarıdan programatik restart
+        window.restartGame = function () {
+          if (userConfig) startMemoryGame(userConfig);
+          else startMemoryGame(demo);
+        };
+
+        // En son verilen config'i sakla (restart için). startMemoryGame içinde set edelim
+        const _origStart = window.startMemoryGame;
+        window.startMemoryGame = function (json) {
+          userConfig = json;
+          _origStart(json);
+        };
+      })();
+    </script>
+  </body>
+</html>
