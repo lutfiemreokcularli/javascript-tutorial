@@ -1,0 +1,53 @@
+{
+  "cover": "imgs/cover.png",
+  "pages": [
+    {
+      "page1": {
+        "type": "image",
+        "content": "imgs/dog.png",
+        "sound": "sounds/dog.mp3"
+      },
+      "page2": {
+        "type": "text",
+        "content": "Merhaba <b>dünya</b>! <br>",
+        "sound": "sounds/chicken.mp3"
+      }
+    },
+    {
+      "page1": {
+        "type": "image",
+        "content": "imgs/chicken.png",
+        "sound": "sounds/chicken.mp3"
+      },
+      "page2": {
+        "type": "text",
+        "content": "Merhaba <b>hasan</b>! <br>",
+        "sound": "sounds/bird.mp3"
+      }
+    },
+    {
+      "page1": {
+        "type": "image",
+        "content": "imgs/bird.png",
+        "sound": "sounds/bird.mp3"
+      },
+      "page2": {
+        "type": "text",
+        "content": "Merhaba <b>emre</b>! <br>",
+        "sound": "sounds/goat.mp3"
+      }
+    },
+    {
+      "page1": {
+        "type": "image",
+        "content": "imgs/goat.png",
+        "sound": "sounds/goat.mp3"
+      },
+      "page2": {
+        "type": "text",
+        "content": "Merhaba <b>mahmut</b>! <br> Renk <color=#ff0066>pembe!</color>Altı çizili <u>kelime</u>. Phaser 2 ile JSON’dan gelen <b><i>stil</i></b> etiketleri. Boyut <size=28>kocaman!</size>",
+        "sound": "sounds/dog.mp3"
+      }
+    }
+  ]
+}

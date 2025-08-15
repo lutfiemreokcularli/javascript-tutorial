@@ -1,0 +1,29 @@
+{
+  "cover": "http://cdn.minticity.com/cover.png",
+  "pages": [
+    {
+      "page1": {
+        "type": "image",
+        "content": "http://cdn.minticity.com/image1.png",
+        "sound": "http://cdn.minticity.com/page1.mp3"
+      },
+      "page2": {
+        "type": "text",
+        "content": "Lorem Ipsum",
+        "sound": "http://cdn.minticity.com/page2.mp3"
+      }
+    },
+    {
+      "page1": {
+        "type": "image",
+        "content": "http://cdn.minticity.com/image1.png",
+        "sound": "http://cdn.minticity.com/page1.mp3"
+      },
+      "page2": {
+        "type": "text",
+        "content": "Lorem Ipsum",
+        "sound": "http://cdn.minticity.com/page2.mp3"
+      }
+    }
+  ]
+}
