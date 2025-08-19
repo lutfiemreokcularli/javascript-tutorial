@@ -3,27 +3,40 @@ let x, y;
 var _this;
 var Seite1 = {
   Assets: {
-    baseURL: "assets/",
+    baseURL: "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/",
     mp3Player: true,
     defaultItems: true,
     image: {
-      book: "ui/book3.png",
-      prev: "ui/prev.png",
-      next: "ui/next.png",
-      sico: "ui/sound.png",
+      book: "andreas-hat-geburtstag/book3.png",
+      prev: "andreas-hat-geburtstag/prev.png",
+      next: "andreas-hat-geburtstag/next.png",
+      sico: "andreas-hat-geburtstag/sound.png",
     },
     audio: {},
     text: {
-      content: "data/content.json",
+      content:
+        "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/andreas-hat-geburtstag/content.json",
     },
   },
   config: Minti.mintibuchConfig1,
 };
 var ASSETS = {
-  book: { key: "book", url: "assets/ui/book3.png" },
-  prev: { key: "prev", url: "assets/ui/prev.png" },
-  next: { key: "next", url: "assets/ui/next.png" },
-  sico: { key: "sico", url: "assets/ui/sound.png" },
+  book: {
+    key: "book",
+    url: "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/andreas-hat-geburtstag/book3.png",
+  },
+  prev: {
+    key: "prev",
+    url: "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/andreas-hat-geburtstag/prev.png",
+  },
+  next: {
+    key: "next",
+    url: "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/andreas-hat-geburtstag/next.png",
+  },
+  sico: {
+    key: "sico",
+    url: "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/andreas-hat-geburtstag/sound.png",
+  },
 };
 var S = {
   data: null,
@@ -326,7 +339,7 @@ function renderSide(side, item, rect) {
       {
         x: rect.x + pad,
         y: rect.y + pad,
-        maxWidth: 500,
+        maxWidth: 100,
         lineSpacing: 8,
         parent: group,
         baseStyle: {
@@ -339,6 +352,15 @@ function renderSide(side, item, rect) {
       },
       item.content
     );
+    var sndKey = item.sound ? getSndKey(item.sound) : null;
+    var mp3Player = new Minti.PhaserHelper.MP3Player(_this, "default", sndKey, {
+      autoPlay: false,
+      volume: 1,
+      width: 500,
+      x: rect.x + 40,
+      y: rect.y + rect.height - 46,
+    });
+    group.add(mp3Player);
     /* var txt = core.add.text(
       rect.x + pad,
       rect.y + pad,
@@ -348,9 +370,16 @@ function renderSide(side, item, rect) {
     );
     txt.wordWrap = true;
     txt.wordWrapWidth = rect.width - pad * 2; */
+    // Sound her zaman altta
   } else if (item.type === "image") {
     var imgKey = getImgKey(item.content);
-    var spr = core.add.sprite(rect.centerX, rect.y + pad, imgKey, null, group);
+    var spr = core.add.sprite(
+      rect.centerX,
+      rect.y + pad + 50,
+      imgKey,
+      null,
+      group
+    );
     spr.anchor.set(0.5, 0);
     var maxW = rect.width - pad * 2,
       maxH = rect.height * 0.72; // üstte görsel alanı
@@ -358,16 +387,6 @@ function renderSide(side, item, rect) {
     spr.scale.set(s);
   }
 
-  // Sound her zaman altta
-  var sndKey = item.sound ? getSndKey(item.sound) : null;
-  var mp3Player = new Minti.PhaserHelper.MP3Player(_this, "default", sndKey, {
-    autoPlay: false,
-    volume: 1,
-    width: 500,
-    x: rect.x + 40,
-    y: rect.y + rect.height - 46,
-  });
-  group.add(mp3Player);
   /* var btn = core.add.button(
     rect.x + rect.width / 2,
     rect.y + rect.height - 46,

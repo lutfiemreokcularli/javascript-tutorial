@@ -1,52 +1,28 @@
 {
-  "cover": "imgs/cover.png",
+  "cover": "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/andreas-hat-geburtstag/cover.png",
   "pages": [
     {
       "page1": {
-        "type": "image",
-        "content": "imgs/dog.png",
-        "sound": "sounds/dog.mp3"
+        "type": "text",
+        "content": "<p>Andreas hat Geburtstag</p> <p>Heute ist ein wundersch&ouml;ner Samstagmorgen.&nbsp;</p> <p>Es ist Fr&uuml;hling und die Sonne scheint.</p> <p>Es ist warm und Andreas m&ouml;chte mit seinen</p>Freunden<p>in den Zoo gehen, denn er hat Geburtstag.</p> <p>Er ist schon sehr aufgeregt und neugierig</p><p> auf die vielen Geschenke.</p> <p>Andreas freut sich auf den heutigen</p> <p>Mittag, denn er hat keine Schule und</p><p> wird den ganzen Tag mit seinen</p><p> Freunden im Zoo verbringen.</p>",
+        "sound": "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/andreas-hat-geburtstag/sounds/chicken.mp3"
       },
       "page2": {
-        "type": "text",
-        "content": "Merhaba <b>dünya</b>! <br>",
-        "sound": "sounds/chicken.mp3"
+        "type": "image",
+        "content": "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/andreas-hat-geburtstag/andreas-hat-geburtstag-0.png",
+        "sound": ""
       }
     },
     {
       "page1": {
-        "type": "image",
-        "content": "imgs/chicken.png",
-        "sound": "sounds/chicken.mp3"
-      },
-      "page2": {
         "type": "text",
         "content": "Merhaba <b>hasan</b>! <br>",
-        "sound": "sounds/bird.mp3"
-      }
-    },
-    {
-      "page1": {
-        "type": "image",
-        "content": "imgs/bird.png",
-        "sound": "sounds/bird.mp3"
+        "sound": "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/andreas-hat-geburtstag/sounds/bird.mp3"
       },
       "page2": {
-        "type": "text",
-        "content": "Merhaba <b>emre</b>! <br>",
-        "sound": "sounds/goat.mp3"
-      }
-    },
-    {
-      "page1": {
         "type": "image",
-        "content": "imgs/goat.png",
-        "sound": "sounds/goat.mp3"
-      },
-      "page2": {
-        "type": "text",
-        "content": "Merhaba <b>mahmut</b>! <br> Renk <color=#ff0066>pembe!</color>Altı çizili <u>kelime</u>. Phaser 2 ile JSON’dan gelen <b><i>stil</i></b> etiketleri. Boyut <size=28>kocaman!</size>",
-        "sound": "sounds/dog.mp3"
+        "content": "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/andreas-hat-geburtstag/andreas-hat-geburtstag-1.png",
+        "sound": ""
       }
     }
   ]
