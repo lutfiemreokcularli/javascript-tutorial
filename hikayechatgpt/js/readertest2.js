@@ -339,7 +339,7 @@ function renderSide(side, item, rect) {
       {
         x: rect.x + pad + 100,
         y: rect.y + pad + 100,
-        maxWidth: 100,
+        maxWidth: 600,
         lineSpacing: 8,
         parent: group,
         baseStyle: {
@@ -522,8 +522,8 @@ function renderRichText(game, opts, html) {
         var testWidth = measureText.width;
         measureText.destroy();
 
-        var willOverflow = cursorX > x && cursorX - x + testWidth > maxWidth;
-
+        //var willOverflow = cursorX > x && cursorX - x + testWidth > maxWidth;
+        var willOverflow = cursorX - x + testWidth > maxWidth;
         if (willOverflow && buffer.trim() !== "") {
           // 1) Önce buffer'ı bas
           var span = createText(game, cursorX, cursorY, buffer, active, {
@@ -543,6 +543,39 @@ function renderRichText(game, opts, html) {
           // 3) Yeni satır başında leading space kırp
           piece = piece.replace(/^\s+/, "");
           buffer = piece;
+        } else if (willOverflow && buffer.trim() === "") {
+          // Tek parça maxWidth'ten uzun: karakter karakter kır
+          var head = "";
+          var tail = piece;
+          while (tail.length > 0) {
+            var next = head + tail.charAt(0);
+            var m = createText(game, -10000, -10000, next, active, {
+              stroke: baseStroke,
+              strokeThickness: baseStrokeThickness,
+            });
+            var w = m.width;
+            m.destroy();
+            if (cursorX - x + w > maxWidth) {
+              // head’i bas, satır kır
+              if (head) {
+                var spanH = createText(game, cursorX, cursorY, head, active, {
+                  stroke: baseStroke,
+                  strokeThickness: baseStrokeThickness,
+                });
+                parent.add(spanH);
+                if (active.underline)
+                  drawUnderline(game, parent, spanH, active, baseFill);
+                cursorX += spanH.width;
+                lineMaxSize = Math.max(lineMaxSize || 0, active.size);
+              }
+              doLineBreak();
+              head = "";
+              continue; // aynı tail ile yeni satıra ölçmeye devam
+            }
+            head = next;
+            tail = tail.slice(1);
+          }
+          buffer = head; // döngü bitti, kalan head yeni buffer
         } else {
           buffer = testStr;
         }
