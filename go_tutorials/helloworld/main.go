@@ -1,7 +1,8 @@
 package main
 
-import "fmt"
+import ("fmt"
+ "myapp/doctor")
 
 func main() {
-	fmt.Println("first go");
+	fmt.Println(doctor.Intro())
 }
