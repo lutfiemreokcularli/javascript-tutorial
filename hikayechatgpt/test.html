@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HTML5 Book Viewer</title>
+    <style>
+      :root {
+        --bg: #eae7dc;
+        --ink: #120f0f;
+        --paper: rgba(0, 0, 0, 0.04);
+        --accent: #3a6ea5;
+        --book-max-w: 90vw; /* Phaser'daki %90 mantığına benzer */
+        --book-max-h: 82vh; /* Phaser'daki %82 mantığına benzer */
+        --gap: 24px;
+        --pad: 20px;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: Arial, system-ui, -apple-system, Segoe UI, Roboto,
+          "Helvetica Neue", Helvetica, "Apple Color Emoji", "Segoe UI Emoji";
+      }
+      .app {
+        min-height: 100%;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+      }
+      header,
+      footer {
+        padding: 8px 12px;
+        color: #444;
+        font-size: 14px;
+        opacity: 0.85;
+      }
+      header {
+        backdrop-filter: blur(2px);
+      }
+      .stage {
+        display: grid;
+        place-items: center;
+        padding: 8px;
+      }
+      .book-viewport {
+        position: relative;
+        width: min(var(--book-max-w), 1400px);
+        height: var(--book-max-h);
+        max-height: 900px;
+        display: grid;
+        align-items: center;
+        justify-items: center;
+      }
+      .controls {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9999;
+      }
+      .nav-btn {
+        pointer-events: all;
+      }
+      .book {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--gap);
+        align-items: stretch;
+        justify-items: stretch;
+      }
+      .page,
+      .cover {
+        background: var(--paper);
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) inset;
+        position: relative;
+        overflow: hidden;
+        display: grid;
+        grid-template-rows: 1fr auto;
+      }
+      .cover {
+        grid-column: 1 / span 2; /* kapak ortada tek geniş blok */
+        display: grid;
+        place-items: center;
+        padding: var(--pad);
+      }
+      .page-content {
+        padding: calc(var(--pad) + 50px) var(--pad) var(--pad) var(--pad);
+        overflow: auto;
+      }
+      .page-content img.media {
+        display: block;
+        max-width: 100%;
+        max-height: 72%;
+        margin: 50px auto 0 auto; /* Phaser'daki +50px uyarlaması */
+        object-fit: contain;
+      }
+      .controls {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+      .nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.85);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        padding: 6px 10px;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: 600;
+        pointer-events: all;
+        user-select: none;
+      }
+      .nav-btn:hover {
+        background: white;
+      }
+      .nav-prev {
+        left: 8px;
+      }
+      .nav-next {
+        right: 8px;
+      }
+
+      .audio-bar {
+        padding: 8px var(--pad);
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.06), transparent);
+        border-top: 1px dashed rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      audio {
+        width: 100%;
+      }
+
+      /* Küçük ekranlarda tek kolon düşsün */
+      @media (max-width: 900px) {
+        .book {
+          grid-template-columns: 1fr;
+        }
+        .nav-prev {
+          left: 4px;
+        }
+        .nav-next {
+          right: 4px;
+        }
+        .page-content {
+          padding-top: calc(var(--pad) + 30px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header>
+        HTML5 Book Viewer • Oklar: ← / → • Tıklanabilir Önceki / Sonraki
+      </header>
+      <main class="stage">
+        <div class="book-viewport" id="bookRoot">
+          <div class="controls">
+            <button class="nav-btn nav-prev" id="btnPrev">◀</button>
+            <button class="nav-btn nav-next" id="btnNext">▶</button>
+          </div>
+          <!-- İçerik JS ile doldurulacak -->
+        </div>
+      </main>
+      <footer>Minticity örnek uyarlama — saf HTML/CSS/JS</footer>
+    </div>
+
+    <script>
+      // === Config & Assets (Phaser dışı HTML5 uyarlaması) ===
+      const Seite1 = {
+        Assets: {
+          image: {
+            book: "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/andreas-hat-geburtstag/book3.png",
+            prev: "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/andreas-hat-geburtstag/prev.png",
+            next: "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/andreas-hat-geburtstag/next.png",
+            sico: "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/andreas-hat-geburtstag/sound.png",
+          },
+          text: {
+            content:
+              "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/andreas-hat-geburtstag/content.json",
+          },
+        },
+      };
+
+      // Global state
+      const S = {
+        data: null,
+        spreadIndex: 0,
+        coverVisible: true,
+      };
+
+      const root = document.getElementById("bookRoot");
+      const btnPrev = document.getElementById("btnPrev");
+      const btnNext = document.getElementById("btnNext");
+
+      // === Helpers ===
+      function el(tag, attrs = {}, children = []) {
+        const node = document.createElement(tag);
+        Object.entries(attrs).forEach(([k, v]) => {
+          if (k === "class") node.className = v;
+          else if (k === "style") Object.assign(node.style, v);
+          else if (k.startsWith("on") && typeof v === "function")
+            node.addEventListener(k.slice(2), v);
+          else node.setAttribute(k, v);
+        });
+        (Array.isArray(children) ? children : [children]).forEach((c) => {
+          if (c == null) return;
+          node.appendChild(
+            typeof c === "string" ? document.createTextNode(c) : c
+          );
+        });
+        return node;
+      }
+
+      function safeHTMLTransform(raw) {
+        if (!raw) return "";
+        // 1) Tehlikeli tag'leri çıkar
+        raw = raw.replace(
+          /<(\/?)(script|style|img|video|audio|iframe|object|embed)[^>]*>/gi,
+          ""
+        );
+        // 2) <br> normalize
+        raw = raw.replace(/<\s*br\s*\/?\s*>/gi, "<br>");
+        // 3) strong/em → b/i
+        raw = raw
+          .replace(/<\s*strong\s*>/gi, "<b>")
+          .replace(/<\s*\/\s*strong\s*>/gi, "</b>")
+          .replace(/<\s*em\s*>/gi, "<i>")
+          .replace(/<\s*\/\s*em\s*>/gi, "</i>");
+        // 4) span style="color:#abc" → <color=#abc>
+        raw = raw
+          .replace(
+            /<\s*span[^>]*style\s*=\s*["'][^"']*color\s*:\s*(#[0-9a-fA-F]{3,6})[^"']*["'][^>]*>/gi,
+            (_, hex) => `<color=${hex.toLowerCase()}>`
+          )
+          .replace(/<\s*\/\s*span\s*>/gi, "</color>");
+        // 5) <span color="#abc"> → <color=#abc>
+        raw = raw
+          .replace(
+            /<\s*span[^>]*\scolor\s*=\s*["']?(#[0-9a-fA-F]{3,6})["']?[^>]*>/gi,
+            (_, hex) => `<color=${hex.toLowerCase()}>`
+          )
+          .replace(/<\s*\/\s*span\s*>/gi, "</color>");
+        // 6) color/size kısa tag normalize
+        raw = raw
+          .replace(
+            /<\s*color\s*=\s*["']?#?([0-9a-fA-F]{3,6})["']?\s*>/gi,
+            (_, hex) => `<color=#${hex.toLowerCase()}>`
+          )
+          .replace(/<\s*\/\s*color\s*>/gi, "</color>")
+          .replace(
+            /<\s*size\s*=\s*["']?(\d{1,3})["']?\s*>/gi,
+            (_, sz) => `<size=${sz}>`
+          )
+          .replace(/<\s*\/\s*size\s*>/gi, "</size>");
+        // 7) whitelist: b,i,u,br,color,size,p dışında kalan her şeyi at
+        raw = raw.replace(
+          /<(?!\/?(?:b|i|u|br|color|size|p)(?:[>\s=]|>)).*?>/gi,
+          ""
+        );
+        // 8) <color> ve <size> tag'lerini gerçek span'a dönüştür
+        raw = raw
+          .replace(/<color=#[0-9a-fA-F]{3,6}>/gi, (m) => {
+            const hex = (m.match(/#[0-9a-fA-F]{3,6}/) || ["#000"])[0];
+            return `<span style="color:${hex}">`;
+          })
+          .replace(/<\/color>/gi, "</span>")
+          .replace(
+            /<size=(\d{1,3})>/gi,
+            (_, sz) =>
+              `<span style="font-size:${Math.max(
+                8,
+                Math.min(200, parseInt(sz, 10))
+              )}px">`
+          )
+          .replace(/<\/size>/gi, "</span>");
+        return raw;
+      }
+
+      function setNavVisibility() {
+        const last = (S.data?.pages || []).length - 1;
+        btnPrev.style.visibility = S.coverVisible ? "hidden" : "visible";
+        btnNext.style.visibility =
+          S.coverVisible || S.spreadIndex < last ? "visible" : "hidden";
+      }
+
+      function render() {
+        root.querySelectorAll(".book, .cover").forEach((n) => n.remove());
+
+        if (S.coverVisible && S.data?.cover) {
+          const cover = el("div", { class: "cover" });
+          const img = el("img", {
+            class: "media",
+            src: S.data.cover,
+            alt: "Kapak",
+            style: {
+              maxWidth: "calc(100% - 24px)",
+              maxHeight: "calc(100% - 24px)",
+            },
+          });
+          cover.appendChild(img);
+          root.appendChild(cover);
+          setNavVisibility();
+          return;
+        }
+
+        const spread = (S.data?.pages || [])[S.spreadIndex];
+        const book = el("div", { class: "book" });
+
+        const left = renderSide(spread?.page1, "left");
+        const right = renderSide(spread?.page2, "right");
+
+        book.appendChild(left);
+        book.appendChild(right);
+        root.appendChild(book);
+        setNavVisibility();
+      }
+
+      function renderSide(item, sideName) {
+        const page = el("section", { class: "page" });
+        const content = el("div", { class: "page-content" });
+
+        if (!item) {
+          content.appendChild(el("div", {}, ""));
+        } else if (item.type === "text") {
+          const html = safeHTMLTransform(item.content || "");
+          const box = el("div");
+          box.innerHTML = html; // güvenirliği safeHTMLTransform sağlıyor
+          content.appendChild(box);
+        } else if (item.type === "image") {
+          const img = el("img", {
+            class: "media",
+            src: item.content,
+            alt: sideName,
+          });
+          content.appendChild(img);
+        }
+
+        // Audio bar (her iki türde de destekler)
+        const bar = el("div", { class: "audio-bar" });
+        const src = item?.sound;
+        if (src) {
+          const audio = el("audio", { controls: true });
+          const source = el("source", { src, type: guessAudioType(src) });
+          audio.appendChild(source);
+          bar.appendChild(audio);
+        } else {
+          bar.appendChild(el("span", { style: { opacity: 0.5 } }, " "));
+        }
+
+        page.appendChild(content);
+        page.appendChild(bar);
+        return page;
+      }
+
+      function guessAudioType(url) {
+        const u = url.toLowerCase();
+        if (u.endsWith(".mp3")) return "audio/mpeg";
+        if (u.endsWith(".ogg")) return "audio/ogg";
+        if (u.endsWith(".wav")) return "audio/wav";
+        return "audio/mpeg";
+      }
+
+      // === Navigation ===
+      function onPrev() {
+        if (S.coverVisible) return; // kapakta geri yok
+        if (S.spreadIndex > 0) {
+          S.spreadIndex--;
+          render();
+        } else {
+          S.coverVisible = true;
+          render();
+        }
+      }
+      function onNext() {
+        if (S.coverVisible) {
+          S.coverVisible = false;
+          S.spreadIndex = 0;
+          render();
+          return;
+        }
+        const last = (S.data?.pages || []).length - 1;
+        if (S.spreadIndex < last) {
+          S.spreadIndex++;
+          render();
+        }
+      }
+
+      btnPrev.addEventListener("click", onPrev);
+      btnNext.addEventListener("click", onNext);
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") onPrev();
+        else if (e.key === "ArrowRight") onNext();
+      });
+
+      // === Load JSON then render ===
+      async function boot() {
+        try {
+          const res = await fetch(Seite1.Assets.text.content, { mode: "cors" });
+          S.data = await res.json();
+          // kapak yoksa direkt sayfaya geç
+          if (!S.data || !S.data.cover) {
+            S.coverVisible = false;
+            S.spreadIndex = 0;
+          }
+          render();
+        } catch (err) {
+          console.error("content.json yükleme/parse hatası:", err);
+          S.data = { cover: null, pages: [] };
+          S.coverVisible = false;
+          S.spreadIndex = 0;
+          render();
+        }
+      }
+
+      // viewport yeniden ölçeklendiğinde özel bir şeye gerek yok; CSS hallediyor
+      window.addEventListener("resize", () => {
+        // Layout CSS grid ile akışkan, sadece yeniden çizmek isterseniz:
+        render();
+      });
+
+      boot();
+    </script>
+  </body>
+</html>
