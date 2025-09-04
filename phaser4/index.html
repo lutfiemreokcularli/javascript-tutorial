@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Phaser 4 - Video Örneği</title>
+    <!-- Phaser 4 (Release Candidate) CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/phaser@4.0.0-rc.5/dist/phaser.min.js"></script>
+  </head>
+  <body>
+    <div id="game"></div>
+
+    <script>
+      const config = {
+        type: Phaser.AUTO,
+        width: 800,
+        height: 600,
+        parent: "game",
+        backgroundColor: 0x00ff00, // yeşil
+        scene: {
+          preload() {
+            // asset klasöründeki videoyu yükle
+            this.load.video("introVideo", "assets/xyz.mp4");
+          },
+          create() {
+            console.log("Phaser sürümü:", Phaser.VERSION);
+
+            // videoyu ekle ve ortala
+            const video = this.add.video(400, 300, "introVideo");
+
+            video.setOrigin(0.5, 0.5);
+            video.setDisplaySize(25, 25);
+            // videoyu oynat
+            video.play(true); // true => loop
+          },
+        },
+      };
+
+      new Phaser.Game(config);
+    </script>
+  </body>
+</html>

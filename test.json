@@ -1,3 +1,101 @@
-{"mini":{"tip_id":2,"tip":"\u00dcbung"},"maxi":{"tip_id":2,"tip":"\u00dcbung"}}
-{"mini":{"tip_id":2,"tip":"\u00dcbung"},"maxi":{"tip_id":2,"tip":"\u00dcbung"}}
-{"mini":{"tip_id":2,"tip":"\u00dcbung"},"maxi":{"tip_id":2,"tip":"\u00dcbung"}}
+{
+  "cover": "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/klaus-im-kindergarten/cover.png",
+  "pages": [
+    {
+      "page1": {
+        "type": "image",
+        "content": "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/start.png",
+        "sound": null
+      },
+      "page2": {
+        "type": "text",
+        "content": "<p>Klaus ist jetzt vier Jahre alt. Er geht in den Kindergarten. Er wird zwei Jahre in den Kindergarten gehen. Mit sechs Jahren kommt er in die Schule.</p>\n\n<p>Er ist sehr aufgeregt und kann nicht schlafen. Am Morgen weckt ihn seine Mutter um acht Uhr. Klaus möchte noch weiter schlafen, denn er ist sehr müde. Er träumt so schön vom Kindergarten und seinen vielen Freunden.</p>",
+        "sound": "https://cdn.minticity.com/audios/mediathek/kurzgeschichten/klaus-im-kindergarten/klaus-im-kindergarten-2.mp3"
+      }
+    },
+    {
+      "page1": {
+        "type": "text",
+        "content": "<p>Seine  Mutter lächelt.</p>\n\n<p>Aber Klaus muss langsam aufstehen, denn heute beginnt sein Kindergarten.</p>\n\n<p>Klaus springt aus dem Bett, läuft ins Badezimmer. Er muss schnell seine Zähne putzen und frühstücken. Er möchte nicht schon am ersten Tag zu spät kommen.</p>\n\n<p>Dann ist er fertig und geht in die Küche.</p>",
+        "sound": "https://cdn.minticity.com/audios/mediathek/kurzgeschichten/klaus-im-kindergarten/klaus-im-kindergarten-3.mp3"
+      },
+      "page2": {
+        "type": "image",
+        "content": "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/klaus-im-kindergarten/klaus-im-kindergarten-1.png",
+        "sound": null
+      }
+    },
+    {
+      "page1": {
+        "type": "text",
+        "content": "<p>Die Mutter macht Klaus ein Brötchen mit Wurst und Käse und natürlich sein  Lieblingsomlett. Beim Frühstück trinkt er immer seinen Lieblingskakao.</p>\n\n<p>20 Minuten später ist Klaus endlich fertig und sie gehen zusammen in den Kindergarten.</p>\n\n<p>Der  Kindergarten ist nicht sehr weit. Aber Klaus möchte mit dem Bus fahren, denn er möchte nicht zu spät kommen.<br />\nEr ist sehr aufgeregt und neugierig. Er möchte sofort seine Freunde kennenlernen.</p>",
+        "sound": "https://cdn.minticity.com/audios/mediathek/kurzgeschichten/klaus-im-kindergarten/klaus-im-kindergarten-5.mp3"
+      },
+      "page2": {
+        "type": "text",
+        "content": "<p>Der Kindergarten ist sehr groß. Es gibt viele Spielzeuge und der Sandkasten ist auch sehr groß.</p>\n\n<p>Im Kindergarten begrüßt sie Frau Müller. Eine sehr sympathische und hübsche Frau. Klaus lächelt, denn er ist sehr glücklich. Er sieht viele Kinder laufen und möchte auch mit ihnen spielen. Aber noch reden Frau Müller und seine Mutter.</p>\n\n<p>Dann zeigt Frau Müller Klaus seinen Schrank. Jetzt kann er seine Freunde kennen lernen.</p>",
+        "sound": "https://cdn.minticity.com/audios/mediathek/kurzgeschichten/klaus-im-kindergarten/klaus-im-kindergarten-6.mp3"
+      }
+    },
+    {
+      "page1": {
+        "type": "text",
+        "content": "<p>Klaus geht zum Sandkasten. Da sind drei Kinder. Die spielen zusammen.</p>\n\n<p>Er möchte mit ihnen spielen und fragt, wie sie heißen. Sie heißen Oliver, Mark und Thomas. Alle sind auch vier Jahre alt. Klaus ist sehr glücklich. Endlich ist er im Kindergarten und hat Freunde zum Spielen. Um 12 Uhr essen sie alle zusammen zu Mittag. Das Essen ist sehr lecker.</p>\n\n<p>Am Nachmittag gibt es Kuchen und Kakao oder Milch. Die Zeit vergeht schnell und um 18 Uhr kommt seine Mutter.</p>",
+        "sound": "https://cdn.minticity.com/audios/mediathek/kurzgeschichten/klaus-im-kindergarten/klaus-im-kindergarten-7.mp3"
+      },
+      "page2": {
+        "type": "image",
+        "content": "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/klaus-im-kindergarten/klaus-im-kindergarten-2.png",
+        "sound": null
+      }
+    },
+    {
+      "page1": {
+        "type": "text",
+        "content": "<p>Am Abend ist er sehr glücklich. Jetzt hat er viele Freunde und kann mit ihnen spielen. Zu Hause muss er immer alleine spielen, denn er hat keine Geschwister. Das findet Klaus sehr langweilig und blöd.</p>\n\n<p>Er möchte so gern ein Brüderchen oder ein Schwesterchen haben. Dann ist er auch zu Hause nicht allein und hat einen Freund zum Spielen.</p>",
+        "sound": "https://cdn.minticity.com/audios/mediathek/kurzgeschichten/klaus-im-kindergarten/klaus-im-kindergarten-9.mp3"
+      },
+      "page2": {
+        "type": "image",
+        "content": "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/klaus-im-kindergarten/klaus-im-kindergarten-3.png",
+        "sound": null
+      }
+    },
+    {
+      "page1": {
+        "type": "text",
+        "content": "<p>Am nächsten Tag fahren Klaus und seine Mutter mit dem Auto zum Kindergarten. Im Auto singt Klaus ein Lied. Er ist wieder sehr glücklich. Im Kindergarten begrüßt die Lehrerin die Mutter und Klaus. Seine Lehrerin ist sehr hübsch, denkt Klaus. Sofort rennt Klaus wieder zum Sandkasten.<br /><br />\nEr möchte mit Oliver, Mark und Thomas spielen. Sie sind jetzt gute Freunde.</p>\n\n<p>Am Abend kommt der Vater. Er möchte Klaus nach Hause fahren. Aber Klaus möchte noch spielen, denn die Eltern von den anderen Kindern sind noch nicht da.</p>",
+        "sound": "https://cdn.minticity.com/audios/mediathek/kurzgeschichten/klaus-im-kindergarten/klaus-im-kindergarten-11.mp3"
+      },
+      "page2": {
+        "type": "text",
+        "content": "<p>So wartet der Vater noch eine Stunde und trinkt mit Frau Müller einen Kaffee.</p>\n\n<p>Endlich möchte Klaus nach Hause gehen, denn er ist müde. Zu Hause erzählt Klaus seinen Eltern, wie schön es im Kindergarten ist.</p>\n\n<p>Die Eltern sind auch glücklich, denn Klaus ist im Kindergarten glücklich.</p>\n\n<p>Nach dem Abendessen geht Klaus sofort ins Bett und schläft. Auch sein nächster Tag beginnt wieder  glücklich. </p>",
+        "sound": "https://cdn.minticity.com/audios/mediathek/kurzgeschichten/klaus-im-kindergarten/klaus-im-kindergarten-12.mp3"
+      }
+    },
+    {
+      "page1": {
+        "type": "text",
+        "content": "<p>Der Kindergarten ist so schön. Ganz viele Kinder, tolle Freunde, viele Spielsachen, eine nette Lehrerin und das einen ganzen Tag lang!</p>\n\n<p>Klaus ist das glücklichste Kind der Welt.</p>",
+        "sound": "https://cdn.minticity.com/audios/mediathek/kurzgeschichten/klaus-im-kindergarten/klaus-im-kindergarten-13.mp3"
+      },
+      "page2": {
+        "type": "image",
+        "content": "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/klaus-im-kindergarten/klaus-im-kindergarten-4.png",
+        "sound": null
+      }
+    },
+    {
+      "page1": {
+        "type": "image",
+        "content": "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/end.png",
+        "sound": null
+      },
+      "page2": {
+        "type": "text",
+        "content": null,
+        "sound": null
+      }
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 import { Scene, PhaserHelper } from "./Minti.js";
 let x, y;
+let goLink = false;
 var _this;
 var Seite1 = {
   Assets: {
@@ -7,12 +8,16 @@ var Seite1 = {
     mp3Player: true,
     defaultItems: true,
     image: {
-      book: "andreas-hat-geburtstag/book3.png",
+      book: "book.png",
       prev: "andreas-hat-geburtstag/prev.png",
       next: "andreas-hat-geburtstag/next.png",
       sico: "andreas-hat-geburtstag/sound.png",
+      fse: "z1.png",
+      fs: "z2.png",
     },
-    audio: {},
+    audio: {
+      page: "page.mp3",
+    },
     text: {
       content:
         "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/andreas-hat-geburtstag/content.json",
@@ -23,7 +28,7 @@ var Seite1 = {
 var ASSETS = {
   book: {
     key: "book",
-    url: "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/andreas-hat-geburtstag/book3.png",
+    url: "https://cdn.minticity.com/assets/mediathek/kurzgeschichten/book.png",
   },
   prev: {
     key: "prev",
@@ -49,11 +54,12 @@ var S = {
 };
 Seite1.PlayScene = function () {
   this.init = function () {
-    this.add.image(0, 0, "bg");
+    //this.add.image(0, 0, "bg");
+    this.addFullScreenButtons = Scene.addFullScreenButtons.bind(this);
   };
   this.create = function () {
     _this = this;
-    core.stage.backgroundColor = "#eae7dc";
+    core.transparent = true;
     core.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     core.scale.pageAlignHorizontally = true;
     core.scale.pageAlignVertically = true;
@@ -65,7 +71,9 @@ Seite1.PlayScene = function () {
       ASSETS.book.key
     );
     S.book.anchor.set(0.5);
+    S.book.visible = false;
     fitBookToScreen();
+    //S.book.scale.set(1.5);
 
     // 2) Sonra GRUPLAR (cover/left/right/ui) — book’un üstünde olacaklar
     S.groups.left = core.add.group();
@@ -99,7 +107,7 @@ Seite1.PlayScene = function () {
       0,
       S.groups.ui
     );
-    S.buttons.next.anchor.set(1, 0.5);
+    S.buttons.next.anchor.set(0.85, 0.5);
 
     layoutNavButtons();
 
@@ -155,11 +163,12 @@ Seite1.PlayScene = function () {
       layoutNavButtons();
       renderCurrent();
     });
+    this.addFullScreenButtons(1730, 20, 0.4, "fs", "fse");
   };
 };
 function fitBookToScreen() {
   var maxW = core.world.width * 0.9;
-  var maxH = core.world.height * 0.82;
+  var maxH = core.world.height * 1.82;
   var s = Math.min(maxW / S.book.texture.width, maxH / S.book.texture.height);
   S.book.scale.set(s);
 }
@@ -173,11 +182,11 @@ function layoutNavButtons() {
   var inset = 20;
 
   if (S.buttons.prev) {
-    S.buttons.prev.x = leftEdge + inset;
+    S.buttons.prev.x = leftEdge + inset - 70;
     S.buttons.prev.y = midY;
   }
   if (S.buttons.next) {
-    S.buttons.next.x = rightEdge - inset;
+    S.buttons.next.x = rightEdge - inset + 75;
     S.buttons.next.y = midY;
   }
   bringUIToTop();
@@ -196,10 +205,10 @@ function pageRects() {
   var bookX = S.book.x - bookW / 2;
   var bookY = S.book.y - bookH / 2;
   var half = bookW / 2,
-    pad = 24;
+    pad = 12;
   return {
     left: new Phaser.Rectangle(
-      bookX + pad,
+      bookX + pad + 30,
       bookY + pad,
       half - pad * 2,
       bookH - pad * 2
@@ -262,7 +271,7 @@ function queueDynamicAssets(data) {
 function renderCover() {
   S.groups.cover.removeAll(true);
   clearSideGroups();
-
+  if (S.book) S.book.visible = false;
   if (!S.data || !S.data.cover) {
     S.coverVisible = false;
     S.spreadIndex = 0;
@@ -305,7 +314,7 @@ function renderCurrent() {
 function renderSpread() {
   S.groups.cover.removeAll(true);
   clearSideGroups();
-
+  if (S.book) S.book.visible = true;
   var spread = (S.data.pages || [])[S.spreadIndex];
   if (!spread) {
     updateNavVisibility();
@@ -325,10 +334,10 @@ function renderSide(side, item, rect) {
   var group = S.groups[side];
 
   // sayfa arkaplanı
-  var bg = core.add.graphics(rect.x, rect.y, group);
-  bg.beginFill(0x000000, 0.04);
-  bg.drawRect(0, 0, rect.width, rect.height);
-  bg.endFill();
+  /*   var bg = core.add.graphics(rect.x, rect.y, group);
+  bg.beginFill(0x000000, 0.0);
+  bg.drawRect(10, 0, rect.width, rect.height);
+  bg.endFill(); */
 
   var pad = 20;
 
@@ -343,8 +352,8 @@ function renderSide(side, item, rect) {
         lineSpacing: 8,
         parent: group,
         baseStyle: {
-          fontFamily: "Arial",
-          fontSize: 22,
+          fontFamily: "ABeeZee",
+          fontSize: 30,
           fill: "#120f0fff",
           stroke: "#000000",
           strokeThickness: 0,
@@ -352,15 +361,18 @@ function renderSide(side, item, rect) {
       },
       item.content
     );
-    var sndKey = item.sound ? getSndKey(item.sound) : null;
-    var mp3Player = new PhaserHelper.MP3Player(_this, "default", sndKey, {
-      autoPlay: false,
-      volume: 1,
-      width: 500,
-      x: rect.x + 80,
-      y: rect.y + rect.height - 46,
-    });
-    group.add(mp3Player);
+    if (item.sound != null) {
+      var sndKey = item.sound ? getSndKey(item.sound) : null;
+      var mp3Player = new PhaserHelper.MP3Player(_this, "default", sndKey, {
+        autoPlay: false,
+        volume: 1,
+        width: 500,
+        x: rect.x + 120,
+        y: rect.y + rect.height - 46,
+      });
+      group.add(mp3Player);
+    }
+
     /* var txt = core.add.text(
       rect.x + pad,
       rect.y + pad,
@@ -375,12 +387,13 @@ function renderSide(side, item, rect) {
     var imgKey = getImgKey(item.content);
     var spr = core.add.sprite(
       rect.centerX,
-      rect.y + pad + 50,
+      rect.y + pad + 30,
       imgKey,
       null,
       group
     );
     spr.anchor.set(0.5, 0);
+    spr.scale.set(0.9);
     var maxW = rect.width - pad * 2,
       maxH = rect.height * 0.72; // üstte görsel alanı
     var s = Math.min(maxW / spr.width, maxH / spr.height);
@@ -421,6 +434,8 @@ function playSideSound(side, key) {
 }
 
 function onPrev() {
+  var soundses = this.add.sound("page", 0.2, false);
+  soundses.play();
   if (S.coverVisible) return; // cover’dan geri yok
   stopAll();
   if (S.spreadIndex > 0) {
@@ -433,23 +448,41 @@ function onPrev() {
 }
 
 function onNext() {
-  if (S.coverVisible) {
-    S.coverVisible = false;
-    S.spreadIndex = 0;
-    renderSpread();
-    return;
-  }
-  stopAll();
-  if (S.spreadIndex < (S.data.pages || []).length - 1) {
-    S.spreadIndex++;
-    renderSpread();
+  if (!goLink) {
+    var soundses = this.add.sound("page", 0.2, false);
+    soundses.play();
+    if (S.coverVisible) {
+      S.coverVisible = false;
+      S.spreadIndex = 0;
+      renderSpread();
+      return;
+    }
+    stopAll();
+    if (S.spreadIndex < (S.data.pages || []).length - 1) {
+      S.spreadIndex++;
+      renderSpread();
+    }
+  } else {
+    S.buttons.next.visible = false;
+    const url = S?.data?.ubungLink;
+    if (typeof url === "string" && /^https?:\/\//i.test(url)) {
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
   }
 }
 
 function updateNavVisibility() {
   S.buttons.prev.visible = !S.coverVisible; // cover'da gizle
   var last = (S.data.pages || []).length - 1;
-  S.buttons.next.visible = S.coverVisible || S.spreadIndex < last;
+  if (S.coverVisible || S.spreadIndex < last) {
+    S.buttons.next.visible = true;
+    goLink = false;
+  } else if (S.spreadIndex == last) {
+    S.buttons.next.visible = true;
+    goLink = true;
+  } else {
+  }
+
   bringUIToTop();
 }
 
@@ -882,6 +915,7 @@ function renderRichText(game, opts, html) {
 }
 
 let core;
+Seite1.config.transparent = true;
 core = new Phaser.Game(Seite1.config);
 core.state.add("Boot", new PhaserHelper.BootState("Preload"), true);
 core.state.add(
