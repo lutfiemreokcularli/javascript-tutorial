@@ -1,20 +1,20 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const ejs = require('ejs');
-const path = require('path');
-const expressLayout = require('express-ejs-layouts');
-const blogRouter = require('./src/routers/blogRouter');
+const ejs = require("ejs");
+const path = require("path");
+const expressLayout = require("express-ejs-layouts");
+const blogRouter = require("./src/routers/blogRouter");
 
-app.use(express.static('public'));
+app.use(express.static("public"));
 app.use(expressLayout);
-app.set('view engine','ejs');
-app.set('views', path.resolve(__dirname,'./src/views'));
+app.set("view engine", "ejs");
+app.set("views", path.resolve(__dirname, "./src/views"));
 
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
-app.use('/',blogRouter);
-app.use('/blog',blogRouter);
+app.use("/", blogRouter);
+app.use("/blog", blogRouter);
 
-app.listen(4000,()=>{
-    console.log("4000 den ayaklandık");
-})
+app.listen(5000, () => {
+  console.log("4000 den ayaklandık");
+});
