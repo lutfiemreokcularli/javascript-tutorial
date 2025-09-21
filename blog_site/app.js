@@ -16,5 +16,5 @@ app.use("/", blogRouter);
 app.use("/blog", blogRouter);
 
 app.listen(5000, () => {
-  console.log("4000 den ayaklandık");
+  console.log("5000 den ayaklandık");
 });
