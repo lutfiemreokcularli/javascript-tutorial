@@ -1,4 +1,4 @@
-var _this;
+var _this, PlayScene;
 var pageType = pageContent.pageType;
 var MintibuchPage = {
   Config: Minti.GetConfig({
@@ -8,143 +8,297 @@ var MintibuchPage = {
   }),
   Assets: {
     baseURL: pageContent.baseURL,
-    image: {
-      que: "que.png",
-      desk: "desk.png",
-      cake: "cake.png",
-      place: "place.png",
-      candle: "candle.png",
-    },
+    image: {},
     audio: {
-      instruction: pageType + "-instruction.mp3",
+      instruction: pageType + "/instruction.mp3",
     },
   },
 };
+var assetURL = pageContent.baseURL.replace(pageContent.slug, "assets");
+for (var i = 0; i < pageContent.data.data.length; i++) {
+  var elem = pageContent.data.data[i];
+  if (pageType === Minti.Types.MAXI) {
+    MintibuchPage.Assets.image[elem] =
+      pageType + "/" + Minti.Slugify(elem) + ".png";
+  } else if (pageType === Minti.Types.MINI) {
+    MintibuchPage.Assets.audio[elem] =
+      assetURL + "/" + Minti.Slugify(elem) + ".mp3";
+    for (var j = 0; j < 4; j++) {
+      var name = Minti.Slugify(elem) + "-" + (j + 1);
+      MintibuchPage.Assets.image[name] = pageType + "/" + name + ".png";
+    }
+  }
+}
 if (pageType === Minti.Types.MAXI) {
   MintibuchPage.Config.scene = [Minti.KeyboardScene];
-}
-var PlayScene = new Phaser.Class({
-  Extends: Minti.Scene,
-  _create: function () {
-    _this = this;
-    this.headers = pageContent.data.headers;
-    this.pageContent = pageContent;
-    this.add.image(this.centerX, 1009, "desk").setOrigin(0.5, 1);
-    this.addInstruction(pageType, App.prod, this.addQuestion);
-  },
-  addQuestion: function () {
-    this.party = this.add.container();
-    var candPlaces = [
-      { x: 911.1681914144971, y: 268.9303307529909, key: "candle", name: 11 },
-      { x: 979.6270232230826, y: 272.5334271639691, key: "candle", name: 12 },
-      { x: 893.1527093596061, y: 295.9535538353273, key: "candle", name: 7 },
-      { x: 925.5805770584097, y: 294.1520056298382, key: "candle", name: 8 },
-      { x: 967.0161857846589, y: 297.7551020408164, key: "candle", name: 9 },
-      { x: 1006.6502463054189, y: 301.3581984517946, key: "candle", name: 10 },
-      { x: 876.9387755102041, y: 337.38916256157637, key: "candle", name: 1 },
-      { x: 900.3589021815623, y: 339.19071076706547, key: "candle", name: 2 },
-      { x: 932.7867698803659, y: 335.58761435608733, key: "candle", name: 3 },
-      { x: 967.0161857846587, y: 335.58761435608733, key: "candle", name: 4 },
-      { x: 1001.2456016889514, y: 328.38142153413094, key: "candle", name: 5 },
-      { x: 1040.8796622097116, y: 342.79380717804366, key: "candle", name: 6 },
-    ];
-    for (var i = 0; i < candPlaces.length; i++) {
-      var candleData = candPlaces[i];
-      this.party.add(
-        this.make.image(candleData).setName(candleData.name).setVisible(false)
-      );
-    }
-    this.cake = this.add.image(this.centerX, 590, "cake");
-    var candle = this.add.image(536, 687, "candle");
-    Minti.Buttonify(candle, true).on(
-      Phaser.Input.Events.DRAG_END,
-      this.onDragEnd
-    );
-    this.party.candle = candle;
-    this.party.add([this.cake, candle]);
-    this.addSendToTeacherButton(this.centerX + 600, this.centerY, function () {
-      if (text) {
-        _this.pageContent = pageContent;
-        _this.teacherData.text = text.text;
-        _this.teacherData.object = {
-          header: _this.headers[0],
-          text: _this.teacherData.text,
-        };
-      } else {
-        _this.teacherData.object = {
-          header: _this.headers[0],
-          text: _this.teacherData.counter,
-        };
-        _this.teacherData.text = _this.teacherData.counter;
+  MintibuchPage.Assets.image.textPlace = pageType + "/text-place.png";
+  PlayScene = new Phaser.Class({
+    Extends: Minti.Scene,
+    _create: function () {
+      _this = this;
+      this.headers = pageContent.data.headers;
+      this.data = pageContent.data.data;
+      this.limit = this.data.length;
+      this.addInstruction(pageType, App.prod, this.addQuestion);
+    },
+    addQuestion: function () {
+      if (this.part) {
+        this.part.destroy(true);
       }
-    });
-    if (pageType === Minti.Types.MAXI) {
-      this.party.setX(-300);
-      this.add.image(1347.15, 366.6, "que");
-      this.add.text(1347.15, 366.6, "Wie alt bist du?", {
-        fontSize: 55,
-        color: "#FFF",
-      });
-
-      var place = this.add.image(1347.15, 500, "place");
-      var text = this.add.text(place.x, place.y, "", {
-        fontSize: 45,
-      });
+      this.part = this.add.container();
+      var rand = Minti.Utils.RemoveRandomItem(this.data);
+      var image = this.add
+        .image(this.centerX, this.centerY + 140, rand)
+        .setScale(0);
+      var place = this.add
+        .image(image.x, image.y - 310, "textPlace")
+        .setScale(0);
+      var text = this.add
+        .text(place.x, place.y, "der ", { fontSize: 60 })
+        .setScale(0);
       Minti.Buttonify(place, function () {
         _this.KeyboardScene.setTarget(text);
       });
+
+      this.add.controlButton(1530, place.y, this.onControlClick);
+
+      this.part.add([image, place, text, this.controlButton.setScale(0)]);
+      this.part.text = text;
+      this.part.datum = rand;
+
+      if (this.KeyboardScene.isVisible) {
+        debugger;
+        if (!this.KeyboardScene.inView) {
+          this.KeyboardScene.toggleView();
+        }
+      }
       this.KeyboardScene.setTarget(text);
-
-      if (this.KeyboardScene.isVisible && !this.KeyboardScene.inView) {
-        this.KeyboardScene.toggleView();
-      }
-
-      this.toTeacher.setPosition(1550, 200);
-    }
-    this.toTeacher.setInteractive();
-  },
-  onDragEnd: function () {
-    var scene = this.scene;
-    var hit = false,
-      wrongSound = false;
-    if (Minti.CheckOverlap(this, scene.cake)) {
-      hit = true;
-      scene.revert(this);
-      scene.counter++;
-      if (!scene.teacherData.counter) {
-        scene.teacherData.counter = 0;
-      }
-      scene.teacherData.counter++;
-      var cand = scene.party.getByName(scene.counter);
-      if (cand) {
-        cand.setVisible(true);
-      }
-    }
-    if (!hit) {
-      scene.tweens.add({
-        targets: this,
-        x: this.defaultPosition.x,
-        y: this.defaultPosition.y,
+      this.tweens.add({
+        targets: this.part.list,
+        scale: 1,
         ease: "Back",
         duration: 400,
+        delay: this.tweens.stagger(50),
       });
-    }
-  },
-  revert: function (gameObject) {
-    var pos = gameObject.defaultPosition;
-    gameObject.setPosition(pos.x, pos.y).setScale(0);
-    this.tweens.add({
-      targets: gameObject,
-      scale: 1,
-      ease: "Back",
-      duration: 150,
-    });
-  },
-});
-var core = new Phaser.Game(MintibuchPage.Config);
-core.scene.add("PreloadScene", new Minti.PreloadScene(), true, {
-  nextScene: "PlayScene",
-  pageType: pageContent.pageType,
-  Assets: MintibuchPage.Assets,
-});
-core.scene.add("PlayScene", PlayScene);
+
+      this.createParticles();
+    },
+    onControlClick: function () {
+      var scene = this.scene,
+        part = scene.part;
+      this.destroy();
+      var text = part.text;
+      scene.counter++;
+      scene.KeyboardScene.target = false;
+      scene.KeyboardScene.clearTarget();
+      scene.KeyboardScene.toggleView();
+      part.iterate(function (ch) {
+        ch.disableInteractive();
+      });
+      if (
+        text.text.mtrim().toLowerCase() === part.datum.mtrim().toLowerCase()
+      ) {
+        scene.correctAnswer();
+        text.setText(part.datum).setColor(Minti.Colors.Correct.Hex);
+      } else {
+        scene.wrongAnswer();
+        text.setColor(Minti.Colors.Wrong.Hex);
+        part.add(
+          scene.make
+            .text({
+              x: text.x,
+              y: text.y - 100,
+              text: part.datum,
+              style: text.style,
+            })
+            .setColor(Minti.Colors.Correct.Hex)
+        );
+      }
+      if (scene.data.length) {
+        scene.addNext(this.x, this.y, scene.addQuestion);
+      } else {
+        scene._endPage();
+      }
+    },
+  });
+} else if (pageType === Minti.Types.MINI) {
+  MintibuchPage.Assets.timerPlace = true;
+  var source, _w, _h;
+  PlayScene = new Phaser.Class({
+    Extends: Minti.Scene,
+    _create: function () {
+      _this = this;
+      this.fullTime = 5;
+      this.headers = pageContent.data.headers;
+      this.data = pageContent.data.data;
+      this.limit = this.data.length;
+      var key = Object.keys(this.textures.list).find(function (ch) {
+        return ch.includes("der-");
+      });
+      source = this.textures.list[key].source[0];
+      _w = source.width / 2;
+      _h = source.height / 2;
+      this.addInstruction(pageType, App.prod, this.addQuestion);
+      this.counterText.setX(1650);
+    },
+    addQuestion: function () {
+      var rand = Minti.Utils.RemoveRandomItem(this.data);
+      if (this.part) {
+        this.part.destroy(true);
+      }
+      this.part = this.add.container();
+      this.part.drags = [];
+      this.part.datum = rand;
+      this.part.counter = 0;
+      this.part.limit = 0;
+      var drags = [
+        { x: this.centerX - _w, y: this.centerY + 50 - _h, key: 1 },
+        { x: this.centerX + _w, y: this.centerY + 50 - _h, key: 2 },
+        { x: this.centerX - _w, y: this.centerY + 50 + _h, key: 3 },
+        { x: this.centerX + _w, y: this.centerY + 50 + _h, key: 4 },
+      ].map(function (ch) {
+        ch.key = Minti.Slugify(rand) + "-" + ch.key;
+        return ch;
+      });
+      this.places = this.add.container().setVisible(false);
+      this.part.add(this.places);
+      for (var i = 0; i < drags.length; i++) {
+        var drag = drags[i];
+        var place = this.make.image(drag).setTint(0x000000).setAlpha(0.25);
+        place.datum = drag.key;
+        this.places.add(place);
+      }
+      for (i = 0; i < drags.length; i++) {
+        drag = drags[i];
+        var draggable = this.make.image(drag).setScale(0);
+        draggable.datum = drag.key;
+        Minti.Buttonify(draggable, {
+          draggable: true,
+          disable: true,
+        }).on(Phaser.Input.Events.DRAG_END, this.onDragEnd);
+        this.part.add(draggable);
+        this.part.drags.push(draggable);
+        this.part.limit++;
+      }
+
+      this.tweens.add({
+        targets: this.part.drags,
+        scale: 1,
+        ease: "Back",
+        duration: 400,
+        delay: this.tweens.stagger(50),
+      });
+
+      this.addTimerPlace(this.centerX, 175, 5);
+      var time = 5;
+      this.timer = this.time.addEvent({
+        repeat: time - 1,
+        delay: 1000,
+        callbackScope: this,
+        callback: function () {
+          time--;
+          this.updateTimer(time);
+          if (time === 0) {
+            this.timeEnd();
+          }
+        },
+      });
+      this.createParticles();
+    },
+    timeEnd: function () {
+      this.randomPointRect = Phaser.Geom.Rectangle.CenterOn(
+        new Phaser.Geom.Rectangle(0, 0, 16 * 50, 9 * 50),
+        this.centerX,
+        this.centerY
+      );
+      var drags = this.part.drags;
+      this.shuffleImages(drags, function () {
+        if (_this.timerGroup) {
+          _this.timerGroup.destroy(true);
+        }
+        _this.shuffleImages(drags, function () {
+          _this.shuffleImages(drags, function () {
+            _this.part.drags.forEach(function (ch) {
+              ch.setInteractive();
+            });
+          });
+        });
+      });
+    },
+    shuffleImages: function (array, callback) {
+      this.places.setVisible(true);
+      for (var i = 0; i < array.length; i++) {
+        var element = array[i];
+        var out = this.randomPointRect.getRandomPoint();
+        this.tweens.add({
+          targets: element,
+          x: out.x,
+          y: out.y,
+          origin: 0.5,
+          ease: "Back.easeOut",
+          duration: 350,
+          onComplete: function (tween, targets, param) {
+            if (param === array.length - 1) {
+              callback.call(_this);
+            }
+          },
+          onCompleteParams: [i],
+        });
+      }
+    },
+    onDragEnd: function () {
+      var scene = this.scene,
+        part = scene.part,
+        places = scene.places;
+      var hit = false,
+        wrongSound = false;
+      scene.sound.stopAll();
+      for (var i = 0; i < places.list.length; i++) {
+        var obj = places.list[i];
+        if (Minti.CheckOverlap(obj, this)) {
+          if (this.datum === obj.datum) {
+            hit = true;
+            this.removeInteractive().setPosition(obj.x, obj.y);
+            part.counter++;
+            if (part.counter === part.limit) {
+              scene.counter++;
+              scene.correctAnswer();
+              scene.sound.play(part.datum);
+              if (scene.data.length) {
+                scene.addNext(scene.addQuestion);
+              } else {
+                scene._endPage();
+              }
+            }
+            break;
+          } else {
+            wrongSound = true;
+          }
+        }
+      }
+      if (!hit) {
+        var out = scene.randomPointRect.getRandomPoint();
+        scene.tweens.add({
+          targets: this,
+          x: out.x,
+          y: out.y,
+          origin: 0.5,
+          ease: "Back.easeOut",
+          duration: 350,
+        });
+        if (wrongSound) {
+          scene.ys.play();
+        }
+      }
+    },
+  });
+}
+if (PlayScene) {
+  var core = new Phaser.Game(MintibuchPage.Config);
+  core.scene.add("PreloadScene", new Minti.PreloadScene(), true, {
+    nextScene: "PlayScene",
+    pageType: pageContent.pageType,
+    Assets: MintibuchPage.Assets,
+  });
+  core.scene.add("PlayScene", PlayScene);
+}

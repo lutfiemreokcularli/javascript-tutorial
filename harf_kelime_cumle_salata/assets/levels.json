@@ -1,0 +1,135 @@
+{
+  "levels": [
+    {
+      "mechanic": "typing",
+      "prompt": "Bir cihaz adı yaz.",
+      "answer": "TELEFON"
+    },
+    {
+      "mechanic": "sorting",
+      "prompt": "Bu kelimenin harflerini sırala.",
+      "parts": ["H", "A", "L", "L", "O"],
+      "answer": ["H", "A", "L", "L", "O"]
+    },
+    {
+      "mechanic": "dragdrop_permanent",
+      "prompt": "Bu kelimenin harflerini sürükle (Permanent).",
+      "parts": ["W", "E", "L", "T"],
+      "answer": ["W", "E", "L", "T"]
+    },
+    {
+      "mechanic": "dragdrop_returning",
+      "prompt": "Bu kelimenin harflerini sürükle (Returning).",
+      "parts": ["B", "U", "C", "H"],
+      "answer": ["B", "U", "C", "H"]
+    },
+    {
+      "mechanic": "clicking",
+      "prompt": "Doğru harf sırasına tıkla.",
+      "parts": ["A", "P", "F", "E", "L"],
+      "answer": ["A", "P", "F", "E", "L"]
+    },
+    {
+      "mechanic": "swapping",
+      "prompt": "Swap ile sırala.",
+      "parts": ["O", "N", "E", "T", "F", "L", "E"],
+      "answer": ["T", "E", "L", "E", "F", "O", "N"]
+    },
+
+    {
+      "mechanic": "typing",
+      "prompt": "Bir hayvan adı yaz.",
+      "answer": ["KATZE"]
+    },
+    {
+      "mechanic": "sorting",
+      "prompt": "Bu kelimeleri sırala.",
+      "parts": ["Hund", "Katze", "Maus"],
+      "answer": ["Hund", "Katze", "Maus"]
+    },
+    {
+      "mechanic": "dragdrop_permanent",
+      "prompt": "Bu kelimeleri sürükle (Permanent).",
+      "parts": ["Apfel", "Banane", "Orange"],
+      "answer": ["Apfel", "Banane", "Orange"]
+    },
+    {
+      "mechanic": "dragdrop_returning",
+      "prompt": "Bu kelimeleri sürükle (Returning).",
+      "parts": ["Auto", "Bus", "Zug"],
+      "answer": ["Auto", "Bus", "Zug"]
+    },
+    {
+      "mechanic": "clicking",
+      "prompt": "Doğru kelime sırasına tıkla.",
+      "parts": ["rot", "blau", "grün"],
+      "answer": ["rot", "blau", "grün"]
+    },
+    {
+      "mechanic": "swapping",
+      "prompt": "Swap ile sırala.",
+      "parts": ["Hund", "Katze", "Maus"],
+      "answer": ["Katze", "Hund", "Maus"]
+    },
+
+    {
+      "mechanic": "typing",
+      "prompt": "Bu cümleyi yaz.",
+      "answer": ["ICH GEHE ZUR SCHULE."]
+    },
+    {
+      "mechanic": "sorting",
+      "prompt": "Diyalog cümlelerini sırala.",
+      "parts": [
+        "Hallo, wie geht es dir?",
+        "Mir geht es gut, danke.",
+        "Und dir?"
+      ],
+      "answer": [
+        "Hallo, wie geht es dir?",
+        "Mir geht es gut, danke.",
+        "Und dir?"
+      ]
+    },
+    {
+      "mechanic": "dragdrop_permanent",
+      "prompt": "Bu cümleleri sürükle (Permanent).",
+      "parts": [
+        "Ich heiße Anna.",
+        "Ich komme aus Berlin.",
+        "Ich bin 20 Jahre alt."
+      ],
+      "answer": [
+        "Ich heiße Anna.",
+        "Ich komme aus Berlin.",
+        "Ich bin 20 Jahre alt."
+      ]
+    },
+    {
+      "mechanic": "dragdrop_returning",
+      "prompt": "Bu cümleleri sürükle (Returning).",
+      "parts": [
+        "Heute ist es kalt.",
+        "Morgen scheint die Sonne.",
+        "Am Wochenende regnet es."
+      ],
+      "answer": [
+        "Heute ist es kalt.",
+        "Morgen scheint die Sonne.",
+        "Am Wochenende regnet es."
+      ]
+    },
+    {
+      "mechanic": "clicking",
+      "prompt": "Doğru diyalog sırasına tıkla.",
+      "parts": ["Wie spät ist es?", "Es ist acht Uhr.", "Danke schön!"],
+      "answer": ["Wie spät ist es?", "Es ist acht Uhr.", "Danke schön!"]
+    },
+    {
+      "mechanic": "swapping",
+      "prompt": "Swap ile cümleleri sırala.",
+      "parts": ["Ich esse Brot.", "Ich trinke Wasser.", "Ich lerne Deutsch."],
+      "answer": ["Ich esse Brot.", "Ich trinke Wasser.", "Ich lerne Deutsch."]
+    }
+  ]
+}
