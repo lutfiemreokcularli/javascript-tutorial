@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Phaser 2 - Almanca Karakter Popup</title>
+    <script src="https://cdn.jsdelivr.net/npm/phaser-ce@2.18.0/build/phaser.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        background: #222;
+        color: white;
+        font-family: sans-serif;
+        overflow: hidden;
+      }
+      #gameContainer {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+      }
+      .german-input {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 220px;
+        font-size: 20px;
+        padding: 6px;
+        margin-top: 5px;
+        border-radius: 6px;
+        border: 1px solid #888;
+      }
+      .popup {
+        position: absolute;
+        background: #444;
+        border: 2px solid #888;
+        border-radius: 8px;
+        padding: 10px;
+        display: none;
+        gap: 5px;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        z-index: 10;
+        transition: opacity 0.1s;
+      }
+      .popup button {
+        background: #666;
+        color: white;
+        border: none;
+        padding: 5px 8px;
+        margin: 3px;
+        border-radius: 4px;
+        font-size: 18px;
+        cursor: pointer;
+      }
+      .popup button:hover {
+        background: #999;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="gameContainer"></div>
+
+    <script>
+      var game = new Phaser.Game(
+        window.innerWidth,
+        window.innerHeight,
+        Phaser.AUTO,
+        "gameContainer",
+        { create: create }
+      );
+
+      var activeInput = null;
+      var popupDiv;
+      var hideTimeout = null;
+
+      function create() {
+        var y = 100;
+        for (var i = 0; i < 6; i++) {
+          var input = document.createElement("input");
+          input.type = "text";
+          input.className = "german-input";
+          input.style.top = y + "px";
+          input.placeholder = "Kelime " + (i + 1);
+
+          // Focus olduğunda popup göster
+          input.addEventListener("focus", function (e) {
+            activeInput = e.target;
+            clearTimeout(hideTimeout); // popup kapanma zamanlayıcısını iptal et
+            showPopup(e.target);
+          });
+
+          // Blur olduğunda popup gizle (küçük gecikmeyle)
+          input.addEventListener("blur", function () {
+            hideTimeout = setTimeout(() => {
+              popupDiv.style.display = "none";
+            }, 150);
+          });
+
+          document.getElementById("gameContainer").appendChild(input);
+          y += 60;
+        }
+
+        createPopup();
+      }
+
+      function createPopup() {
+        popupDiv = document.createElement("div");
+        popupDiv.className = "popup";
+        popupDiv.style.display = "none";
+        popupDiv.style.position = "absolute";
+        popupDiv.style.flexDirection = "row";
+
+        var chars = ["ä", "ö", "ü", "Ä", "Ö", "Ü", "ß"];
+        chars.forEach(function (ch) {
+          var btn = document.createElement("button");
+          btn.textContent = ch;
+
+          // Butona tıklanınca aktif input'a karakter ekle
+          btn.addEventListener("mousedown", function (e) {
+            e.preventDefault();
+            clearTimeout(hideTimeout); // popup kapanmasın
+            if (activeInput) {
+              insertChar(activeInput, ch);
+            }
+          });
+
+          popupDiv.appendChild(btn);
+        });
+
+        document.getElementById("gameContainer").appendChild(popupDiv);
+      }
+
+      function insertChar(input, ch) {
+        var start = input.selectionStart;
+        var end = input.selectionEnd;
+        var text = input.value;
+        input.value = text.slice(0, start) + ch + text.slice(end);
+        input.focus();
+        input.selectionStart = input.selectionEnd = start + 1;
+      }
+
+      function showPopup(inputElem) {
+        var rect = inputElem.getBoundingClientRect();
+        popupDiv.style.top = rect.bottom + 5 + "px";
+        popupDiv.style.left = rect.left + "px";
+        popupDiv.style.display = "flex";
+        popupDiv.style.opacity = 1;
+      }
+
+      window.addEventListener("resize", function () {
+        game.scale.setGameSize(window.innerWidth, window.innerHeight);
+      });
+    </script>
+  </body>
+</html>

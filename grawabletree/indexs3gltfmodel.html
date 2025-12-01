@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Growable 3D Tree – Three.js</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: #0c1117;
+        color: #e6edf3;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+          Cantarell, Noto Sans, sans-serif;
+      }
+      #ui {
+        position: fixed;
+        top: 12px;
+        left: 12px;
+        padding: 10px 12px;
+        background: rgba(20, 25, 33, 0.7);
+        border: 1px solid #2d3642;
+        border-radius: 10px;
+        backdrop-filter: blur(6px);
+        font-size: 12px;
+        line-height: 1.4;
+        z-index: 10;
+      }
+      #ui label {
+        display: block;
+        margin: 6px 0 2px;
+        opacity: 0.9;
+      }
+      #ui input[type="range"] {
+        width: 220px;
+      }
+      #ui button {
+        margin-top: 8px;
+        padding: 6px 10px;
+        border-radius: 8px;
+        border: 1px solid #2d3642;
+        background: #1a2332;
+        color: #e6edf3;
+        cursor: pointer;
+      }
+      #ui button:hover {
+        background: #223048;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="ui">
+      <div><strong>Growable 3D Tree</strong></div>
+      <label>Iteration (1–7): <span id="itv">5</span></label>
+      <input id="iter" type="range" min="1" max="7" value="5" />
+      <label>Branch Angle (deg): <span id="angv">26</span></label>
+      <input id="angle" type="range" min="10" max="50" value="26" />
+      <label>Randomness: <span id="rndv">0.25</span></label>
+      <input id="rand" type="range" min="0" max="1" step="0.01" value="0.25" />
+      <label>Grow Time (s): <span id="grwv">6.0</span></label>
+      <input id="grow" type="range" min="1" max="12" step="0.1" value="6.0" />
+
+      <div style="margin-top: 6px">
+        <button id="regen">Ağacı Yeniden Üret</button>
+        <button id="replay">Animasyonu Yeniden Oynat</button>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/three@0.146.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.146.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://unpkg.com/three@0.146.0/examples/js/loaders/GLTFLoader.js"></script>
+
+    <script>
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      document.body.appendChild(renderer.domElement);
+
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color("#0b1015");
+      scene.fog = new THREE.Fog("#0b1015", 8, 40);
+
+      const camera = new THREE.PerspectiveCamera(
+        55,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        200
+      );
+      camera.position.set(8, 6, 12);
+
+      const controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.target.set(0, 3, 0);
+
+      scene.add(new THREE.AmbientLight(0xffffff, 0.45));
+      const sun = new THREE.DirectionalLight(0xfff5dd, 1.2);
+      sun.position.set(10, 15, 7);
+      scene.add(sun);
+
+      const ground = new THREE.Mesh(
+        new THREE.CircleGeometry(30, 64).rotateX(-Math.PI / 2),
+        new THREE.MeshStandardMaterial({ color: 0x1e2a21, roughness: 1 })
+      );
+      scene.add(ground);
+
+      // -----------------------------------------------------
+      // LOAD REALISTIC PINE TREE (WORKING URL ✔)
+      // -----------------------------------------------------
+      let pine = null;
+      const loader = new THREE.GLTFLoader();
+
+      loader.load(
+        "https://cdn.jsdelivr.net/gh/pmndrs/gltf-asset-library/pine_tree/scene.gltf",
+        (gltf) => {
+          pine = gltf.scene;
+
+          pine.scale.set(0.01, 0.01, 0.01); // start tiny
+          pine.position.set(0, 0, 0);
+
+          scene.add(pine);
+          startGrow();
+        }
+      );
+
+      // Grow Animation
+      let growStart = null;
+      const growTime = 4;
+
+      function startGrow() {
+        growStart = performance.now() / 1000;
+      }
+
+      function updateGrow() {
+        if (!pine || growStart === null) return;
+
+        const t = (performance.now() / 1000 - growStart) / growTime;
+        const p = Math.min(1, t);
+
+        const ease = 1 - Math.pow(1 - p, 4); // smoother
+        pine.scale.set(ease, ease, ease);
+      }
+
+      function animate() {
+        requestAnimationFrame(animate);
+        updateGrow();
+        controls.update();
+        renderer.render(scene, camera);
+      }
+
+      animate();
+
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    </script>
+  </body>
+</html>

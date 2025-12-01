@@ -1,4 +1,9 @@
-var game = new Phaser.Game("100", "100", Phaser.AUTO, "phaser-canvas");
+var game = new Phaser.Game(
+  window.innerWidth,
+  window.innerHeight,
+  Phaser.AUTO,
+  "phaser-canvas"
+);
 
 var MainState = {
   preload: function () {},

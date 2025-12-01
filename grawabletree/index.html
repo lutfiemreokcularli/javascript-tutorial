@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Growable 3D Tree – Three.js</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: #0c1117;
+        color: #e6edf3;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+          Cantarell, Noto Sans, sans-serif;
+      }
+      #ui {
+        position: fixed;
+        top: 12px;
+        left: 12px;
+        padding: 10px 12px;
+        background: rgba(20, 25, 33, 0.7);
+        border: 1px solid #2d3642;
+        border-radius: 10px;
+        backdrop-filter: blur(6px);
+        font-size: 12px;
+        line-height: 1.4;
+        z-index: 10;
+      }
+      #ui label {
+        display: block;
+        margin: 6px 0 2px;
+        opacity: 0.9;
+      }
+      #ui input[type="range"] {
+        width: 220px;
+      }
+      #ui button {
+        margin-top: 8px;
+        padding: 6px 10px;
+        border-radius: 8px;
+        border: 1px solid #2d3642;
+        background: #1a2332;
+        color: #e6edf3;
+        cursor: pointer;
+      }
+      #ui button:hover {
+        background: #223048;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="ui">
+      <div><strong>Growable 3D Tree</strong></div>
+      <label>Iteration (1–7): <span id="itv">5</span></label>
+      <input id="iter" type="range" min="1" max="7" value="5" />
+      <label>Branch Angle (deg): <span id="angv">26</span></label>
+      <input id="angle" type="range" min="10" max="50" value="26" />
+      <label>Randomness: <span id="rndv">0.25</span></label>
+      <input id="rand" type="range" min="0" max="1" step="0.01" value="0.25" />
+      <label>Grow Time (s): <span id="grwv">6.0</span></label>
+      <input id="grow" type="range" min="1" max="12" step="0.1" value="6.0" />
+
+      <div style="margin-top: 6px">
+        <button id="regen">Ağacı Yeniden Üret</button>
+        <button id="replay">Animasyonu Yeniden Oynat</button>
+      </div>
+    </div>
+
+    <!-- DİKKAT: sadece bu iki script, başka JS yok -->
+    <script src="https://unpkg.com/three@0.146.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.146.0/examples/js/controls/OrbitControls.js"></script>
+
+    <script>
+      // --------------------------------------------------------
+      // THREE SETUP (global THREE kullanıyoruz)
+      // --------------------------------------------------------
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      document.body.appendChild(renderer.domElement);
+
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color("#0c1117");
+
+      const camera = new THREE.PerspectiveCamera(
+        55,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        200
+      );
+      camera.position.set(6, 5, 8);
+
+      const controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.target.set(0, 2, 0);
+      controls.enableDamping = true;
+
+      scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+      const dl = new THREE.DirectionalLight(0xffffff, 1.0);
+      dl.position.set(5, 10, 3);
+      scene.add(dl);
+
+      // zemin
+      const ground = new THREE.Mesh(
+        new THREE.CircleGeometry(30, 64).rotateX(-Math.PI / 2),
+        new THREE.MeshStandardMaterial({ color: 0x0c1722, roughness: 1 })
+      );
+      scene.add(ground);
+
+      // --------------------------------------------------------
+      // UI
+      // --------------------------------------------------------
+      const iterInput = document.getElementById("iter");
+      const angleInput = document.getElementById("angle");
+      const randInput = document.getElementById("rand");
+      const growInput = document.getElementById("grow");
+
+      const itv = document.getElementById("itv");
+      const angv = document.getElementById("angv");
+      const rndv = document.getElementById("rndv");
+      const grwv = document.getElementById("grwv");
+
+      [iterInput, angleInput, randInput, growInput].forEach((inp) => {
+        inp.addEventListener("input", () => {
+          itv.textContent = iterInput.value;
+          angv.textContent = angleInput.value;
+          rndv.textContent = randInput.value;
+          grwv.textContent = growInput.value;
+        });
+      });
+
+      document.getElementById("regen").addEventListener("click", rebuild);
+      document.getElementById("replay").addEventListener("click", replay);
+
+      // --------------------------------------------------------
+      // TREE SYSTEM
+      // --------------------------------------------------------
+      const TMP_UP = new THREE.Vector3(0, 1, 0);
+      let treeGroup = null;
+      let segments = [];
+      let startClock = 0;
+      let totalGrow = 6.0;
+
+      function randRange(a, b) {
+        return a + Math.random() * (b - a);
+      }
+
+      function rebuild() {
+        if (treeGroup) {
+          scene.remove(treeGroup);
+          treeGroup.traverse((o) => {
+            if (o.isMesh) {
+              o.geometry && o.geometry.dispose();
+              o.material && o.material.dispose();
+            }
+          });
+        }
+
+        const iter = parseInt(iterInput.value, 10);
+        const angleDeg = parseFloat(angleInput.value);
+        const randomness = parseFloat(randInput.value);
+        totalGrow = parseFloat(growInput.value);
+
+        treeGroup = new THREE.Group();
+        scene.add(treeGroup);
+        segments = [];
+
+        const root = new THREE.Vector3(0, 0, 0);
+        const dir = new THREE.Vector3(0, 1, 0);
+
+        growBranch(
+          root,
+          dir,
+          2.0,
+          0.18,
+          iter,
+          (angleDeg * Math.PI) / 180,
+          randomness
+        );
+
+        const per = totalGrow / segments.length;
+        segments.forEach((s, i) => {
+          s.startTime = i * per * 0.85;
+          s.duration = per * 0.9;
+        });
+
+        replay();
+      }
+
+      function replay() {
+        startClock = performance.now() / 1000;
+        for (const s of segments) {
+          if (s.leaf) {
+            s.mesh.scale.setScalar(0.001);
+            s.mesh.material.opacity = 0.0;
+          } else {
+            s.mesh.userData.baseLen = s.mesh.scale.y;
+            s.mesh.scale.y = 0.001;
+            s.mesh.material.opacity = 1.0;
+          }
+        }
+      }
+
+      function addCylinderSegment(start, end, radius) {
+        const geom = new THREE.CylinderGeometry(
+          radius,
+          radius * 1.12,
+          1,
+          7,
+          1,
+          true
+        );
+        geom.translate(0, 0.5, 0);
+
+        const mat = new THREE.MeshStandardMaterial({
+          color: 0x6c4f33,
+          roughness: 0.95,
+          metalness: 0.0,
+          transparent: true,
+        });
+
+        const mesh = new THREE.Mesh(geom, mat);
+
+        const diff = end.clone().sub(start);
+        const len = diff.length();
+        const dir = diff.clone().normalize();
+
+        const q = new THREE.Quaternion().setFromUnitVectors(TMP_UP, dir);
+        mesh.quaternion.copy(q);
+        mesh.position.copy(start);
+        mesh.scale.set(1, len, 1);
+        mesh.userData.baseLen = len;
+
+        treeGroup.add(mesh);
+        return mesh;
+      }
+
+      function addLeaf(pos, scale) {
+        const geom = new THREE.IcosahedronGeometry(scale, 0);
+        const mat = new THREE.MeshStandardMaterial({
+          color: 0x2fbf71,
+          roughness: 0.9,
+          metalness: 0.0,
+          transparent: true,
+          opacity: 0.0,
+        });
+        const leaf = new THREE.Mesh(geom, mat);
+        leaf.position.copy(pos);
+        treeGroup.add(leaf);
+        return leaf;
+      }
+
+      function growBranch(
+        start,
+        dir,
+        len,
+        radius,
+        depth,
+        angleRad,
+        randomness
+      ) {
+        const end = start.clone().add(dir.clone().multiplyScalar(len));
+
+        const seg = addCylinderSegment(start, end, radius);
+        segments.push({ mesh: seg, leaf: false });
+
+        if (depth <= 0) {
+          const leaf = addLeaf(end, Math.max(0.12, radius * 1.4));
+          segments.push({ mesh: leaf, leaf: true });
+          return;
+        }
+
+        const childCount = Math.random() < 0.25 ? 3 : 2;
+
+        for (let i = 0; i < childCount; i++) {
+          const yaw = randRange(-Math.PI, Math.PI);
+          const pitch =
+            angleRad + randRange(-angleRad * randomness, angleRad * randomness);
+
+          const qYaw = new THREE.Quaternion().setFromAxisAngle(TMP_UP, yaw);
+          const right = new THREE.Vector3(1, 0, 0).applyQuaternion(qYaw);
+          const qPitch = new THREE.Quaternion().setFromAxisAngle(right, pitch);
+
+          const newDir = dir
+            .clone()
+            .applyQuaternion(qYaw)
+            .applyQuaternion(qPitch)
+            .normalize();
+
+          const newLen = len * randRange(0.62, 0.78);
+          const newRad = radius * randRange(0.62, 0.78);
+          const spawn = start.clone().lerp(end, randRange(0.35, 0.85));
+
+          growBranch(
+            spawn,
+            newDir,
+            newLen,
+            newRad,
+            depth - 1,
+            angleRad,
+            randomness
+          );
+        }
+      }
+
+      // --------------------------------------------------------
+      // ANIMATION LOOP
+      // --------------------------------------------------------
+      function animate() {
+        requestAnimationFrame(animate);
+
+        const t = performance.now() / 1000 - startClock;
+        for (const s of segments) {
+          const p = Math.min(1, (t - s.startTime) / s.duration);
+          if (p < 0) continue;
+
+          if (s.leaf) {
+            s.mesh.scale.setScalar(THREE.MathUtils.lerp(0.001, 1, p));
+            s.mesh.material.opacity = p;
+          } else {
+            const base = s.mesh.userData.baseLen || 1;
+            s.mesh.scale.y = Math.max(0.0001, base * p);
+          }
+        }
+
+        controls.update();
+        renderer.render(scene, camera);
+      }
+
+      rebuild();
+      animate();
+
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    </script>
+  </body>
+</html>

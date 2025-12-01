@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Phaser 2 - Almanca Karakter Popup (Klavye ortalanmış sağda)</title>
+    <script src="https://cdn.jsdelivr.net/npm/phaser-ce@2.18.0/build/phaser.min.js"></script>
+
+    <style>
+      body {
+        margin: 0;
+        background: #222;
+        color: white;
+        font-family: sans-serif;
+        overflow: hidden;
+      }
+      #gameContainer {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      /* Her input için kapsayıcı */
+      .input-wrapper {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 220px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .german-input {
+        width: 100%;
+        font-size: 20px;
+        padding: 6px 6px; /* sade padding */
+        border-radius: 6px;
+        border: 1px solid #888;
+        box-sizing: border-box;
+      }
+
+      /* 🔧 Klavye ikonu: input'un SAĞINDA, ortalanmış */
+      .keyboard-icon {
+        position: absolute;
+        right: -32px; /* input'un hemen dışında sağda */
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 20px;
+        cursor: pointer;
+        display: none;
+        user-select: none;
+        opacity: 0.8;
+        transition: 0.15s;
+      }
+
+      .keyboard-icon:hover {
+        opacity: 1;
+        transform: translateY(-50%) scale(1.15);
+      }
+
+      .popup {
+        position: absolute;
+        background: #444;
+        border: 2px solid #888;
+        border-radius: 8px;
+        padding: 10px;
+        display: none;
+        gap: 5px;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        z-index: 10;
+      }
+
+      .popup button {
+        background: #666;
+        color: white;
+        border: none;
+        padding: 5px 8px;
+        margin: 3px;
+        border-radius: 4px;
+        font-size: 18px;
+        cursor: pointer;
+      }
+      .popup button:hover {
+        background: #999;
+      }
+
+      .popup .close-btn {
+        background: #a33;
+      }
+      .popup .close-btn:hover {
+        background: #d55;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="gameContainer"></div>
+
+    <script>
+      var game = new Phaser.Game(
+        window.innerWidth,
+        window.innerHeight,
+        Phaser.AUTO,
+        "gameContainer",
+        { create: create }
+      );
+
+      var activeInput = null;
+      var popupDiv;
+      var hideTimeout = null;
+      var autoPopupEnabled = true;
+
+      function create() {
+        var y = 100;
+
+        for (var i = 0; i < 6; i++) {
+          var wrapper = document.createElement("div");
+          wrapper.className = "input-wrapper";
+          wrapper.style.top = y + "px";
+
+          var input = document.createElement("input");
+          input.type = "text";
+          input.className = "german-input";
+          input.placeholder = "Kelime " + (i + 1);
+
+          var icon = document.createElement("span");
+          icon.className = "keyboard-icon";
+          icon.innerHTML = "⌨️";
+          icon.title = "Almanca karakter klavyesini aç";
+
+          wrapper.appendChild(input);
+          wrapper.appendChild(icon);
+          document.getElementById("gameContainer").appendChild(wrapper);
+
+          // Focus olduğunda popup aç (eğer autoPopupEnabled true ise)
+          input.addEventListener("focus", function (e) {
+            activeInput = e.target;
+            clearTimeout(hideTimeout);
+
+            // sadece focus olan inputta ikon göster
+            document
+              .querySelectorAll(".keyboard-icon")
+              .forEach((ic) => (ic.style.display = "none"));
+            e.target.parentElement.querySelector(
+              ".keyboard-icon"
+            ).style.display = "block";
+
+            if (autoPopupEnabled) showPopup(e.target);
+          });
+
+          // Blur olduğunda popup gizle
+          input.addEventListener("blur", function () {
+            hideTimeout = setTimeout(() => {
+              popupDiv.style.display = "none";
+              // focus kaybolunca ikon da gizlensin
+              document
+                .querySelectorAll(".keyboard-icon")
+                .forEach((ic) => (ic.style.display = "none"));
+            }, 150);
+          });
+
+          // Klavye ikonuna tıklanınca popup göster
+          icon.addEventListener("mousedown", function (e) {
+            e.preventDefault();
+            clearTimeout(hideTimeout);
+            autoPopupEnabled = true;
+            var parentInput =
+              e.target.parentElement.querySelector(".german-input");
+            activeInput = parentInput;
+            showPopup(parentInput);
+          });
+
+          y += 60;
+        }
+
+        createPopup();
+      }
+
+      function createPopup() {
+        popupDiv = document.createElement("div");
+        popupDiv.className = "popup";
+
+        var chars = ["ä", "ö", "ü", "Ä", "Ö", "Ü", "ß"];
+        chars.forEach(function (ch) {
+          var btn = document.createElement("button");
+          btn.textContent = ch;
+          btn.addEventListener("mousedown", function (e) {
+            e.preventDefault();
+            clearTimeout(hideTimeout);
+            if (activeInput) insertChar(activeInput, ch);
+          });
+          popupDiv.appendChild(btn);
+        });
+
+        // ✖ Kapat butonu
+        var closeBtn = document.createElement("button");
+        closeBtn.textContent = "✖";
+        closeBtn.className = "close-btn";
+        closeBtn.title = "Kapat (Bir daha otomatik açılmasın)";
+        closeBtn.addEventListener("mousedown", function (e) {
+          e.preventDefault();
+          popupDiv.style.display = "none";
+          autoPopupEnabled = false;
+        });
+        popupDiv.appendChild(closeBtn);
+
+        document.getElementById("gameContainer").appendChild(popupDiv);
+      }
+
+      function insertChar(input, ch) {
+        var start = input.selectionStart;
+        var end = input.selectionEnd;
+        var text = input.value;
+        input.value = text.slice(0, start) + ch + text.slice(end);
+        input.focus();
+        input.selectionStart = input.selectionEnd = start + 1;
+      }
+
+      function showPopup(inputElem) {
+        var rect = inputElem.getBoundingClientRect();
+        popupDiv.style.top = rect.bottom + 5 + "px";
+        popupDiv.style.left = rect.left + "px";
+        popupDiv.style.display = "flex";
+      }
+
+      window.addEventListener("resize", function () {
+        game.scale.setGameSize(window.innerWidth, window.innerHeight);
+      });
+    </script>
+  </body>
+</html>
